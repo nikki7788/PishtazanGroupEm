@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Model.DAL;
 
 namespace PishtazanGroupEm
@@ -62,6 +64,16 @@ namespace PishtazanGroupEm
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                //------------برای آپدیت کردن کتابخانه های کلاینت مانند بوت استرپ جی کویری و ..------------------
+                //app.UseStaticFiles(new StaticFileOptions
+                //{
+                //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                //    RequestPath = "/" + "node_modules"
+                //});
+                //--------------------------------------------------=-------
+
+
             }
             else
             {
