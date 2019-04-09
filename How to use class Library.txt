@@ -1,0 +1,12 @@
+Install below refrences in (ClassLibrary)
+
+1.Install-Package Microsoft.EntityFrameworkCore
+
+2.Install-Package Microsoft.EntityFrameworkCore.SqlServer
+
+3.Install-Package Microsoft.EntityFrameworkCore.Tools
+
+after that right click on project name then click on refrence then select class library checkbox
+then create tables(=classes =entities) & AppDbContext &AppRoles & AppUser in class library
+
+then add-Migration & and update-Database on class libraryb to create database
