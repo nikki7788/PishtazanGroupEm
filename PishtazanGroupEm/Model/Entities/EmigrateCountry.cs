@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Model.Entities
 {
     /// <summary>
-    /// جدول کشورها
+    /// جدول واسط بین جدول نوع مهاجرت و کشورها
     /// </summary>
-    [Table("Country")]
-    public class Country:BaseEntity<int>
+    [Table("EmigrateCountry")]
+    public class EmigrateCountry : BaseEntity<int>
     {
         #region ############# Constructors #############
 
@@ -18,28 +17,28 @@ namespace Model.Entities
 
         #region ############## Properties #########################
 
+        /// <summary>
+        /// شناسه کشور
+        /// </summary>
+        public int CountryId { get; set; }
 
         /// <summary>
-        /// نام کشور
+        /// شناسه نوع مهاجرت
         /// </summary>
-        public string Name { get; set; }
+        public int EmigrationTypeId { get; set; }
 
 
-        /// <summary>
-        /// توضیحات کشور
-        /// </summary>
-
-        public string  Description  { get; set; }
 
         #endregion#############
 
         #region #################### Navigation Properties ########################
 
-        public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
+        [ForeignKey(nameof(CountryId))]
+        public virtual Country Country { get; set; }
 
-        public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 
-        public virtual ICollection<EmigrateCountry> EmigrateCountries { get; set; }
+        [ForeignKey(nameof(EmigrationTypeId))]
+        public virtual EmigrationType EmigrationType { get; set; }
 
         #endregion ##################
 
@@ -48,4 +47,3 @@ namespace Model.Entities
         #endregion
     }
 }
-//todo:ولیدشن اگر نیاز داشتبنویسم.نیاز ندارد

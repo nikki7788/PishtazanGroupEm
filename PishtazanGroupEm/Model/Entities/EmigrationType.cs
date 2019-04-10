@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace Model.Entities
 {
     /// <summary>
-    /// جدول کشورها
+    /// جدول نوع مهاجرت
     /// </summary>
-    [Table("Country")]
-    public class Country:BaseEntity<int>
+    [Table("EmigrationType")]
+    public class EmigrationType:BaseEntity<int>
     {
         #region ############# Constructors #############
 
@@ -18,26 +18,21 @@ namespace Model.Entities
 
         #region ############## Properties #########################
 
-
         /// <summary>
-        /// نام کشور
+        /// نام نوع مهاجرت
         /// </summary>
         public string Name { get; set; }
 
 
         /// <summary>
-        /// توضیحات کشور
+        /// توضیحات نوع مهاجرت
         /// </summary>
-
-        public string  Description  { get; set; }
+        public string Description { get; set; }
 
         #endregion#############
 
         #region #################### Navigation Properties ########################
 
-        public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
-
-        public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 
         public virtual ICollection<EmigrateCountry> EmigrateCountries { get; set; }
 
@@ -48,4 +43,3 @@ namespace Model.Entities
         #endregion
     }
 }
-//todo:ولیدشن اگر نیاز داشتبنویسم.نیاز ندارد

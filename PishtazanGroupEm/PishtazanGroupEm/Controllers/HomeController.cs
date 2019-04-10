@@ -4,15 +4,36 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Model.Models.Countries;
+using Model.Models.UnitOfWork;
 using PishtazanGroupEm.Models;
 
 namespace PishtazanGroupEm.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IUnitOfWork _unitOfWork;
+        public HomeController(IUnitOfWork unitOfWork)
         {
-            return View();
+            _unitOfWork = unitOfWork;
+        }
+        public async Task< IActionResult> Index()
+        {
+            var model=await _unitOfWork.CountryRepUW.GetByIdAsync(2);
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CountryCreatDto dto)
+        {
+            //CountryDto cdo = new CountryDto()
+            //{
+            //    Name = "امریکا",
+            //    Description = "ندارد"
+            //};
+           await _unitOfWork.CountryRepUW.CreateAsync(dto);
+            await _unitOfWork.Save();
+            return RedirectToAction("Index");
         }
 
         public IActionResult Privacy()
