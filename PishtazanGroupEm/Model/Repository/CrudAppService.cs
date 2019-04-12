@@ -46,7 +46,7 @@ namespace Model.Repository
             _table = context.Set<TEntity>();
 
         }
-        public CrudAppService(IMapper mapper) :base()
+        public CrudAppService(IMapper mapper) 
         {
             _mapper = mapper;
 

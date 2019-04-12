@@ -19,22 +19,23 @@ namespace PishtazanGroupEm.Controllers
         }
         public async Task< IActionResult> Index()
         {
-            var model=await _unitOfWork.CountryRepUW.GetByIdAsync(2);
-            return View(model);
+            //var model=await _unitOfWork.CountryRepUW.GetByIdAsync(2);
+            //return View(model);
+            return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CountryCreatDto dto)
-        {
-            //CountryDto cdo = new CountryDto()
-            //{
-            //    Name = "امریکا",
-            //    Description = "ندارد"
-            //};
-           await _unitOfWork.CountryRepUW.CreateAsync(dto);
-            await _unitOfWork.Save();
-            return RedirectToAction("Index");
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Create(CountryCreatDto dto)
+        //{
+        //    //CountryDto cdo = new CountryDto()
+        //    //{
+        //    //    Name = "امریکا",
+        //    //    Description = "ندارد"
+        //    //};
+        //   await _unitOfWork.CountryRepUW.CreateAsync(dto);
+        //    await _unitOfWork.Save();
+        //    return RedirectToAction("Index");
+        //}
 
         public IActionResult Privacy()
         {

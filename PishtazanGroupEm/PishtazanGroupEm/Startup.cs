@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Model.DAL;
 using Model.Infrastructure;
 using Model.Models.UnitOfWork;
+using System.IO;
 
 namespace PishtazanGroupEm
 {
@@ -69,12 +71,13 @@ namespace PishtazanGroupEm
             {
                 app.UseDeveloperExceptionPage();
 
-                //------------برای آپدیت کردن کتابخانه های کلاینت مانند بوت استرپ جی کویری و ..------------------
-                //app.UseStaticFiles(new StaticFileOptions
-                //{
-                //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                //    RequestPath = "/" + "node_modules"
-                //});
+                //------------------------------NPM  node_modules  دسترسی دادن پروژه به فایل های   --------------------------------------------------
+                //----------- برای آپدیت کردن کتابخانه های کلاینت NPM  node_modules  ..------------------
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                    RequestPath = "/" + "node_modules"
+                });
                 //--------------------------------------------------=-------
 
 
@@ -93,8 +96,17 @@ namespace PishtazanGroupEm
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                    );
             });
         }
     }
