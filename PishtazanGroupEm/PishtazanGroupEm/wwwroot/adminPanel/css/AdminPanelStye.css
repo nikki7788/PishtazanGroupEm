@@ -1,0 +1,11 @@
+﻿
+
+
+ul li {
+    list-style: none;
+}
+
+.main-li-ul li {
+    /*padding:8px;*/
+    margin: 12px 7px;
+}
