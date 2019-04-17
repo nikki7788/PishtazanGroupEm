@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {},
   "dependencies": {
-    "material-dashboard": "^2.1.0",
-    "font-awesome": "4.7.0"
+    "font-awesome": "4.7.0",
+    "material-dashboard": "^2.1.0"
   }
 }
