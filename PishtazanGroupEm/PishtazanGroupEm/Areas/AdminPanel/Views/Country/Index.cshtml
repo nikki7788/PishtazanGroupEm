@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<CountryListDto>
+﻿@model IEnumerable<CountryListDto>
 @{
     ViewData["Title"] = "مدیریت کشورها";
 }
@@ -43,23 +42,16 @@
 
                     <td class="align-middle">
                         <div class="dropdown dropright">
-                            <a   class=" dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+                            <a class=" dropdown-toggle" aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
                                 ...
                             </a>
-                            <div class="dropdown-menu">
-                                <a class="btn btn-info " data-toggle="modal" id="show-edit-book" asp-action="EditBook"
+                            <div class="dropdown-menu text-center">
+                                <a class="btn btn-info p-2" data-toggle="modal" id="show-edit-book" asp-action="EditBook"
                                    data-target="#modal-action-country" asp-route-id="@item.Id">
-                                    <i class="fa fa-pen"></i>
+                                    <i class="fa fa-pencil"></i>
                                     <span>ویرایش</span>
                                 </a>
-                                <a class="btn btn-info " data-toggle="modal" id="show-edit-book" asp-action="EditBook"
-                                   data-target="#modal-action-country" asp-route-id="@item.Id">
-                                    <i class="fa fa-pen"></i>
-                                    <span>ویرایش</span>
-                                </a>
-
-
-                                <a class="btn btn-danger " data-toggle="modal" id="show-delete-book" asp-action="DeleteBook"
+                                <a class="btn btn-danger p-2" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook"
                                    data-target="#modal-action-country" asp-route-id="@item.Id">
                                     <i class="fa fa-trash"></i>
                                     <span>حذف</span>
@@ -74,4 +66,11 @@
     </table>
 
 </div>
-
+@section panelScript{
+    <script>
+        $(document).ready(function () {
+            //ریسپانسیو کردن جدول-دستور پلاگین
+            $('table').tableMobilize();
+        });
+    </script>
+}

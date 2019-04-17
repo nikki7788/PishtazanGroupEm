@@ -1,7 +1,7 @@
 ﻿
 $(document).ready(function () {
 
-    $(".main-li").children('ul').hide();     //به طور پیش فرض پنل مدیریت سیستم باز باشد وبقیه پنل ها بته باشد
+    $(".main-li").children('ul').hide();     //به طور پیش فرض همه پتل های چند سطحی  پنل ها بسته باشد
 
     //-------------------------------------
     //var num = 0;
@@ -16,7 +16,7 @@ $(document).ready(function () {
         var getli = $(this).parent('li');
         //   getli.find('ul').slideToggle(200);
         getli.children('ul').slideToggle(200)                                 //نمایش و محو ایتم های پنل ها
-            .siblings('a').children('i.fa').toggleClass("fa fa-chevron-left").toggleClass("fa fa-chevron-down");           //تعویض ایکن ضربدر به بعلاوه و بالعکس
+            .siblings('a').children('i.fa').toggleClass("fa fa-chevron-left").toggleClass("fa fa-chevron-down");           //تعویض ایکن > به ^ و بالعکس
     });
 
 

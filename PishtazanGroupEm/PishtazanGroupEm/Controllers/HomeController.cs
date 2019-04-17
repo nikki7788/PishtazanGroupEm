@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Model.Models.Countries;
-using Model.Models.UnitOfWork;
+using Model.UnitOfWork;
 using PishtazanGroupEm.Models;
 
 namespace PishtazanGroupEm.Controllers
