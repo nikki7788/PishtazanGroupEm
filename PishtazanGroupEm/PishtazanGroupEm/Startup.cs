@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Model.DAL;
 using Model.Infrastructure;
-using Model.Models.UnitOfWork;
+using Model.UnitOfWork;
 using System.IO;
 
 namespace PishtazanGroupEm

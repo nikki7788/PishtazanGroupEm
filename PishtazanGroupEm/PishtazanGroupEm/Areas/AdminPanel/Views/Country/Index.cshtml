@@ -1,0 +1,73 @@
+﻿@model IEnumerable<CountryListDto>
+@{
+    ViewData["Title"] = "مدیریت کشورها";
+}
+
+
+
+
+<div class="card-body">
+    <div>
+        <a class="btn btn-primary" data-toggle="modal" id="all-index" asp-action="Create"
+           data-target="#modal-action-book">
+            <i class="fa fa-plus"></i>
+            <span>افزودن  کشور</span>
+        </a>
+    </div>
+
+    <table class="table table-striped table-sm  table-hover mt-3 text-center ">
+        <thead>
+            <tr>
+
+                <th>ردیف</th>
+                <!-- Html Helper for dynamic implementing the property titles of the table(class= @@model IEnumerable<BookGroup>)-->
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.Description)</th>
+              
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int counter = 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(counter++)</td>
+
+                    <td>@item.Name</td>
+
+                    <td>@item.Description</td>
+                   
+
+
+                    <td class="align-middle">
+                            <div class="dropdown dropright ">
+                                <a class="fa fa-spin " aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+                                    <i class="fa fa-cog  fa-spin"></i>
+                                </a>
+                                <div class="dropdown-menu justify-content-center">
+                                    <a   class= "text-info  dropdown-item" data-toggle="modal" id="show-edit-book" asp-action="EditBook"
+                                       data-target="#modal-action-country" asp-route-id="@item.Id">
+                                        <i class="p-1 fa fa-pencil"></i>
+                                        <span>ویرایش</span>
+                                    </a>
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a class="text-danger dropdown-item" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook"
+                                       data-target="#modal-action-country" asp-route-id="@item.Id">
+                                        <i class="p-1 fa fa-trash"></i>
+                                        <span>حذف</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>

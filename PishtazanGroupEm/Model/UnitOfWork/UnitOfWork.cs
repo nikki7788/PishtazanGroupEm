@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Models.UnitOfWork
+namespace Model.UnitOfWork
 {
     /// <summary>
     /// برای هر موجودیت و جدول Crud پیاده سازی 

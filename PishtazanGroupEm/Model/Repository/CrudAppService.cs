@@ -37,7 +37,7 @@ namespace Model.Repository
 
         private DbSet<TEntity> _table;    //e.g. _context.categories....
 
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
 
         public CrudAppService(ApplicationDbContext context)
@@ -46,11 +46,11 @@ namespace Model.Repository
             _table = context.Set<TEntity>();
 
         }
-        public CrudAppService(IMapper mapper) 
-        {
-            _mapper = mapper;
+        //public CrudAppService(IMapper mapper) 
+        //{
+        //    _mapper = mapper;
 
-        }
+        //}
 
         #endregion##################################################################################
 
@@ -66,7 +66,7 @@ namespace Model.Repository
             //BaseDto<TCreateDto, TEntity> baseDto = new BaseDto<TCreateDto, TEntity>();
             //TEntity entity = baseDto.ToEntity();
 
-            TEntity entity = _mapper.Map<TEntity>(entityDto);
+            TEntity entity = Mapper.Map<TEntity>(entityDto);
             await _table.AddAsync(entity);
 
         }
@@ -84,7 +84,7 @@ namespace Model.Repository
         /// اگر وجودنداشت از ویو مدل ایجاد و اگر ایجاد وجود نداشت از لیست
         public virtual void Update(TEditDto entityDto)
         {
-            var entity = _mapper.Map<TEntity>(entityDto);
+            var entity = Mapper.Map<TEntity>(entityDto);
             _table.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
@@ -103,7 +103,7 @@ namespace Model.Repository
             //var entityDto = BaseDto<TEntityDto,TEntity>.FromEntity(entity);
 
             //TEntityDto entityDto = BaseDto<TEntityDto, TEntity>.FromEntity(entity);
-            var entityDto = _mapper.Map<TEntityDto>(entity);
+            var entityDto = Mapper.Map<TEntityDto>(entity);
             return entityDto;
         }
 
@@ -145,7 +145,7 @@ namespace Model.Repository
 
             }
             //لیستی از ویو مدل نمایش لیست برمیکرداند
-            IEnumerable<TEntityDto> entityDto = _mapper.Map<IEnumerable<TEntityDto>>(await query.ToListAsync());
+            IEnumerable<TEntityDto> entityDto = Mapper.Map<IEnumerable<TEntityDto>>(await query.ToListAsync());
             return entityDto;
             //todo:ویو مدل های ورودی متد را اگه نیاز بود باید تغییر نوع بدهم
         }

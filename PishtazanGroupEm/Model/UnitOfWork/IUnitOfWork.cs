@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Models.UnitOfWork
+namespace Model.UnitOfWork
 {
     /// <summary>
     ///  UnitOfWork اینترفیس برای دسترسی کنترلر به  
