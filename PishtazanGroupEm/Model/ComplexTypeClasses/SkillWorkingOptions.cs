@@ -1,4 +1,5 @@
-﻿using Model.PublicClasses;
+﻿using Microsoft.EntityFrameworkCore;
+using Model.PublicClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,8 @@ namespace Model.ComplexTypeClasses
     ///هزینه  انجام هر خدمت برای تمام کشور ها یکسان است
     ///این هزینه هزینه انجام خدمت توسط موسسه است  
     ///  است که در کلاس و جدول کشور برای  پراپرتی مورد نظراز  نوع این کلاس تعریف میشود complexType جدول از نوع    
-    [ComplexType]
+   // [ComplexType]
+    [Owned]
     public class SkillWorkingOptions
     {
 
