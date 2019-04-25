@@ -21,6 +21,7 @@ namespace Model.Entities
         /// نام فایل تصویری کشور
         /// </summary>
         /// 
+
         public string ImageName { get; set; }
 
 
