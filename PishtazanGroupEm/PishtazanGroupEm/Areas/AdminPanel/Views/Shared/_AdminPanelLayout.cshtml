@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" >
 
 <head>
     <meta charset="utf-8" />
@@ -27,7 +27,7 @@
     <!-- CSS Files -->
     <!--<link href="../assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />-->
     <link href="~/node_modules/material-dashboard/assets/css/material-dashboard.css" rel="stylesheet" />
-
+    
     <!--<link href="../assets/css/material-dashboard-rtl.css?v=1.1" rel="stylesheet" />-->
     <link href="~/node_modules/material-dashboard/assets/css/material-dashboard-rtl.css" rel="stylesheet" /> <!--    rtl bootsrap    -->
     <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -36,7 +36,7 @@
 
     <!--customize Css - My css-->
     <link href="~/adminPanel/css/AdminPanelStye.css" rel="stylesheet" />
-
+    
     <!--responvsive table-->
     <link href="~/Responsive-table/jquery.stackedrows.css" rel="stylesheet" />
     <style>
@@ -56,15 +56,15 @@
     </style>
 </head>
 
-<body class="">
+<body class="admin-panel">
     <div class="wrapper ">
 
         <!--تصویر پس زمینه و رنگ منو های ادمین پنل-->
         <!--تصویر زمینه داینامیک است رنگ منوها را باید داینامیک کنم todo 1:-->
         <!--
-         رنگ منو ها هم داینامیک است باید رنگ سربرگ تب ها را در هر صفحه داینامیک کنم
-    انتخاب تصویر پس زمینه داینامیک است
-       -->
+             رنگ منو ها هم داینامیک است باید رنگ سربرگ تب ها را در هر صفحه داینامیک کنم
+        انتخاب تصویر پس زمینه داینامیک است
+           -->
         <!-- side bar -->
         <partial name="~/Areas/AdminPanel/Views/Shared/PartialViews/_SidebarPartial.cshtml" />
         <!-- End side bar -->
@@ -93,14 +93,14 @@
 
         <!--آیکون تنظیمات ویو پنل-->
         <!--todo 2: انتخاب تصویر پس زمینه داینامیک است
-    رنگ منو ها هم داینامیک است باید رنگ سربرگ تب ها را در هر صفحه داینامیک کنم-->
+        رنگ منو ها هم داینامیک است باید رنگ سربرگ تب ها را در هر صفحه داینامیک کنم-->
         <!-- مرتبط است todo 1 با -->
         <!-- fixed plugin -->
-        <partial name="~/Areas/AdminPanel/Views/Shared/PartialViews/_FixedPluginPartial.cshtml" >
+        <partial name="~/Areas/AdminPanel/Views/Shared/PartialViews/_FixedPluginPartial.cshtml">
             <!--End fixed plugin -->
 
 
-</div>
+    </div>
 
 
 
@@ -137,7 +137,8 @@
     <!--دستورات مربوط به ریسپانسیو جدول-->
     <script src="~/Responsive-table/responsive-js-command-for-table.js"></script>
 
-
+    <!--نمایش مودال Modal-->
+    <script src="~/js/all-index.js"></script>
 
 
 
@@ -157,6 +158,14 @@
     <!--  fixed-plugin دستورات مربوط به-->
     <!--  داینامیک کردن انتخاب رنگ و تصویر زمینه منو توسط کاربر-->
     <script src="~/node_modules/material-dashboard/assets/js/fixed-plugin.js"></script>
+
+
+    <script>
+        //برای اسکرول کردن داینامیک
+        $("html").removeClass("perfect-scrollbar-off").addClass("perfect-scrollbar-on");
+        //todo:اگر صفحه رفرش شود این دستور اجرا میشود
+        //را دارد تا صفحه رفرش شود وبرگردد perfect-scrollbar-off اگراز مودال خارج شویم همچنان کلاس 
+    </script>
 
     @RenderSection("panelScript", required: false)
 </body>

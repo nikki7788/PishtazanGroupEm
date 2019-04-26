@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Model.ComplexTypeClasses;
+using Model.OwnedTypeClasses;
 using Model.Entities;
 using Model.Infrastructure;
 using Model.PublicClasses;
@@ -24,7 +24,8 @@ namespace Model.Models.Countries
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
         [StringLength(250, MinimumLength = 2, ErrorMessage = PublicConst.LengthMessage)]
-         [RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
+        [RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
+        [Display(Name = "نام کشور")]
         public string Name { get; set; }
 
 
@@ -36,6 +37,7 @@ namespace Model.Models.Countries
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
         //[StringLength(5000, MinimumLength = 3, ErrorMessage = PublicConst.LengthMessage)]
         //[RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
+        [Display(Name = "توضیحات ")]
         public string Description { get; set; }
 
 
@@ -45,6 +47,7 @@ namespace Model.Models.Countries
         /// تصویر سایز کوچک شاخص هر کشور
         ///  تصویری که برای هر کشور نمایش می دهیم در صفحه اصلی یا جاهای دیگر
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = " تصویر شاخص")]
         public string IndexImage { get; set; }
 
 
@@ -54,6 +57,7 @@ namespace Model.Models.Countries
         /// </summary>
         ///هزینه  انجام هر خدمت برای تمام کشور ها یکسان است
         ///این هزینه هزینه انجام خدمت توسط موسسه است  
+
         public SkillWorkingOptions SkillWorkingOption { get; set; }
 
 
@@ -67,7 +71,7 @@ namespace Model.Models.Countries
         ///این هزینه هزینه انجام خدمت توسط موسسه است نه هزینه خدمت 
         public TouristOptions TouristOption { get; set; }
 
-        
+
 
         #endregion ###########
 

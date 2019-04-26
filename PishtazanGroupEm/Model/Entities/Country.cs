@@ -1,4 +1,4 @@
-﻿using Model.ComplexTypeClasses;
+﻿using Model.OwnedTypeClasses;
 using Model.PublicClasses;
 using System;
 using System.Collections.Generic;

@@ -10,7 +10,7 @@ using Model.DAL;
 namespace Model.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190425185101_Mig3-some_properties_added_to_country_table")]
+    [Migration("20190425205434_Mig3-some_properties_added_to_country_table")]
     partial class Mig3some_properties_added_to_country_table
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -317,7 +317,7 @@ namespace Model.Migrations
 
             modelBuilder.Entity("Model.Entities.Country", b =>
                 {
-                    b.OwnsOne("Model.ComplexTypeClasses.SkillWorkingOptions", "SkillWorkingOption", b1 =>
+                    b.OwnsOne("Model.OwnedTypeClasses.SkillWorkingOptions", "SkillWorkingOption", b1 =>
                         {
                             b1.Property<int>("CountryId")
                                 .ValueGeneratedOnAdd()
@@ -329,7 +329,7 @@ namespace Model.Migrations
 
                             b1.Property<int>("MakingCoverLetterPrice");
 
-                            b1.Property<int>("MakingLinkdInPrice");
+                            b1.Property<int>("MakingLinkedInPrice");
 
                             b1.HasKey("CountryId");
 
@@ -337,11 +337,11 @@ namespace Model.Migrations
 
                             b1.HasOne("Model.Entities.Country")
                                 .WithOne("SkillWorkingOption")
-                                .HasForeignKey("Model.ComplexTypeClasses.SkillWorkingOptions", "CountryId")
+                                .HasForeignKey("Model.OwnedTypeClasses.SkillWorkingOptions", "CountryId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
 
-                    b.OwnsOne("Model.ComplexTypeClasses.TouristOptions", "TouristOption", b1 =>
+                    b.OwnsOne("Model.OwnedTypeClasses.TouristOptions", "TouristOption", b1 =>
                         {
                             b1.Property<int>("CountryId")
                                 .ValueGeneratedOnAdd()
@@ -365,7 +365,7 @@ namespace Model.Migrations
 
                             b1.HasOne("Model.Entities.Country")
                                 .WithOne("TouristOption")
-                                .HasForeignKey("Model.ComplexTypeClasses.TouristOptions", "CountryId")
+                                .HasForeignKey("Model.OwnedTypeClasses.TouristOptions", "CountryId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

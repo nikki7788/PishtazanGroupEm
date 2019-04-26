@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.ComplexTypeClasses
+namespace Model.OwnedTypeClasses
 {
 
     /// <summary>
@@ -35,6 +35,7 @@ namespace Model.ComplexTypeClasses
         /// cv رزومه 
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = " CV هزینه")]
         public int MakingCVPrice { get; set; }
 
 
@@ -44,6 +45,7 @@ namespace Model.ComplexTypeClasses
         /// cover letter ساخت کاورلتر
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = " Cover letter هزینه")]
         public int MakingCoverLetterPrice { get; set; }
 
 
@@ -52,7 +54,8 @@ namespace Model.ComplexTypeClasses
         /// ساخت لینکدین
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
-        public int MakingLinkdInPrice { get; set; }
+        [Display(Name = " LinkedIn  هزینه ساخت")]
+        public int MakingLinkedInPrice { get; set; }
 
 
         /// <summary>
@@ -60,6 +63,7 @@ namespace Model.ComplexTypeClasses
         /// پیداکردن شغل مناسب و فرستادن رزومه
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = "  هزینه یافتن شغل و فرستادن رزومه")]
         public int FindingJobCVPrice { get; set; }
 
 

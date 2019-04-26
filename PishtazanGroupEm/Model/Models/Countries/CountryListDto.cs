@@ -1,9 +1,10 @@
-﻿using Model.ComplexTypeClasses;
+﻿using Model.OwnedTypeClasses;
 using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Model.Models.Countries
 {
@@ -17,6 +18,7 @@ namespace Model.Models.Countries
         /// <summary>
         /// نام کشور
         /// </summary>
+        [Display(Name ="نام کشور")]
         public string Name { get; set; }
 
 
@@ -25,6 +27,7 @@ namespace Model.Models.Countries
         /// <summary>
         /// توضیحات کشور
         /// </summary>
+        [Display(Name ="توضیحات")]
         public string Description { get; set; }
 
 
@@ -34,6 +37,7 @@ namespace Model.Models.Countries
         /// </summary>
         /// تصویر سایز کوچک شاخص هر کشور
         ///  تصویری که برای هر کشور نمایش می دهیم در صفحه اصلی یا جاهای دیگر
+        [Display(Name = "تصویر شاخص ")]
         public string IndexImage { get; set; }
 
 

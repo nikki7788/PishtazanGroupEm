@@ -13,3 +13,26 @@ ul li {
 .sidebar-wrapper i.fa, .dropdown-menu i.fa {
     font-size: 12px !important;
 }
+
+/******************************************/
+/******************************************/
+/******************************************/
+/****************************** //// scrollbar for Modal ///*********************/
+
+/*.modal-dialog {
+    overflow-y:auto !important;
+}*/
+
+.modal-body {
+    height: 350px;
+    overflow-y: auto;
+    /*direction: ltr;*/
+}
+
+/*.modal-body {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}*/
+/******************************************/
+/******************************************/
+/******************************************/

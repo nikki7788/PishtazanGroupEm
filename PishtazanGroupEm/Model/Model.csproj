@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Infrastructure\AutoMaperProfile.cs" />
     <Compile Remove="Infrastructure\BaseDto.cs" />
+    <Compile Remove="Migrations\20190425185101_Mig3-some_properties_added_to_country_table.cs" />
+    <Compile Remove="Migrations\20190425185101_Mig3-some_properties_added_to_country_table.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

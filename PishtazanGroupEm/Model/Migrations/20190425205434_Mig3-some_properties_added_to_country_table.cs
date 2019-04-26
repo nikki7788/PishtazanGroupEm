@@ -6,20 +6,10 @@ namespace Model.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
+            migrationBuilder.AddColumn<string>(
+                name: "IndexImage",
                 table: "Country",
-                maxLength: 250,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Country",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "SkillWorkingOption_FindingJobCVPrice",
@@ -40,7 +30,7 @@ namespace Model.Migrations
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "SkillWorkingOption_MakingLinkdInPrice",
+                name: "SkillWorkingOption_MakingLinkedInPrice",
                 table: "Country",
                 nullable: false,
                 defaultValue: 0);
@@ -80,16 +70,15 @@ namespace Model.Migrations
                 table: "Country",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<string>(
-                name: "IndexImage",
-                table: "Country",
-                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
+                name: "IndexImage",
+                table: "Country");
+
+            migrationBuilder.DropColumn(
                 name: "SkillWorkingOption_FindingJobCVPrice",
                 table: "Country");
 
@@ -102,7 +91,7 @@ namespace Model.Migrations
                 table: "Country");
 
             migrationBuilder.DropColumn(
-                name: "SkillWorkingOption_MakingLinkdInPrice",
+                name: "SkillWorkingOption_MakingLinkedInPrice",
                 table: "Country");
 
             migrationBuilder.DropColumn(
@@ -128,23 +117,6 @@ namespace Model.Migrations
             migrationBuilder.DropColumn(
                 name: "TouristOption_TravelArrangment",
                 table: "Country");
-
-            migrationBuilder.DropColumn(
-                name: "IndexImage",
-                table: "Country");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "Country",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldMaxLength: 250);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Description",
-                table: "Country",
-                nullable: true,
-                oldClrType: typeof(string));
         }
     }
 }

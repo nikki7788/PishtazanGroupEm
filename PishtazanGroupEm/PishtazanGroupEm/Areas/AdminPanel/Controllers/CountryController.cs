@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Model.Models.Countries;
+using Model.OwnedTypeClasses;
 using Model.UnitOfWork;
 
 namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
@@ -34,11 +36,26 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
             return View(model);
         }
 
-        //public async Task<IActionResult> Create()
-        //{
 
-        //    return PartialView();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        ///todo: دارند باید از روی کلاس انها نمونه ساخت و بعد مقدار دهی گرد owned  برای مقدار دهی پراپرتی هایی که ازنوع کلاس هایی که اتریبیوت 
+        //[HttpGet]
+        //public IActionResult CreateCountry()
+        //{
+            
+        //    CountryCreatDto model = new CountryCreatDto();
+            
+        //    return PartialView("_CreateCountryPartial",model);
         //}
+
+        public async Task<IActionResult> CreateCountry()
+        {
+            CountryCreatDto model = new CountryCreatDto();
+            return PartialView("_CreateCountryPartial",model);
+        }
 
         #endregion#################
     }

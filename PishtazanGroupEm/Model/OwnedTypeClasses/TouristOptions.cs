@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Model.ComplexTypeClasses
+namespace Model.OwnedTypeClasses
 {
     /// <summary>
     /// جدول هزینه انجام  گزینه هاوخدمت های اختیاری برای مهاجرت توریستی
@@ -34,6 +34,7 @@ namespace Model.ComplexTypeClasses
         /// </summary>
 
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = "  هزینه رزرو هتل")]
         public int BookingHotel { get; set; }
 
         /// <summary>
@@ -41,6 +42,7 @@ namespace Model.ComplexTypeClasses
         /// گرفتن دعوت نامه
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = "  هزینه گرفتن دعوتنامه")]
         public int TakingInvitation { get; set; }
 
 
@@ -49,6 +51,7 @@ namespace Model.ComplexTypeClasses
         /// گرفتن بلیط قطار
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = "   هزینه گرفتن بلیط قطار")]
         public int TakingTrainTicket { get; set; }
 
 
@@ -57,6 +60,7 @@ namespace Model.ComplexTypeClasses
         /// رزرو هواپیما
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = " هزینه رزرو هواپیما")]
         public int BookingPlane { get; set; }
 
 
@@ -65,6 +69,7 @@ namespace Model.ComplexTypeClasses
         /// گرفتن وقت مصاحبه سفارت
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = "  هزینه گرفتن وقتن مصاحبه")]
         public int TakingEmbassyInterview { get; set; }
 
 
@@ -73,6 +78,7 @@ namespace Model.ComplexTypeClasses
         /// برنامه ریزی سفر
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Display(Name = " هزینه برنامه ریزی سفر")]
         public int TravelArrangment { get; set; }
 
         #endregion##################################
