@@ -1,0 +1,117 @@
+﻿
+
+
+
+
+@model CountryCreatDto
+<!--برای اپلود تصویر باید از اتریبیوت هعای
+    encripte & method=post
+    استفاده کرد-->
+<form asp-controller="Country" asp-action="CreateCountry" id="form-addedit-country">
+
+    <!--Modal Header-->
+    <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن کشور" }' />
+    @*@await Html.PartialAsync("~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml", new ModalHeader { Heading = "افزودن کشور" })*@
+
+
+    @*@Html.AntiForgeryToken()*@
+    <!--Modal Body-->
+    <div class="modal-body ">
+
+        <!--نام کشور-->
+        <div class="form-group row ">
+            <label asp-for="Name" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!--توضیحات کشور-->
+        <div class="form-group row">
+            <label asp-for="Description" class="col-12 col-form-label"></label>
+            <div class="col-12 ">
+                <textarea asp-for="Description" id="BookDescription" name="BookDescription" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+                <script type="text/javascript">
+
+                </script>
+            </div>
+        </div>
+
+
+        <!--گزینه های اختیاری مهاجرت کاری برای همه کشور ها ثابت-->
+        <div class="form-group row ">
+            <label asp-for="SkillWorkingOption.MakingCVPrice" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="SkillWorkingOption.MakingCVPrice" class="form-control" />
+                <span asp-validation-for="SkillWorkingOption.MakingCVPrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" />
+                <span asp-validation-for="SkillWorkingOption.MakingCoverLetterPrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label asp-for="SkillWorkingOption.MakingLinkedInPrice" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" />
+                <span asp-validation-for="SkillWorkingOption.MakingCoverLetterPrice" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row ">
+            <label asp-for="SkillWorkingOption.FindingJobCVPrice" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="SkillWorkingOption.FindingJobCVPrice" class="form-control" />
+                <span asp-validation-for="SkillWorkingOption.FindingJobCVPrice" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <!--تصویر شاخص کشور-->
+        @*<input type="hidden" asp-for="Id" />*@
+
+        @*<input type="hidden" name="redirectUrl" value="@Url.Action("Index","Book")" />*@
+    </div>
+
+
+
+    @*Modal Footer*@
+
+    <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model=' new ModalFooter { SubmitButtonText = "افزودن کشور" }' />
+    @*@await Html.PartialAsync("~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml", new ModalFooter { SubmitButtonText = "افزودن کشور" })*@
+
+
+</form>
+
+@*<script>
+        //پیش نمایش تصویر قبل از اپلود
+        $(document).ready(function () {
+
+            $("#files").on('change', function () {
+
+                if (typeof (FileReader) != "undefined") {
+                    var image_holder = $("#image-holder");
+                    image_holder.empty();
+
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("<img />", {
+                            "src": e.target.result,
+                            "class": "img-fluid",
+                            "style": "width:150px;height:150px;border:solid 1px"
+                        }).appendTo(image_holder);
+
+                    }
+                    image_holder.show();
+                    reader.readAsDataURL($(this)[0].files[0]);
+                } else {
+                    alert("This browser does not support FileReader.");
+                }
+
+            });
+        });
+    </script>*@
