@@ -81,7 +81,7 @@ namespace Model.Entities
 
         #region #################### Navigation Properties ########################
 
-        public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
+        public virtual ICollection<creaetcountrydto> CountryCoverImages { get; set; }
 
         public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 

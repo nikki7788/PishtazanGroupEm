@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Model.DAL;
 using Model.Infrastructure;
+using Model.Repository;
+using Model.Service;
 using Model.UnitOfWork;
 using System.IO;
 
@@ -49,9 +51,11 @@ namespace PishtazanGroupEm
                 .AddDefaultTokenProviders(); //به هرکاربردر هنگام لاگین بودن یک توکن اختصاص میدهد  باتغیرر توکن لاگ وت میشود
                                              //-----------------------------------------------------------------------
 
-            //-------------------------- set the services and Unit of work and repository setting ---------------------------------------------
+            //-------------------------- set the services and Unit of work and repository and services setting ---------------------------------------------
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUploadingService, UploadingRepo>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

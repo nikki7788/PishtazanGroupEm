@@ -1,28 +1,29 @@
-﻿using System;
+﻿using Model.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Model.Entities
+namespace Model.Models.CountryCover_Video
 {
-
     /// <summary>
-    /// جدول تصاویر کشورها
+    /// ویو مدل ویدوهای کشور
     /// </summary>
-    [Table("CountryCoverImage")]
-    public class creaetcountrydto:BaseEntity<int>
+   public class CountryCoverVideoDto:BaseEntity<int>
     {
+
         #region ############# Constructors #############
 
         #endregion#########
 
         #region ############## Properties #########################
         /// <summary>
-        /// نام فایل تصویری کشور
+        /// نام فایل ویدویی کشور
         /// </summary>
         /// 
-
-        public string ImageName { get; set; }
+        [Display(Name = " ویدوهای کشور")]
+        public string VideoName { get; set; }
 
 
         /// <summary>

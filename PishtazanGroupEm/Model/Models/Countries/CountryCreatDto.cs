@@ -47,7 +47,7 @@ namespace Model.Models.Countries
         /// تصویر سایز کوچک شاخص هر کشور
         ///  تصویری که برای هر کشور نمایش می دهیم در صفحه اصلی یا جاهای دیگر
         [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
-        [Display(Name = " تصویر شاخص")]
+        [Display(Name = " تصویر شاخص کشور")]
         public string IndexImage { get; set; }
 
 
@@ -78,7 +78,7 @@ namespace Model.Models.Countries
         #region ######################## Navigation properties ######################
 
         //todo:روش صرف نظر گردن از نویگیشن پراپرتی ها
-        public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
+        public virtual ICollection<creaetcountrydto> CountryCoverImages { get; set; }
 
         public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 

@@ -1,27 +1,28 @@
-﻿using System;
+﻿using Model.Entities;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Model.Entities
+namespace Model.Models.CountryCoverImage
 {
-
     /// <summary>
-    /// جدول تصاویر کشورها
+    /// ویو مدل تصاویر کشور
     /// </summary>
-    [Table("CountryCoverImage")]
-    public class creaetcountrydto:BaseEntity<int>
+    public class CountryCoverImageDto:BaseEntity<int>
     {
         #region ############# Constructors #############
 
         #endregion#########
 
         #region ############## Properties #########################
+
         /// <summary>
         /// نام فایل تصویری کشور
         /// </summary>
         /// 
-
+        [Display(Name =" تصویر کشور")]
         public string ImageName { get; set; }
 
 

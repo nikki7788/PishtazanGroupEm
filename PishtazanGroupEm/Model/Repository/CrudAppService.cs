@@ -77,6 +77,9 @@ namespace Model.Repository
         //}
 
 
+
+
+
         /// <summary>
         /// آپدیت یک رکورد
         /// </summary>
@@ -88,6 +91,9 @@ namespace Model.Repository
             _table.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
         }
+
+
+
 
 
         /// <summary>
@@ -106,6 +112,11 @@ namespace Model.Repository
             var entityDto = Mapper.Map<TEntityDto>(entity);
             return entityDto;
         }
+
+
+
+
+
 
 
         /// <summary>
@@ -151,6 +162,11 @@ namespace Model.Repository
         }
 
 
+
+
+
+
+
         /// <summary>
         /// حذف یک کورد
         /// مثلا میگوییم دسته بندی فوتبال را حذف کن
@@ -179,6 +195,9 @@ namespace Model.Repository
         //    Delete(entity);
 
         //}
+
+
+
 
 
 
