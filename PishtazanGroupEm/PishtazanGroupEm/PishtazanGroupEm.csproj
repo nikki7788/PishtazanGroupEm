@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <TypeScriptToolsVersion>3.3</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -61,6 +62,9 @@
     <Content Include="node_modules\material-dashboard\examples\user.html" />
     <Content Include="node_modules\material-dashboard\package.json" />
     <Content Include="node_modules\material-dashboard\template.html" />
+    <Content Include="node_modules\sweetalert2\dist\sweetalert2.css" />
+    <Content Include="node_modules\sweetalert2\dist\sweetalert2.min.css" />
+    <Content Include="node_modules\sweetalert2\package.json" />
   </ItemGroup>
 
 
@@ -304,6 +308,82 @@
     <None Include="node_modules\material-dashboard\ISSUE_TEMPLATE.md" />
     <None Include="node_modules\material-dashboard\LICENSE.md" />
     <None Include="node_modules\material-dashboard\README.md" />
+    <None Include="node_modules\sweetalert2\bin\postinstall.js" />
+    <None Include="node_modules\sweetalert2\CHANGELOG.md" />
+    <None Include="node_modules\sweetalert2\dist\sweetalert2.all.js" />
+    <None Include="node_modules\sweetalert2\dist\sweetalert2.all.min.js" />
+    <None Include="node_modules\sweetalert2\dist\sweetalert2.js" />
+    <None Include="node_modules\sweetalert2\dist\sweetalert2.min.js" />
+    <None Include="node_modules\sweetalert2\LICENSE" />
+    <None Include="node_modules\sweetalert2\README.md" />
+    <None Include="node_modules\sweetalert2\src\animations.scss" />
+    <None Include="node_modules\sweetalert2\src\constants.js" />
+    <None Include="node_modules\sweetalert2\src\enhancers\withNoNewKeyword.js" />
+    <None Include="node_modules\sweetalert2\src\globalState.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\close.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\enable-disable-elements.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\getInput.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\hideLoading.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\progress-steps.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\show-reset-validation-error.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\update.js" />
+    <None Include="node_modules\sweetalert2\src\instanceMethods\_main.js" />
+    <None Include="node_modules\sweetalert2\src\mixins.scss" />
+    <None Include="node_modules\sweetalert2\src\privateMethods.js" />
+    <None Include="node_modules\sweetalert2\src\privateProps.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\argsToParams.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\dom.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\fire.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\mixin.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\queue.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\showLoading.js" />
+    <None Include="node_modules\sweetalert2\src\staticMethods\timer.js" />
+    <None Include="node_modules\sweetalert2\src\SweetAlert.js" />
+    <None Include="node_modules\sweetalert2\src\sweetalert2.js" />
+    <None Include="node_modules\sweetalert2\src\sweetalert2.scss" />
+    <None Include="node_modules\sweetalert2\src\toasts.scss" />
+    <None Include="node_modules\sweetalert2\src\utils\aria.js" />
+    <None Include="node_modules\sweetalert2\src\utils\classes.js" />
+    <None Include="node_modules\sweetalert2\src\utils\defaultInputValidators.js" />
+    <None Include="node_modules\sweetalert2\src\utils\DismissReason.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\animationEndEvent.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\domUtils.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\getters.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\index.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\init.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\inputUtils.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\measureScrollbar.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\parseHtmlToContainer.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\render.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderActions.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderCloseButton.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderContainer.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderContent.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderFooter.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderHeader.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderIcon.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderImage.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderInput.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderPopup.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderProgressSteps.js" />
+    <None Include="node_modules\sweetalert2\src\utils\dom\renderers\renderTitle.js" />
+    <None Include="node_modules\sweetalert2\src\utils\ieFix.js" />
+    <None Include="node_modules\sweetalert2\src\utils\iosFix.js" />
+    <None Include="node_modules\sweetalert2\src\utils\isNodeEnv.js" />
+    <None Include="node_modules\sweetalert2\src\utils\openPopup.js" />
+    <None Include="node_modules\sweetalert2\src\utils\params.js" />
+    <None Include="node_modules\sweetalert2\src\utils\scrollbarFix.js" />
+    <None Include="node_modules\sweetalert2\src\utils\setParameters.js" />
+    <None Include="node_modules\sweetalert2\src\utils\Timer.js" />
+    <None Include="node_modules\sweetalert2\src\utils\utils.js" />
+    <None Include="node_modules\sweetalert2\src\variables.scss" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <TypeScriptCompile Include="node_modules\sweetalert2\sweetalert2.d.ts" />
   </ItemGroup>
 
 </Project>
