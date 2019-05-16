@@ -2,6 +2,7 @@
 using Model.Models.Countries;
 using Model.Models.CountryCover_Video;
 using Model.Models.CountryCoverImage;
+using Model.OwnedTypeClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,11 +17,20 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels
     ///  برای افزودن کشور و تصاویر و ویدوهای آن همزمان و در یک ویو
     public class CreatCountryMViewModel
     {
-
+       
+        
+        /// <summary>
+        /// افزودن کشور
+        /// ویومدل کشورها
+        /// </summary>
+        public CountryCreatDto Country { get; set; }
+        
+        
+        
         /// <summary>
         /// افزودن مجموعه ای از ویدو ها برای هر کشور
         /// </summary>
-        [Display(Name ="ویدوهای کشور")]
+        [Display(Name = "ویدوهای کشور")]
         public List<CountryCoverVideoDto> Videos { get; set; }
 
 
@@ -29,14 +39,11 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels
         /// افزودن مجموعه ای از تصاویر برای هر کشور
         /// </summary>
         [Display(Name = " تصاویر کشور")]
-        public List<CountryCoverImageDto> Images { get; set; }
+        public ICollection<CountryCoverImageDto> Images { get; set; }
 
 
 
-        /// <summary>
-        /// افزودن کشور
-        /// </summary>
-        public CountryCreatDto Country { get; set; }
+
 
 
 

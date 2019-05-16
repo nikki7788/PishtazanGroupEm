@@ -4,10 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Model.Models.Countries;
+using Model.Models.CountryCover_Video;
+using Model.Models.CountryCoverImage;
 using Model.OwnedTypeClasses;
 using Model.Service;
 using Model.UnitOfWork;
+using Newtonsoft.Json;
 using PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels;
 
 namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
@@ -50,7 +54,9 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         ///todo: دارند باید از روی کلاس انها نمونه ساخت و بعد مقدار دهی گرد owned  برای مقدار دهی پراپرتی هایی که ازنوع کلاس هایی که اتریبیوت 
         public IActionResult CreateCountry()
         {
-            CreatCountryMViewModel model = new CreatCountryMViewModel();
+            //CreatCountryMViewModel model = new CreatCountryMViewModel();
+            CountryCreatDto model = new CountryCreatDto();
+
             return PartialView("_CreateCountryPartial", model);
         }
 
@@ -58,64 +64,69 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// اپلود کردن تصویر و ویدو برای کشور
         /// </summary>
         /// <param name="files">فایل دریافتی از کاربر برای آپلودکردن</param>
+        /// <param name="inputId">نام آیدی دریافتی اینپوتی که روی ان کلیک شده استبرای انتخاب تصویر</param>
+        /// برای اینکه تشخیص دهیم روی دکمه اپلو.د تصویر شاخص کلیک شده است یا مجموعه تصاویر یا ویدوها
         /// <returns></returns>
+        /// اطالاعات به صورت زیر ارسال شده است
+        /// data{files:"asdff.jpg",inputId:"#videoFiles"}
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IEnumerable<IFormFile> files)
+        public async Task<IActionResult> UploadFile(IEnumerable<IFormFile> files, string inputId)
         {
             if (files.Count() != 0)
             {
                 string imagePath = "";
-                string thumbnailImagePath =null;
-                bool typeValidate = false; //برمیگرداند true  درصورت درست بودن فرمت فایل و حجم فایل 
-                byte typeF = 0; // درصورتی که فایل عکس باشد 0 برمیگرداند و درصورتی که فیلم باشد 1 برمیگرداند
+                string thumbnailImagePath = null;
+
 
                 //چک کردن نوع فایلها و حجم ان
                 foreach (var item in files)
                 {
-
-                    //اگر فایل ها تصویر بودند
-                    if (item.ContentType == "image/jpg" || item.ContentType == "image/jpeg" || item.ContentType == "image/pjpeg"
-                        || item.ContentType == "image/gif" || item.ContentType == "image/x-png" || item.ContentType == "image/png")
+                    if (inputId == "#indexFiles" || inputId == "#imgFiles")
                     {
-
-                        //چک کردن حجم فایل
-                        if (item != null && item.Length > 0 && item.Length <= 10240000)
+                        //اگر فایل ها تصویر بودند
+                        if (item.ContentType == "image/jpg" || item.ContentType == "image/jpeg" || item.ContentType == "image/pjpeg"
+                            || item.ContentType == "image/gif" || item.ContentType == "image/x-png" || item.ContentType == "image/png")
                         {
 
-                            //درصورت صحیح بودن تمام شرط ها
-                            typeValidate = true;
+                            //چک کردن حجم فایل
+                            if (item == null && item.Length <= 0 && item.Length >= 10240000)
+                            {
+
+                                // اگر حجم فایل بیش از حد مجاز باشد یا یکی از فایل ها نال باشد
+                                return Json(new { status = "empty", message = "حجم فایل بیش از حد مجاز است یا یکی از فایل هامشکل دارد" });
+                            }
+
 
                         }
                         else
                         {
-                            // اگر حجم فایل بیش از حد مجاز باشد یا یکی از فایل ها نال باشد
-                            return Json(new { status = "empty", message = "حجم فایل بیش از حد مجاز است یا یکی از فایل هامشکل دارد" });
-                        }
+                            return Json(new { status = "typeError", message = "فرمت فایل ها یا یکی از فایل های انتخابی جز فایل های مجاز  نیست" });
 
+                        }
                     }
 
                     //اگر فایل ها فیلم بودند
-                    else if (item.ContentType == "video/mp4" || item.ContentType == "video/mkv" || item.ContentType == "image/webm"
-                        || item.ContentType == "image/ogg" || item.ContentType == "image/3gp")
+                    else if (inputId == "#videoFile")
                     {
-                        //چک کردن حجم فایل
-                        if (item != null && item.Length > 0 && item.Length <= 30720000)
+                        if (item.ContentType == "video/mp4" || item.ContentType == "video/mkv" || item.ContentType == "image/webm"
+                           || item.ContentType == "image/ogg" || item.ContentType == "image/3gp")
                         {
+                            //چک کردن حجم فایل
+                            if (item == null && item.Length <= 0 && item.Length >= 30720000)
+                            {
+                                // اگر حجم فایل بیش از حد مجاز باشد یا یکی از فایل ها نال باشد
+                                return Json(new { status = "empty", message = "حجم فایل بیش از حد مجاز است یا یکی از فایل هامشکل دارد" });
+                            }
 
-                            //درصورت صحیح بودن تمام شرط ها
-                            typeValidate = true;
-
-                            typeF = 1;
                         }
                         else
                         {
-                            // اگر حجم فایل بیش از حد مجاز باشد یا یکی از فایل ها نال باشد
-                            return Json(new { status = "empty", message = "حجم فایل بیش از حد مجاز است یا یکی از فایل هامشکل دارد" });
-                        }
+                            return Json(new { status = "typeError", message = "فرمت فایل ها یا یکی از فایل های انتخابی جز فایل های مجاز  نیست" });
 
+                        }
                     }
                 }
-                if (files.Count() == 1 && typeValidate == true)
+                if (inputId == "#indexFiles")
                 {
                     //فایل عکس است و تصویر شاخص کشور است
 
@@ -124,23 +135,34 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                     //مسیر ذخیره تصویربند انگشتی شاخص کشور
                     thumbnailImagePath = "upload//country//indexImage//thumbnailImage//";
+                    //دریافت مجموعه نام فایلهای آپلود شده از لایه سرویس و متد آپلود کردن تصویر
+                    List<string> indexImgName = await _uploadingService.UploadFiles(files, imagePath, thumbnailImagePath);
+
+                    ViewBag.indexImgNM = indexImgName;
+                    return Json(new { status = "success", message = "فایل با موفقیت آپلود شد", indexImagName = indexImgName });
+
                 }
-                else if (files.Count() != 1 && typeValidate == true)
+                else if (inputId == "#imgFiles")
                 {
                     //مسیر ذخیره تصاویر  کشور
                     imagePath = "upload//country//images//";
+
+                    //دریافت مجموعه نام فایلهای آپلود شده از لایه سرویس و متد آپلود کردن تصویر
+                    List<string> ImageFileNames = await _uploadingService.UploadFiles(files, imagePath, thumbnailImagePath);
+
+                    return Json(new { status = "success", message = "فایل با موفقیت آپلود شد", imageNames = ImageFileNames });
                 }
-                else if (files.Count() != 1 && typeValidate == true && typeF == 1)
+                else if (inputId == "#videoFile")
                 {
                     //مسیر ذخیره ویدوهای  کشور
                     imagePath = "upload//country//videos//";
+
+                    //دریافت مجموعه نام فایلهای آپلود شده از لایه سرویس و متد آپلود کردن تصویر
+                    List<string> videoFileNames = await _uploadingService.UploadFiles(files, imagePath, thumbnailImagePath);
+
+                    return Json(new { status = "success", message = "فایل با موفقیت آپلود شد", videoNames = videoFileNames });
                 }
 
-
-                //دریافت مجموعه نام فایلهای آپلود شده از لایه سرویس و متد آپلود کردن تصویر
-                List<string> fileNames = await _uploadingService.UploadFiles(files, imagePath, thumbnailImagePath);
-
-                return Json(new { status = "success", message = "فایل با موفقیت آپلود شد", imageName = fileNames });
             }
 
             //اگر تصویری برای اپلود انتخاب نشود
@@ -156,16 +178,118 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// <returns></returns>
         [HttpPost, ActionName("CreateCountry")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCountryConfirm(CreatCountryMViewModel model, string indexImg, List<string> imgs, List<string> videos)
+        public async Task<IActionResult> CreateCountryConfirm(CountryCreatDto model, /*string Country_IndexImage,*/ List<string> images, List<string> videos)
         {
             try
             {
+                var ImagesNM = ViewBag.ImagesNM;
                 if (ModelState.IsValid)
                 {
-                    await _unitOfWork.CountryRepUW.CreateAsync(model.Country);
+                    //###################------ایجاد کشور در جدول کشور ها -----#########################
+
+                    if (model.IndexImage == null)
+                    {
+                        //اگر تصویر شاخص آپلود نشده بود تصویر پیش فرض را اپلود کند 
+                        model.IndexImage = "384e5d169c";
+
+                    }
+              
+
+                    await _unitOfWork.CountryRepUW.CreateAsync(model);
+                    await _unitOfWork.SaveAsync();
+                    //############------#############
+
+                    //-######################--CoverImage ثبت نام تمجموعه تصاویر کشور در دول تصاویر---#####################################
+
+                    if (images.Count != 0)
+                    {
+                        for (int i = 0; i < images.Count; i++)
+                        {
+
+                            CountryCoverImageDto coverImageDto = new CountryCoverImageDto
+                            {
+                                ImageName = images[i],
+                                CountryId = model.Id
+                            };
+
+                            await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
+                            await _unitOfWork.SaveAsync();
+                        }
+                    }
+
+                    //-######################--#####################################
+
+                    //------######################----CoverVideo ثبت نام تمجموعه تصاویر کشور در دول تصاویر--------######################----------
+
+                    if (videos.Count != 0)
+                    {
+                        for (int i = 0; i < videos.Count; i++)
+                        {
+
+                            CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
+                            {
+                                VideoName = videos[i],
+                                CountryId = model.Id
+                            };
+
+                            await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
+                            await _unitOfWork.SaveAsync();
+                        }
+                    }
+
+                    //-######################--#####################################
+
+                    return Json(new { status = "success", message = "با موفقیت ثبت شد" + "<span class='text-success'>" + model.Name + "</span>" + "کشور" });
+                }
+
+                // ---------------اگر ولیدیشن رعایت نشده بود-------
+
+                //-----اگر ولیدیشن رعایت نشده بود عکس آپلود شده دوباره نمایش داده شود ------------------
+                //و نام ان برای ذخیره در دیتابیس بماند و نیاز ب اپدیت مجدد نباشد
+                if (model.IndexImage != null)
+                {
+                    // این روش بدون کوکی است
+                    //در کنترلر یوزر و اکشن ایجاد از کوکی استفاده کرده ام
+                    ViewBag.indexImgNM = model.IndexImage;
+                }
+                //---------------------------------------------------------
+                //display validation with jquery ajax
+                var errorMessage = new List<string>();
+                var errorKeys = new List<string>();
+                foreach (var validation in ViewData.ModelState.Values)
+                {
+                    errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
 
                 }
-                return View();
+                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        errorKeys.Add(modelStateKey);
+                        // You may log the errors if you want
+                    }
+                }
+              
+                return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
+
+                //ModelState.AddModelError("Password", "نام کاربری یا رمزعبور اشتباه است");
+                //return View(model);
+
+                //todo:ولیدیشن ها را اعلام خطا کنم در ویو
+                //return Json(new { status = "fail", message = "خطایی رخ داده است دوباره تلاش کنید" });
+                // return View(model);
+
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+
+                throw ex;
+            }
+            catch (DbUpdateException ex)
+            {
+
+                throw ex;
             }
             catch (Exception)
             {

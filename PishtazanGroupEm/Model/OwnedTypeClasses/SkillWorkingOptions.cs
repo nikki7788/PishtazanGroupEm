@@ -25,7 +25,7 @@ namespace Model.OwnedTypeClasses
         #region ############# Constructors #############
         public SkillWorkingOptions()
         {
-
+         
         }
         #endregion#########
 
@@ -34,9 +34,11 @@ namespace Model.OwnedTypeClasses
         /// هزینه
         /// cv رزومه 
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+
+        //[Required(ErrorMessage = PublicConst.EnterMessage)]
+        [Range(0, 1000000, ErrorMessage = PublicConst.RangeMessage)]
         [Display(Name = " CV هزینه")]
-        public int MakingCVPrice { get; set; }
+        public int MakingCVPrice { get; set; } 
 
 
 
@@ -44,27 +46,30 @@ namespace Model.OwnedTypeClasses
         /// هزینه
         /// cover letter ساخت کاورلتر
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+       // [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Range(0, 1000000, ErrorMessage = PublicConst.RangeMessage)]
         [Display(Name = " Cover letter هزینه")]
-        public int MakingCoverLetterPrice { get; set; }
+        public int MakingCoverLetterPrice { get; set; } 
 
 
         /// <summary>
         /// هزینه
         /// ساخت لینکدین
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+       // [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Range(0, 1000000, ErrorMessage = PublicConst.RangeMessage)]
         [Display(Name = " LinkedIn  هزینه ساخت")]
-        public int MakingLinkedInPrice { get; set; }
+        public int MakingLinkedInPrice { get; set; } 
 
 
         /// <summary>
         /// هزینه
         /// پیداکردن شغل مناسب و فرستادن رزومه
         /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        //[Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [Range(0, 1000000, ErrorMessage = PublicConst.RangeMessage)]
         [Display(Name = "  هزینه یافتن شغل و فرستادن رزومه")]
-        public int FindingJobCVPrice { get; set; }
+        public int FindingJobCVPrice { get; set; } 
 
 
         #endregion##################################

@@ -2,6 +2,8 @@
 using Model.DAL;
 using Model.Entities;
 using Model.Models.Countries;
+using Model.Models.CountryCover_Video;
+using Model.Models.CountryCoverImage;
 using Model.Repository;
 using System;
 using System.Collections.Generic;
@@ -17,7 +19,9 @@ namespace Model.UnitOfWork
     {
         #region ################## Dependencies #####################################
         private readonly ApplicationDbContext _context;
+
         //private readonly IMapper _mapper;
+
         public UnitOfWork(ApplicationDbContext context/*,IMapper mapper*/)
         {
             _context = context;
@@ -31,9 +35,15 @@ namespace Model.UnitOfWork
         #region############################# Fields ################################### 
 
         //نباید باشد readonly  
+
         private CrudAppService<Country, CountryListDto, CountryCreatDto, CountryCreatDto> _countryRepUW;
 
-     
+        private CrudAppService<CountryCoverImage,CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> _countryCoverImageRepoUW;
+
+
+        private CrudAppService<CountryCoverVideo,CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> _countryCoverVideoRepoUW;
+
+
 
 
         #endregion #######################
@@ -61,6 +71,52 @@ namespace Model.UnitOfWork
         }
 
 
+
+
+        /// <summary>
+        /// تصاویر کشور ها
+        ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
+        ///  CountryCoverImage برای کلاس و جدول CRUD پیاده سازی کلاس 
+        /// </summary>
+        public CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> CountryCoverImageRepoUW
+        {
+            //فقط خواندنی
+            get
+            {
+                if (_countryCoverImageRepoUW == null)
+                {
+                    _countryCoverImageRepoUW = new CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto>(_context/*,_mapper*/);
+                }
+                return _countryCoverImageRepoUW;
+            }
+        }
+
+
+
+
+
+        /// <summary>
+        /// ویدو های کشور ها
+        ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
+        ///  CountryCovervideo برای کلاس و جدول CRUD پیاده سازی کلاس 
+        /// </summary>
+        public CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> CountryCoverVideoRepoUW
+        {
+            //فقط خواندنی
+            get
+            {
+                if (CountryCoverVideoRepoUW == null)
+                {
+                    _countryCoverVideoRepoUW = new CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto>(_context/*,_mapper*/);
+                }
+                return CountryCoverVideoRepoUW;
+            }
+        }
+
+
+
+
+
         #endregion ##########################
 
 
@@ -71,7 +127,7 @@ namespace Model.UnitOfWork
         /// متد ذخیره کردن در دیتابیس--
         ///  IUnitOfWork پیاده سازی اعضای اینترفیس
         /// </summary>
-        public async Task Save()
+        public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
         }
@@ -87,10 +143,11 @@ namespace Model.UnitOfWork
         ///  بعد از اتمام کار کلاس ارتباط با دیتابیس را ازبین میبرد و قطع میکند 
         /// IDisposable  متد مربوط به اینترفیس  
         /// </summary>
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+        public void Dispose() => _context.Dispose();
+        //public void Dispose()
+        //{
+        //    _context.Dispose();
+        //}
 
         #endregion ##########################
     }

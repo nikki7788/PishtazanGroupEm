@@ -26,8 +26,7 @@ namespace Model.Models.Countries
         [StringLength(250, MinimumLength = 2, ErrorMessage = PublicConst.LengthMessage)]
         [RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
         [Display(Name = "نام کشور")]
-        public string Name { get; set; }
-
+        public string Name { get; set; } 
 
 
 
@@ -38,7 +37,7 @@ namespace Model.Models.Countries
         //[StringLength(5000, MinimumLength = 3, ErrorMessage = PublicConst.LengthMessage)]
         //[RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
         [Display(Name = "توضیحات ")]
-        public string Description { get; set; }
+        public string Description { get; set; } 
 
 
         /// <summary>
@@ -46,7 +45,7 @@ namespace Model.Models.Countries
         /// </summary>
         /// تصویر سایز کوچک شاخص هر کشور
         ///  تصویری که برای هر کشور نمایش می دهیم در صفحه اصلی یا جاهای دیگر
-        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        // [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
         [Display(Name = " تصویر شاخص کشور")]
         public string IndexImage { get; set; }
 
@@ -58,8 +57,7 @@ namespace Model.Models.Countries
         ///هزینه  انجام هر خدمت برای تمام کشور ها یکسان است
         ///این هزینه هزینه انجام خدمت توسط موسسه است  
 
-        public SkillWorkingOptions SkillWorkingOption { get; set; }
-
+        public SkillWorkingOptions SkillWorkingOption { get; set; } 
 
 
 
@@ -78,7 +76,7 @@ namespace Model.Models.Countries
         #region ######################## Navigation properties ######################
 
         //todo:روش صرف نظر گردن از نویگیشن پراپرتی ها
-        public virtual ICollection<creaetcountrydto> CountryCoverImages { get; set; }
+        //public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
 
         public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 

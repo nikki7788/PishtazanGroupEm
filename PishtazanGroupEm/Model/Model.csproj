@@ -9,6 +9,8 @@
     <Compile Remove="Infrastructure\BaseDto.cs" />
     <Compile Remove="Migrations\20190425185101_Mig3-some_properties_added_to_country_table.cs" />
     <Compile Remove="Migrations\20190425185101_Mig3-some_properties_added_to_country_table.Designer.cs" />
+    <Compile Remove="Migrations\20190516181934_test.cs" />
+    <Compile Remove="Migrations\20190516181934_test.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -30,5 +30,9 @@ namespace Model.PublicClasses
         public const string DangrouseMessageForBadCharachter = "در {0} کاراکترهای نامعتبر وارد شده است.";
 
 
+        /// <summary>
+        /// خطای رعایت نکردن ارقام مقدار های عددی
+        /// </summary>
+        public const string RangeMessage = "مقدار {0} باید بین {1} و {2} تومان باشد";
     }
 }

@@ -1,7 +1,12 @@
-﻿@model IEnumerable<CountryListDto>
+﻿@*  todo:دکمه لودینگ دار برای اپدیت فیلم وتصویر
+    //todo:loding button ایچجاد کنم
+*@
+
+@model IEnumerable<CountryListDto>
 @{
     ViewData["Title"] = "مدیریت کشورها";
 }
+<link href="~/node_modules/sweetalert2/dist/sweetalert2.css" rel="stylesheet" />
 <style>
     tr th {
         text-align: center !important;
@@ -72,17 +77,17 @@
         </tbody>
     </table>
 
-
 </div>
 <partial name="~/Views/Shared/Partials/Modal/_ModalPartial.cshtml" model='new BootstrapModel { Id ="modal-action-country", Size=ModalSize.Large }' />
 @*@await Html.PartialAsync("~/Views/Shared/Partials/Modal/_ModalPartial.cshtml", new BootstrapModel { Id = "modal-action-country", Size = ModalSize.Large })*@
 
 @section panelScript{
-
+    <script src="~/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
     <script>
         //آپلود فایل
         var UploadImage = function (inputId) {
 
+            //-------------------- ذخیره تصاویر رویمتغیر برای ارسال به اکشن-------------------
             var data = new FormData;
             var file;
 
@@ -91,34 +96,134 @@
 
             //اضافه کردن فایل ها به متغیر برای ارسال به اکشن
             for (var i = 0; i < file.length; i++) {
+                 // data مهم است نه نام  files در دریافت اطلاهات فرم و تصویر اپلود نام
+                // میسازیم data نامی که در متغیر files
+                //data={files:"asdfdasf.jpg"}
                 data.append('files', file[i]);
             }
 
+            data.append("inputId",inputId)
+            //---------------------------------------
             $.ajax({
                 type: "post",
                 url: '@Url.Action("UploadFile","Country", new { area = "AdminPanel"})',
+
                 data: data,
                 contentType: false,
+            //    dataType: "json",
                 processData: false,
-                dataType: "json",
-                success: function(result){
 
+                success: function (result) {
+                    if (result.status == "success") {
+
+                        if (inputId === "#indexFiles") {
+
+                            //-------------برای نمایش تصویر شاخص کشور-------------------------
+                            //دریافت نام تصویر آپلود شده
+                            $("#IndexImages").attr('src', "\\upload\\country\\indexImage\\thumbnailImage\\" + result.indexImagName);
+                            $("#divmessage").removeClass('d-none');
+                            $("#divmessage").text("تصویر با موفقیت آپلود شد");
+
+                            //ذخیره نام تصویر شاخص مجموعه تصاویر و ویدوهای کشور
+                            //در تگ اینپوت مربوطه برای دسترسی به انها بعد از پلود و ثبت در دیتابیس
+                            if (result.indexImagName != null) {
+
+                                //ذخیره نام تصویرشاخص در تگ
+                                $("#IndexImage").attr("value",result.indexImagName);
+                            }
+
+                        }
+                        else if (inputId === "#imagesFiles") {
+                            if (result.imageNames != null) {
+
+                                //ذخیره نام تصاویر در تگ
+                                for (var i = 0; i < result.imageNames.length; i++) {
+                                    $("div#hidden-input>div#images-hidden").append('<input type="text" class="d-none images" name="images"  />');
+                                    $('input.images').eq(i).attr("value", result.imageNames[i]);
+                                }
+                            }
+                        }
+                        else if (inputId === "#videosFiles") {
+
+                            if (result.videoNames != null) {
+
+                                //ذخیره نام ویدوها در تگ
+                                for (var i = 0; i < result.imageNames.length; i++) {
+                                    $("div#hidden-input>div#videos-hidden").append('<input type="text" class="d-none videos" name="videos"  />');
+                                    $('input.videos').eq(i).attr("value", result.videoNames[i]);
+                                }
+                            }
+                        }
+                       //----------------------------------------------------------------------------------
+
+            //-----------مخفی کردن دمه انتخاب و اپلود مجموعه تصاویر وفیلمها بعد از موفقیت امیز بودن  اپلود------------
+            if (inputId==="#imgFiles") {
+
+                $('#btnupload-images').addClass("d-none");
+                $(inputId).parentsUntil("div.btn-group").addClass("d-none");
+                $('#img-success').removeClass("d-none").addClass("d-block");
+                $('#img-success>span').html(result.message);
+
+            } else if(inputId==="#videoFiles"){
+                $('#btnupload-videos').addClass("d-none");
+                $(inputId).parentsUntil("div.btn-group").addClass("d-none");
+                $('#video-success').removeClass("d-none").addClass("d-block");
+                $('#video-success>span').html(result.message);
+
+                    };
+                  //---------------------------------------------------------------
+                };
+                    if (result.status === "typeError") {
+                        Swal.fire({
+                            type: "warning",
+                            html: "<span class='text-dark font-weight-bold'>" + result.message + "</span>",
+                            animation: false,
+                            confirmButtonColor: '#ff9800',
+                             confirmButtonText: 'تایید',
+                            customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+                    };
+                    if (result.status === "empty") {
+                        Swal.fire({
+                            type: "warning",
+                            html: "<span class='text-dark font-weight-bold'>" + result.message + "</span>",
+                            animation: false,
+                            confirmButtonColor: '#ff9800',
+                             confirmButtonText: 'تایید',
+                            customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+                    }
                 }
             }).done(function (result) {
-                if (result.status == "success") {
+                //todo:loding button ایچجاد کنم
 
-                    //برای نمایش تصویر کاربر
-                    //دریافت نام تصویر آپلود شده
-                    $("#imgindex").attr('src', "\\upload\\indexImage\\" + result.imageName);
-
-                    $("#divmessage").removeClass('hidden');
-                    $("#divmessage").text("تصویر با موفقیت آپلود شد");
-
-                    //ذخیره نام تصویر در تگ و پراپرتی جدول خبر
-                    $("#IndexImage").val(result.imageName);
-                }
+                //if (result.status === "typeError") {
+                //    Swal.fire({
+                //        title: "done",
+                //        animation: false,
+                //        customClass: {
+                //            popup: 'animated tada'
+                //        }
+                //    });
+                //};
             }).fail(function (result) {
+
                 if (result.status != "success") {
+                        Swal.fire({
+                            type: "warning",
+                            html: "<span class='text-dark font-weight-bold'>" +" در هنگام آپلود مشکلی رخ داد" + "</span>",
+                            animation: false,
+                            confirmButtonColor: '#ff9800',
+                             confirmButtonText: 'تایید',
+                            customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+
                     $("#divmessage").removeClass('hidden');
                     $("#divmessage").text("در هنگام آپلود مشکلی رخ داد");
 
@@ -126,6 +231,7 @@
             });
         };
     </script>
+    
 }
 
 

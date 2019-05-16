@@ -9,8 +9,9 @@ namespace Model.Entities
     /// <summary>
     /// جدول تصاویر کشورها
     /// </summary>
+    /// 
     [Table("CountryCoverImage")]
-    public class creaetcountrydto:BaseEntity<int>
+    public class CountryCoverImage : BaseEntity<int>
     {
         #region ############# Constructors #############
 
