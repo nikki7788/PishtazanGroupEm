@@ -197,7 +197,7 @@ namespace Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Model.Entities.CountryCoverImage", b =>
@@ -214,7 +214,7 @@ namespace Model.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("CountryCoverImage");
+                    b.ToTable("CountryCoverImages");
                 });
 
             modelBuilder.Entity("Model.Entities.CountryCoverVideo", b =>
@@ -231,7 +231,7 @@ namespace Model.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("CountryCoverVideo");
+                    b.ToTable("CountryCoverVideos");
                 });
 
             modelBuilder.Entity("Model.Entities.EmigrateCountry", b =>
@@ -250,7 +250,7 @@ namespace Model.Migrations
 
                     b.HasIndex("EmigrationTypeId");
 
-                    b.ToTable("EmigrateCountry");
+                    b.ToTable("EmigrateCountrys");
                 });
 
             modelBuilder.Entity("Model.Entities.EmigrationType", b =>
@@ -265,7 +265,7 @@ namespace Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EmigrationType");
+                    b.ToTable("EmigrationTypes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -331,39 +331,11 @@ namespace Model.Migrations
 
                             b1.HasKey("CountryId");
 
-                            b1.ToTable("Country");
+                            b1.ToTable("Countries");
 
                             b1.HasOne("Model.Entities.Country")
                                 .WithOne("SkillWorkingOption")
                                 .HasForeignKey("Model.OwnedTypeClasses.SkillWorkingOptions", "CountryId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("Model.OwnedTypeClasses.TouristOptions", "TouristOption", b1 =>
-                        {
-                            b1.Property<int>("CountryId")
-                                .ValueGeneratedOnAdd()
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                            b1.Property<int>("BookingHotel");
-
-                            b1.Property<int>("BookingPlane");
-
-                            b1.Property<int>("TakingEmbassyInterview");
-
-                            b1.Property<int>("TakingInvitation");
-
-                            b1.Property<int>("TakingTrainTicket");
-
-                            b1.Property<int>("TravelArrangment");
-
-                            b1.HasKey("CountryId");
-
-                            b1.ToTable("Country");
-
-                            b1.HasOne("Model.Entities.Country")
-                                .WithOne("TouristOption")
-                                .HasForeignKey("Model.OwnedTypeClasses.TouristOptions", "CountryId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

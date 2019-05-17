@@ -9,7 +9,7 @@ namespace Model.Entities
     /// <summary>
     /// جدول فایل های ویدویی کشور ها
     /// </summary>
-    [Table("CountryCoverVideo")]
+    [Table("CountryCoverVideos")]
     public class CountryCoverVideo : BaseEntity<int>
     {
         #region ############# Constructors #############

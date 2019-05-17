@@ -1,0 +1,46 @@
+﻿
+افزایش  حجم اپلود فایل اپلودی سایت و IIs
+بهطور پیش فرض حجم مجاز اپلود حدود ۳۰ مکابایت است 
+برای افزایش حجم اپلود فایل  و اپلود فایل های حجیم باید دستورات زیر را وارد کنیم
+
+در startup و در قسمت  configureservice:
+
+      //-------------------IIS افزایش حجم اپلود فایل پیش فرض سایت و---------------------
+            //--< set uploadsize large files >----
+
+            services.Configure<FormOptions>(options =>
+
+            {
+
+              options.ValueLengthLimit = int.MaxValue;
+
+                options.MultipartBodyLengthLimit = int.MaxValue;
+
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+
+            });
+
+            //--</ set uploadsize large files >----
+            //----------------------------------------------------------------
+
+و ک فایل web.config ایجاد میکنیم اگر این فایل وجود نداشت و در قسمت <configuration> دستور زیر را وارد میکنیم:
+
+
+  <!-- IIS افزایش حجم رکویست اپلود فایل پیش فرض سایت و -->
+  <system.web>
+    <httpRuntime maxRequestLength="2048576" />
+  </system.web>
+
+  <!-- IIS افزایش حجم فایل اپلود فایل پیش فرض سایت و -->
+  <system.webServer>
+    <security>
+      <requestFiltering>
+        <requestLimits maxAllowedContentLength="2073741824" />
+      </requestFiltering>
+    </security>
+  </system.webServer>
+
+  <!-- ///////////// -->
+
+
+

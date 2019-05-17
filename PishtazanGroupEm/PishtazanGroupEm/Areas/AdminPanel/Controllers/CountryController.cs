@@ -88,8 +88,9 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                             || item.ContentType == "image/gif" || item.ContentType == "image/x-png" || item.ContentType == "image/png")
                         {
 
-                            //چک کردن حجم فایل
-                            if (item == null && item.Length <= 0 && item.Length >= 10240000)
+                            //چک کردن حجم فایل برحسب بایت
+                            //تا حجم 10مگابایت
+                            if (item == null || item.Length <= 0 || item.Length >= 10240000)
                             {
 
                                 // اگر حجم فایل بیش از حد مجاز باشد یا یکی از فایل ها نال باشد
@@ -106,13 +107,15 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                     }
 
                     //اگر فایل ها فیلم بودند
-                    else if (inputId == "#videoFile")
+                    else if (inputId == "#videoFiles")
                     {
-                        if (item.ContentType == "video/mp4" || item.ContentType == "video/mkv" || item.ContentType == "image/webm"
-                           || item.ContentType == "image/ogg" || item.ContentType == "image/3gp")
+                        if (item.ContentType == "video/mp4" || item.ContentType == "video/mkv"|| item.ContentType == "video/Matroska" || item.ContentType == "video/x-matroska"
+                            || item.ContentType == "image/webm"|| item.ContentType == "image/ogg" || item.ContentType == "image/3gp")
                         {
-                            //چک کردن حجم فایل
-                            if (item == null && item.Length <= 0 && item.Length >= 30720000)
+                           
+                            //چک کردن حجم فایل برحسب بایت
+                            //تا حجم ۱ گیگ
+                            if (item == null || item.Length <= 0 || item.Length >= 1000720000)
                             {
                                 // اگر حجم فایل بیش از حد مجاز باشد یا یکی از فایل ها نال باشد
                                 return Json(new { status = "empty", message = "حجم فایل بیش از حد مجاز است یا یکی از فایل هامشکل دارد" });
@@ -152,7 +155,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                     return Json(new { status = "success", message = "فایل با موفقیت آپلود شد", imageNames = ImageFileNames });
                 }
-                else if (inputId == "#videoFile")
+                else if (inputId == "#videoFiles")
                 {
                     //مسیر ذخیره ویدوهای  کشور
                     imagePath = "upload//country//videos//";
@@ -240,7 +243,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                     //-######################--#####################################
 
-                    return Json(new { status = "success", message = "با موفقیت ثبت شد" + "<span class='text-success'>" + model.Name + "</span>" + "کشور" });
+                    return Json(new { status = "success", message = model.Name  });
                 }
 
                 // ---------------اگر ولیدیشن رعایت نشده بود-------

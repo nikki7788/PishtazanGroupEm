@@ -89,16 +89,17 @@
 
             //-------------------- ذخیره تصاویر رویمتغیر برای ارسال به اکشن-------------------
             var data = new FormData;
-            var file;
+           // var file;
 
             //همه فایل های داخل اینپوت فایل را  دریافت میکند
-           file = $(inputId).prop("files");
+         var  file = $(inputId).prop("files");
 
             //اضافه کردن فایل ها به متغیر برای ارسال به اکشن
             for (var i = 0; i < file.length; i++) {
                  // data مهم است نه نام  files در دریافت اطلاهات فرم و تصویر اپلود نام
                 // میسازیم data نامی که در متغیر files
                 //data={files:"asdfdasf.jpg"}
+
                 data.append('files', file[i]);
             }
 
@@ -107,12 +108,10 @@
             $.ajax({
                 type: "post",
                 url: '@Url.Action("UploadFile","Country", new { area = "AdminPanel"})',
-
                 data: data,
                 contentType: false,
-            //    dataType: "json",
+                dataType: "json",
                 processData: false,
-
                 success: function (result) {
                     if (result.status == "success") {
 

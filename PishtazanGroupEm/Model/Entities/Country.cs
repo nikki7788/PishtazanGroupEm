@@ -12,7 +12,7 @@ namespace Model.Entities
     /// <summary>
     /// جدول کشورها
     /// </summary>
-    [Table("Country")]
+    [Table("Countries")]
     public class Country:BaseEntity<int> 
     {
         #region ############# Constructors #############

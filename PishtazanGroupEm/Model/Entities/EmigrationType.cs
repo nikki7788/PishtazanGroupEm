@@ -9,7 +9,7 @@ namespace Model.Entities
     /// <summary>
     /// جدول نوع مهاجرت
     /// </summary>
-    [Table("EmigrationType")]
+    [Table("EmigrationTypes")]
     public class EmigrationType:BaseEntity<int>
     {
         #region ############# Constructors #############

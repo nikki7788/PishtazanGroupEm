@@ -8,7 +8,7 @@ namespace Model.Entities
     /// <summary>
     /// جدول واسط بین جدول نوع مهاجرت و کشورها
     /// </summary>
-    [Table("EmigrateCountry")]
+    [Table("EmigrateCountrys")]
     public class EmigrateCountry : BaseEntity<int>
     {
         #region ############# Constructors #############

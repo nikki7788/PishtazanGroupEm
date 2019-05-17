@@ -10,7 +10,7 @@ namespace Model.Entities
     /// جدول تصاویر کشورها
     /// </summary>
     /// 
-    [Table("CountryCoverImage")]
+    [Table("CountryCoverImages")]
     public class CountryCoverImage : BaseEntity<int>
     {
         #region ############# Constructors #############

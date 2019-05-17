@@ -90,9 +90,10 @@
 
 
                     CKEDITOR.replace(editor, config);
-
                 </script>
+
                 <!------------------################---------->
+
             </div>
 
             <!--گزینه های اختیاری مهاجرت کاری برای همه کشور ها ثابت-->
@@ -126,12 +127,12 @@
                 </div>
             </div>
 
-            @*<input type="hidden" asp-for="Id" />*@
-
-            @*<input type="hidden" name="redirectUrl" value="@Url.Action("Index","Book")" />*@
+       
         </div>
 
-
+        @*<requestFiltering>
+                <requestLimits maxAllowedContentLength="104857600000" />
+            </requestFiltering>*@
 
 
         <!--tab 2 صفحه دوم مودال-->
@@ -191,13 +192,15 @@
                     <span class="text-white"></span>
                 </div>
             </div>
+
+
             <!--آپلود مجموعه ویدوهای کشور-->
             <div class="row mt-2">
                 <div class="row col-xl-6  col-md-6 col-sm-12  btn-group  btn-group-sm mx-auto px-0 ">
                     <div class="col-xl-6  col-md-6 col-sm-12 btn px-0 py-0">
                         <div class="btn btn-dark  pb-0 ">
 
-                            <input type="file" id="videoFiles" name="videoFiles" multiple />
+                            <input type="file" id="videoFiles" name="videoFiles" class="btn" multiple />
 
                             <label class="control-label text-white">انتخاب مجموعه ویدو ها</label>
                         </div>
@@ -329,7 +332,25 @@
                            $(`span[data-valmsg-for='${result.errorKey[i]}']`).removeClass("field-validation-valid")
                                .addClass("field-validation-error").text(result.errorMessages[i]);
                        };
-                         }
+                     };
+
+                     if (result.status==="success") {
+                          Swal.fire({
+                               type: "success",
+                              html: "<span class='text-dark ' style:'font-weight: bold'> کشور</span>"
+                                 + "<span class='text-success px-3' style:'font-weight: bold;font-style:20px;'>"+result.message + "</span>"+
+                            "<span class='text-dark ' style:'font-weight: bold'> با موفقیت ثبت شد</span>"
+                              ,
+                               animation: false,
+                               confirmButtonColor: '#4caf50',
+                               confirmButtonText: 'تایید',
+
+                          }).then(function () {
+
+                              //for displaying index view after finishing modal
+                              window.location.href = '@Url.Action("Index", "Country")';
+                          });
+                     }
 
                  }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 

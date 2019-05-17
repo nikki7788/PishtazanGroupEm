@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,24 @@ namespace PishtazanGroupEm
             //----------------------------------------------------------------------------
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //-------------------IIS افزایش حجم اپلود فایل پیش فرض سایت و---------------------
+            //--< set uploadsize large files >----
+
+            services.Configure<FormOptions>(options =>
+
+            {
+
+              options.ValueLengthLimit = int.MaxValue;
+
+                options.MultipartBodyLengthLimit = int.MaxValue;
+
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+
+            });
+
+            //--</ set uploadsize large files >----
+            //----------------------------------------------------------------
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

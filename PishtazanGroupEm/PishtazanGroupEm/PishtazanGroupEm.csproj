@@ -86,6 +86,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\AdminPanel\Data\" />
+    <Folder Include="wwwroot\assets\css\" />
+    <Folder Include="wwwroot\assets\img\" />
+    <Folder Include="wwwroot\assets\js\" />
+    <Folder Include="wwwroot\assets\scss\gsdk-bootstrap-wizard\mixins\" />
     <Folder Include="wwwroot\upload\country\images\" />
     <Folder Include="wwwroot\upload\country\contentImage\" />
     <Folder Include="wwwroot\upload\country\videos\" />
