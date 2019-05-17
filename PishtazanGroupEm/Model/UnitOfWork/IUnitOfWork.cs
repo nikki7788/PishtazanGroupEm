@@ -1,6 +1,6 @@
 ﻿using Model.Entities;
 using Model.Models.Countries;
-using Model.Models.CountryCover_Video;
+using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImage;
 using Model.Repository;
 using System;
@@ -18,14 +18,14 @@ namespace Model.UnitOfWork
         /// <summary>
         /// برای جدول کشورها CRUD پیاده سازی عملیات 
         /// </summary>
-        CrudAppService<Country, CountryListDto, CountryCreatDto, CountryCreatDto> CountryRepUW { get; }
+        CrudAppService<Country, CountryListDto, CountryCreateDto, CountryCreateDto> CountryRepUW { get; }
 
 
 
         /// <summary>
         /// برای جدول تصاویر کشور ها CRUD پیاده سازی عملیات 
         /// </summary>
-        CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> CountryCoverImageRepoUW { get; }
+        CrudAppService<CountryCoverImage,CountryCoverImageDto,CountryCoverImageDto,CountryCoverImageDto> CountryCoverImageRepoUW { get; }
 
 
         /// <summary>

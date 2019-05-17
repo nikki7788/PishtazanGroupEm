@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Models.Countries;
-using Model.Models.CountryCover_Video;
+using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImage;
 using Model.OwnedTypeClasses;
 using Model.Service;
@@ -55,7 +55,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         public IActionResult CreateCountry()
         {
             //CreatCountryMViewModel model = new CreatCountryMViewModel();
-            CountryCreatDto model = new CountryCreatDto();
+            CountryCreateDto model = new CountryCreateDto();
 
             return PartialView("_CreateCountryPartial", model);
         }
@@ -178,7 +178,8 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// <returns></returns>
         [HttpPost, ActionName("CreateCountry")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCountryConfirm(CountryCreatDto model, /*string Country_IndexImage,*/ List<string> images, List<string> videos)
+        public async Task<IActionResult> CreateCountryConfirm(CountryCreateDto model,  List<string> images, List<string> videos)
+            
         {
             try
             {
@@ -190,11 +191,16 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                     if (model.IndexImage == null)
                     {
                         //اگر تصویر شاخص آپلود نشده بود تصویر پیش فرض را اپلود کند 
-                        model.IndexImage = "384e5d169c";
+                        model.IndexImage = "384e5d169c.jpg";
 
                     }
-              
 
+                    //model.TouristOption.BookingHotel = 0;
+                    //model.TouristOption.BookingPlane = 0;
+                    //model.TouristOption.TakingEmbassyInterview = 0;
+                    //model.TouristOption.TakingInvitation = 0;
+                    //model.TouristOption.TakingTrainTicket = 0;
+                    //model.TouristOption.TravelArrangment = 0;
                     await _unitOfWork.CountryRepUW.CreateAsync(model);
                     await _unitOfWork.SaveAsync();
                     //############------#############
@@ -291,10 +297,10 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                 throw ex;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+               // return Json(new { message = ex });
+               throw ex;
             }
         }
 

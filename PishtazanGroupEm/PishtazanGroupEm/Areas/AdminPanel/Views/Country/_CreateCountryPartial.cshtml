@@ -1,8 +1,8 @@
 ﻿<!--todo:بررسی حجم فایل و نوع فایل سمت جیکویری
                 بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
 
-@*@model CreatCountryMViewModel‌*@
-@model CountryCreatDto
+
+@model CountryCreateDto
 <!--استایل مودال مرحله ای-->
 <link href="~/step-modal/style-step-modal.css" rel="stylesheet" />
 <style>
@@ -65,40 +65,41 @@
 
             <!--توضیحات کشور-->
             <div class="form-group row ">
-                @* <script src="~/ckeditor/ckeditor.js"></script>*@
+
+                <script src="~/ckeditor/ckeditor.js"></script>
 
                 <label asp-for="Description" class="col-12 col-form-label"></label>
                 <div class="col-12 ">
-                    <textarea asp-for="Description" id="Description" name="Description" class="form-control"></textarea>
+                    <textarea id="Description" name="Description" class="form-control"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
 
                 </div>
 
                 <!-------#########---- CKEditor دستورات استفاده از ------############---->
-                @*<script>
-                        //CKEDITOR.replace('Content');
-                        const config = {
-                            filebrowserImageBrowseUrl: "/imagebrowser",
-                            filebrowserImageWindowWidth: 780,
-                            filebrowserImageWindowHeight: 720,
-                            filebrowserBrowseUrl: "/linkbrowser",
-                            filebrowserWindowWidth: 350,
-                            filebrowserWindowHeight: 500
-                        };
-                        const editor = document.getElementById("Description");
-                        CKEDITOR.replace(editor, config);
+                <script>
+
+                    const config = {
+                        filebrowserImageBrowseUrl: "/imagebrowser",
+                        filebrowserImageWindowWidth: 780,
+                        filebrowserImageWindowHeight: 720,
+                        filebrowserBrowseUrl: "/linkbrowser",
+                        filebrowserWindowWidth: 350,
+                        filebrowserWindowHeight: 500
+                    };
+                    const editor = document.getElementById("Description");
 
 
+                    CKEDITOR.replace(editor, config);
 
-                    </script>*@
+                </script>
                 <!------------------################---------->
             </div>
 
             <!--گزینه های اختیاری مهاجرت کاری برای همه کشور ها ثابت-->
             <div class="form-group row ">
-                <label asp-for="SkillWorkingOption.MakingCVPrice" class="col-12 col-form-label" ></label>
+                <label asp-for="SkillWorkingOption.MakingCVPrice" class="col-12 col-form-label"></label>
                 <div class="col-12">
-                    <input asp-for="SkillWorkingOption.MakingCVPrice" class="form-control" value="0"/>
+                    <input asp-for="SkillWorkingOption.MakingCVPrice" class="form-control" value="0" />
                     <span asp-validation-for="SkillWorkingOption.MakingCVPrice" class="text-danger"></span>
                 </div>
             </div>
@@ -106,21 +107,21 @@
             <div class="form-group row ">
                 <label asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="col-12 col-form-label"></label>
                 <div class="col-12">
-                    <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" value="0"/>
+                    <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" value="0" />
                     <span asp-validation-for="SkillWorkingOption.MakingCoverLetterPrice" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row ">
                 <label asp-for="SkillWorkingOption.MakingLinkedInPrice" class="col-12 col-form-label"></label>
                 <div class="col-12">
-                    <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" value="0"/>
+                    <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" value="0" />
                     <span asp-validation-for="SkillWorkingOption.MakingCoverLetterPrice" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group row ">
                 <label asp-for="SkillWorkingOption.FindingJobCVPrice" class="col-12 col-form-label"></label>
                 <div class="col-12">
-                    <input asp-for="SkillWorkingOption.FindingJobCVPrice" class="form-control"value="0" />
+                    <input asp-for="SkillWorkingOption.FindingJobCVPrice" class="form-control" value="0" />
                     <span asp-validation-for="SkillWorkingOption.FindingJobCVPrice" class="text-danger"></span>
                 </div>
             </div>
@@ -179,9 +180,9 @@
                 <div class="row col-xl-6  col-md-6 col-sm-12  btn-group btn-group-sm mx-auto px-0 ">
                     <div class="col-xl-6  col-md-6 col-sm-12 btn btn px-0 py-0">
                         <div class="btn btn-dark  pb-0 ">
-                            <input  type="file" id="imgFiles" name="imgFiles" class="btn " multiple />
+                            <input type="file" id="imgFiles" name="imgFiles" class="btn " multiple />
 
-                            <label  class="control-label text-white">انتخاب مجموعه تصاویر</label>
+                            <label class="control-label text-white">انتخاب مجموعه تصاویر</label>
                         </div>
                     </div>
                     <input type="button" id="btnupload-images" class="col-xl-6  col-md-6 col-sm-12 btn btn-info" value="آپلود تصاویر" onclick="UploadImage('#imgFiles')" />
@@ -196,7 +197,7 @@
                     <div class="col-xl-6  col-md-6 col-sm-12 btn px-0 py-0">
                         <div class="btn btn-dark  pb-0 ">
 
-                            <input  type="file" id="videoFiles" name="videoFiles" multiple />
+                            <input type="file" id="videoFiles" name="videoFiles" multiple />
 
                             <label class="control-label text-white">انتخاب مجموعه ویدو ها</label>
                         </div>
@@ -279,18 +280,26 @@
 
                 e.preventDefault();
 
+                //----############----CKEDITOR دریافت مقادیر   ---##############----------------
+                 //دریافت مقادیر ادیتور
+                var description = CKEDITOR.instances['Description'].getData();
+                $("textarea").val(description);
                 var form = $(this);
+                //-------------------------##########################--------------------------------------
+
+
+
                  $.ajax({
                 type: "post",
                 url: '@Url.Action("CreateCountry", "Country", new { area = "AdminPanel"})',
-                cache: false,
-                data: form.serialize(),
+                     cache: false,
+                     data: form.serialize() /*+ "&description=" + description*/ ,
                 //beforeSend: function () {
                 //   // $(".se-pre-con").fadeIn('fast');
                 //     },
-                     success: function (result) {
+                     //success: function (result) {
 
-                     }
+                     //}
                  }).done(function (result) {
 
                      //اگر ولیدیشن خطا داشت
@@ -322,9 +331,18 @@
                        };
                          }
 
-            }).fail(function (result) {
+                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
 
-
+                     Swal.fire({
+                         type: "error",
+                         html: "<span class='text-dark ' style:'font-weight: bold'>:" + textStatus+ " </span>",
+                               animation: false,
+                               confirmButtonColor: '#f44336',
+                               confirmButtonText: 'تایید',
+                               customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
             });
 
 

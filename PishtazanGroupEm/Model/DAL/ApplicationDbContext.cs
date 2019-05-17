@@ -23,5 +23,9 @@ namespace Model.DAL
         public DbSet<EmigrationType> EmigrationTypes { get; set; }
 
         public DbSet<EmigrateCountry> EmigrateCountries { get; set; }
+
+        public DbSet<CountryCoverImage> CountryCoverImages { get; set; }
+
+        public DbSet<CountryCoverVideo> CountryCoverVideos { get; set; }
     }
 }

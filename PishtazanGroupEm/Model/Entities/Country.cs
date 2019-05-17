@@ -75,6 +75,7 @@ namespace Model.Entities
         /// </summary>
         ///هزینه  انتخاب هر خدمت برای هرکشور متفاوت است
         ///این هزینه هزینه انجام خدمت توسط موسسه است نه هزینه خدمت 
+        [NotMapped]
         public TouristOptions TouristOption { get; set; }
 
         #endregion#############

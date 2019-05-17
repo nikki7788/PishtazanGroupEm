@@ -1,6 +1,6 @@
 ﻿using Model.Entities;
 using Model.Models.Countries;
-using Model.Models.CountryCover_Video;
+using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImage;
 using Model.OwnedTypeClasses;
 using System;
@@ -23,7 +23,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels
         /// افزودن کشور
         /// ویومدل کشورها
         /// </summary>
-        public CountryCreatDto Country { get; set; }
+        public CountryCreateDto Country { get; set; }
         
         
         
@@ -39,7 +39,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels
         /// افزودن مجموعه ای از تصاویر برای هر کشور
         /// </summary>
         [Display(Name = " تصاویر کشور")]
-        public ICollection<CountryCoverImageDto> Images { get; set; }
+        public ICollection<CountryCoverImage> Images { get; set; }
 
 
 

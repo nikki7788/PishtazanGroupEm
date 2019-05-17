@@ -2,7 +2,7 @@
 using Model.DAL;
 using Model.Entities;
 using Model.Models.Countries;
-using Model.Models.CountryCover_Video;
+using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImage;
 using Model.Repository;
 using System;
@@ -36,9 +36,9 @@ namespace Model.UnitOfWork
 
         //نباید باشد readonly  
 
-        private CrudAppService<Country, CountryListDto, CountryCreatDto, CountryCreatDto> _countryRepUW;
+        private CrudAppService<Country, CountryListDto, CountryCreateDto, CountryCreateDto> _countryRepUW;
 
-        private CrudAppService<CountryCoverImage,CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> _countryCoverImageRepoUW;
+        private CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> _countryCoverImageRepoUW;
 
 
         private CrudAppService<CountryCoverVideo,CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> _countryCoverVideoRepoUW;
@@ -57,14 +57,14 @@ namespace Model.UnitOfWork
         ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
         ///  Country برای کلاس و جدول CRUD پیاده سازی کلاس 
         /// </summary>
-        public CrudAppService<Country, CountryListDto, CountryCreatDto, CountryCreatDto> CountryRepUW
+        public CrudAppService<Country, CountryListDto, CountryCreateDto, CountryCreateDto> CountryRepUW
         {
             //فقط خواندنی
             get
             {
                 if (_countryRepUW == null)
                 {
-                    _countryRepUW = new CrudAppService<Country, CountryListDto, CountryCreatDto, CountryCreatDto>(_context/*,_mapper*/);
+                    _countryRepUW = new CrudAppService<Country, CountryListDto, CountryCreateDto, CountryCreateDto>(_context/*,_mapper*/);
                 }
                 return _countryRepUW;
             }
@@ -78,7 +78,7 @@ namespace Model.UnitOfWork
         ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
         ///  CountryCoverImage برای کلاس و جدول CRUD پیاده سازی کلاس 
         /// </summary>
-        public CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> CountryCoverImageRepoUW
+        public CrudAppService<CountryCoverImage,CountryCoverImageDto,CountryCoverImageDto, CountryCoverImageDto> CountryCoverImageRepoUW
         {
             //فقط خواندنی
             get
@@ -105,11 +105,11 @@ namespace Model.UnitOfWork
             //فقط خواندنی
             get
             {
-                if (CountryCoverVideoRepoUW == null)
+                if (_countryCoverVideoRepoUW == null)
                 {
                     _countryCoverVideoRepoUW = new CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto>(_context/*,_mapper*/);
                 }
-                return CountryCoverVideoRepoUW;
+                return _countryCoverVideoRepoUW;
             }
         }
 

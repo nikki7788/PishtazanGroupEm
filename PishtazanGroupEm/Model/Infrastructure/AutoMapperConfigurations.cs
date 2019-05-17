@@ -25,6 +25,7 @@ namespace Model.Infrastructure
         public static void AddCustomMappingProfile(this IMapperConfigurationExpression config)
         {
             config.AddCustomMappingProfile(Assembly.GetEntryAssembly());
+
         }
 
         public static void AddCustomMappingProfile(this IMapperConfigurationExpression config, params Assembly[] assemblies)
@@ -40,6 +41,8 @@ namespace Model.Infrastructure
             var profile = new CustomMappingProfile(list);
             config.AddProfile(profile);
         }
+
+   
     }
 
 }
