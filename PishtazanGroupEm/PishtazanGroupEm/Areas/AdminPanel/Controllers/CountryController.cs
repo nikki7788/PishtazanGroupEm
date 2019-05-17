@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
-using Model.Models.CountryCoverImage;
+using Model.Models.CountryCoverImages;
 using Model.OwnedTypeClasses;
 using Model.Service;
 using Model.UnitOfWork;
@@ -195,12 +195,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                     }
 
-                    //model.TouristOption.BookingHotel = 0;
-                    //model.TouristOption.BookingPlane = 0;
-                    //model.TouristOption.TakingEmbassyInterview = 0;
-                    //model.TouristOption.TakingInvitation = 0;
-                    //model.TouristOption.TakingTrainTicket = 0;
-                    //model.TouristOption.TravelArrangment = 0;
+          
                     await _unitOfWork.CountryRepUW.CreateAsync(model);
                     await _unitOfWork.SaveAsync();
                     //############------#############

@@ -3,7 +3,7 @@ using Model.DAL;
 using Model.Entities;
 using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
-using Model.Models.CountryCoverImage;
+using Model.Models.CountryCoverImages;
 using Model.Repository;
 using System;
 using System.Collections.Generic;

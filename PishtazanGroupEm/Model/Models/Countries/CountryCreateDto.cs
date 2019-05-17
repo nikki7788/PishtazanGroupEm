@@ -77,7 +77,7 @@ namespace Model.Models.Countries
 
         public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 
-        // public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
+         public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
 
         public virtual ICollection<EmigrateCountry> EmigrateCountries { get; set; }
 

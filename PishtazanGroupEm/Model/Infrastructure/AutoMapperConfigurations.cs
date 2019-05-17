@@ -40,9 +40,11 @@ namespace Model.Infrastructure
             //Create a new automapper Profile for this list to create mapping then add to the config
             var profile = new CustomMappingProfile(list);
             config.AddProfile(profile);
+          
         }
 
-   
+
+
     }
 
 }
