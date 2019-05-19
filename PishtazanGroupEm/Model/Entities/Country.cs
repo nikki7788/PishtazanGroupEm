@@ -48,6 +48,15 @@ namespace Model.Entities
         public string  Description  { get; set; }
 
 
+        /// <summary>
+        /// چکیده خلاصه و توضیحات درمورد کشور
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        //[StringLength(5000, MinimumLength = 3, ErrorMessage = PublicConst.LengthMessage)]
+        //[RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
+        public string Abstract { get; set; }
+
+
 
         /// <summary>
         /// نام تصویر شاخص کشور
@@ -75,8 +84,9 @@ namespace Model.Entities
         /// </summary>
         ///هزینه  انتخاب هر خدمت برای هرکشور متفاوت است
         ///این هزینه هزینه انجام خدمت توسط موسسه است نه هزینه خدمت 
-        [NotMapped]
         public TouristOptions TouristOption { get; set; }
+
+        //کردیم در دیتابیس ایجاد نشده است   notmapped  چون 
 
         #endregion#############
 

@@ -28,6 +28,23 @@ namespace Model.Models.Countries
 
 
 
+
+        /// <summary>
+        /// چکیده خلاصه و توضیحات درمورد کشور
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [StringLength(500, MinimumLength = 3, ErrorMessage = PublicConst.LengthMessage)]
+        //[RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
+        [Display(Name = "چکیده توضیحات کشور")]
+
+        public string Abstract { get; set; }
+
+
+
+
+
+
+
         /// <summary>
         /// توضیحات کشور
         /// </summary>
@@ -65,6 +82,7 @@ namespace Model.Models.Countries
         /// </summary>
         ///هزینه  انتخاب هر خدمت برای هرکشور متفاوت است
         ///این هزینه هزینه انجام خدمت توسط موسسه است نه هزینه خدمت 
+       // [AutoMapper.IgnoreMap]
         public TouristOptions TouristOption { get; set; }
 
 
@@ -77,7 +95,7 @@ namespace Model.Models.Countries
 
         public virtual ICollection<CountryCoverVideo> CountryCoverVideos { get; set; }
 
-         public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
+        public virtual ICollection<CountryCoverImage> CountryCoverImages { get; set; }
 
         public virtual ICollection<EmigrateCountry> EmigrateCountries { get; set; }
 
@@ -87,4 +105,7 @@ namespace Model.Models.Countries
     //todo:ولیدیشن ها مانده
     //ایا به نویگیشن پراپرتی ها نیاز است؟اگر نگذاریم خطا میدهد هنگام مپینگ
     //روش نادیده گرفتن پراپرتی هایی که در کلاس اصلی وجود دارد ولی منادر ویومدل نمیخاهیم ایجاد کنیم
+
+    //tod:روش صرف نطر کردن از پراپرتی که نمیخواهیم
+    // public TouristOptions TouristOption { get; set; }
 }

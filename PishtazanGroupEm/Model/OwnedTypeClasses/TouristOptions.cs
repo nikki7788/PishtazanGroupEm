@@ -32,59 +32,53 @@ namespace Model.OwnedTypeClasses
         /// هزینه
         /// رزرو هتل
         /// </summary>
-        [AutoMapper.IgnoreMap]
 
         [Display(Name = "  هزینه رزرو هتل")]
-        public int BookingHotel { get; set; } = 0;
+        public int BookingHotel { get; set; } 
 
         /// <summary>
         /// هزینه
         /// گرفتن دعوت نامه
         /// </summary>
 
-        [AutoMapper.IgnoreMap]
         [Display(Name = "  هزینه گرفتن دعوتنامه")]
-        public int TakingInvitation { get; set; } = 0;
+        public int TakingInvitation { get; set; } 
 
 
         /// <summary>
         /// هزینه
         /// گرفتن بلیط قطار
         /// </summary>
-        [AutoMapper.IgnoreMap]
 
         [Display(Name = "   هزینه گرفتن بلیط قطار")]
-        public int TakingTrainTicket { get; set; } = 0;
+        public int TakingTrainTicket { get; set; } 
 
 
         /// <summary>
         /// هزینه
         /// رزرو هواپیما
         /// </summary>
-        [AutoMapper.IgnoreMap]
 
         [Display(Name = " هزینه رزرو هواپیما")]
-        public int BookingPlane { get; set; } = 0;
+        public int BookingPlane { get; set; } 
 
 
         /// <summary>
         /// هزینه
         /// گرفتن وقت مصاحبه سفارت
         /// </summary>
-        [AutoMapper.IgnoreMap]
 
         [Display(Name = "  هزینه گرفتن وقتن مصاحبه")]
-        public int TakingEmbassyInterview { get; set; } = 0;
+        public int TakingEmbassyInterview { get; set; } 
 
 
         /// <summary>
         /// هزینه
         /// برنامه ریزی سفر
         /// </summary>
-        [AutoMapper.IgnoreMap]
 
         [Display(Name = " هزینه برنامه ریزی سفر")]
-        public int TravelArrangment { get; set; } = 0;
+        public int TravelArrangment { get; set; } 
 
         #endregion##################################
 

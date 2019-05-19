@@ -186,6 +186,9 @@ namespace Model.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Abstract")
+                        .IsRequired();
+
                     b.Property<string>("Description")
                         .IsRequired();
 
@@ -336,6 +339,34 @@ namespace Model.Migrations
                             b1.HasOne("Model.Entities.Country")
                                 .WithOne("SkillWorkingOption")
                                 .HasForeignKey("Model.OwnedTypeClasses.SkillWorkingOptions", "CountryId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("Model.OwnedTypeClasses.TouristOptions", "TouristOption", b1 =>
+                        {
+                            b1.Property<int>("CountryId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<int>("BookingHotel");
+
+                            b1.Property<int>("BookingPlane");
+
+                            b1.Property<int>("TakingEmbassyInterview");
+
+                            b1.Property<int>("TakingInvitation");
+
+                            b1.Property<int>("TakingTrainTicket");
+
+                            b1.Property<int>("TravelArrangment");
+
+                            b1.HasKey("CountryId");
+
+                            b1.ToTable("Countries");
+
+                            b1.HasOne("Model.Entities.Country")
+                                .WithOne("TouristOption")
+                                .HasForeignKey("Model.OwnedTypeClasses.TouristOptions", "CountryId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

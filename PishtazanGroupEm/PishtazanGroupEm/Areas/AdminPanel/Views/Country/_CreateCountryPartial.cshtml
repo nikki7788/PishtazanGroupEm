@@ -1,6 +1,7 @@
 ﻿<!--todo:بررسی حجم فایل و نوع فایل سمت جیکویری
-                بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
-
+    بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده
+   ریسپانسیو کردن صفحه در سایرز کوچک اسکرول عرضی نگیرید
+    -->
 
 @model CountryCreateDto
 <!--استایل مودال مرحله ای-->
@@ -54,6 +55,7 @@
             <h4 class="text-info text-center"><b>‌مشخصات کشور</b></h4>
             <hr class="w-50 bg-info" />
             <br />
+
             <!--نام کشور-->
             <div class="form-group row ">
                 <label asp-for="Name" class="col-12 col-form-label"></label>
@@ -62,6 +64,19 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
             </div>
+
+
+
+            <!--چکیده توضیحات کشور-->
+            <div class="form-group row ">
+                <label asp-for="Abstract" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="Abstract" class="form-control" />
+                    <span asp-validation-for="Abstract" class="text-danger"></span>
+                </div>
+            </div>
+
+
 
             <!--توضیحات کشور-->
             <div class="form-group row ">
@@ -90,6 +105,7 @@
 
 
                     CKEDITOR.replace(editor, config);
+
                 </script>
 
                 <!------------------################---------->
@@ -126,13 +142,8 @@
                     <span asp-validation-for="SkillWorkingOption.FindingJobCVPrice" class="text-danger"></span>
                 </div>
             </div>
-
-       
         </div>
 
-        @*<requestFiltering>
-                <requestLimits maxAllowedContentLength="104857600000" />
-            </requestFiltering>*@
 
 
         <!--tab 2 صفحه دوم مودال-->
@@ -219,6 +230,7 @@
 
                 <!--میتوان به دوصورت زیر  نوشت تگ-->
                 <!--ذخیره نام تصویر شاخص بعد از اپلود برای ارسال  همراه فرم -->
+                <!--این نام روی پراپرتی ام تصویر شاخص ذخیره میشود و همراه رم ارسال میشود نیاز ب دریافت جداگانه نیست  -->
                 @*<input type="text" class="d-none" id="indexImage" name="indexImage" />*@
                 <input type="text" class="d-none" asp-for="IndexImage" />
 
@@ -290,13 +302,20 @@
                 var form = $(this);
                 //-------------------------##########################--------------------------------------
 
-
+                //todo:از نام فایل هایی که در اینپوت اپلود فایل  همان اینپوتی که از نوع فایل است نمیتوان استفاده کرد برای ارسال نا تصویر به اکشن
+                //چون نام فایل ماست ک درسیستم موجود است نه نامی که ما بعد از اپلود به ان اختصاص دادیم
+                //ما نامی که بعد از عمل اپلود له فایل دادیم را نیاز داریم
+                //پس از تگ و اینپو.تی که به صورت مخفی ایجاد کردیم و نام فایل ها را جداگانه در ان ذخیره کردیم استفاده میکنیم
+                //   تگ اینپوت را در ورودی اکشن کپی کنیم تا بتوانیم مقدار  name="" چون از در تگ اینپوت ذخیره کردیم خودکار توسط فرم به اکشن ارسال میشود و فقط ما باید خاصیت
+                // اینپوت را دریافت کنیم و اینجا چون چند اینپوت داریم با نام های یکسان باید در اکشن لیستی از انهارادریافت کنیم
+                //تصویر شاخص چون نام ان را هم نام پراپرتی ان گرفیتم با استفاده از تگ هلپر به همراه مدل فرستاده میشود
+                //------------------------------------------------------------------
 
                  $.ajax({
                 type: "post",
                 url: '@Url.Action("CreateCountry", "Country", new { area = "AdminPanel"})',
                      cache: false,
-                     data: form.serialize() /*+ "&description=" + description*/ ,
+                     data: form.serialize()/*+"&images="+images+"&videos="+videos*/  ,
                 //beforeSend: function () {
                 //   // $(".se-pre-con").fadeIn('fast');
                 //     },
@@ -356,7 +375,7 @@
 
                      Swal.fire({
                          type: "error",
-                         html: "<span class='text-dark ' style:'font-weight: bold'>:" + textStatus+ " </span>",
+                         html: "<span class='text-dark ' style:'font-weight: bold'>:" + "خطایی رخ داده است لطفا دوباره تلاش کنید"+ " </span>",
                                animation: false,
                                confirmButtonColor: '#f44336',
                                confirmButtonText: 'تایید',

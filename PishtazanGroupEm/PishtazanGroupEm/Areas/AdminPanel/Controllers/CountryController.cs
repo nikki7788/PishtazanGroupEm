@@ -176,8 +176,15 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
         /// <summary>
-        /// 
+        /// افزودن کشور 
+        /// post
         /// </summary>
+        /// <param name="model">مدل کشور دریافتی از ویو</param>
+        /// نام تصویر شاخص اپلود شده داخل مدل وجود دارد چون تگی اینپوتی که نام تصویر را را پس از اپلود در ان ذخیره کردیم را همنام اینپوت مدل ان گرفتیم با تگ هلپر ها به همراه خود مدل ارسال میشود به اکشن
+        /// <param name="images">نام تگهای اینپوت شامل نام تصاویر اپلود  داخل ویو</param>
+        ///  باید لیستی از ان را دریافت کنیم name="images"  چون چندین تگ اینپوت بایک 
+        /// <param name="videos">نام تگ های اینپوت شامل نام ویدوهای اپلود شده داخل ویو</param>
+        ///  باید لیستی از ان را دریافت کنیم name="videos"  چون چندین تگها  اینپوت بایک 
         /// <returns></returns>
         [HttpPost, ActionName("CreateCountry")]
         [ValidateAntiForgeryToken]
@@ -191,14 +198,30 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                 {
                     //###################------ایجاد کشور در جدول کشور ها -----#########################
 
-                    if (model.IndexImage == null)
+                    //if (model.IndexImage == null)
+                    //{
+                    //    //اگر تصویر شاخص آپلود نشده بود تصویر پیش فرض را اپلود کند 
+                    //    model.IndexImage = "384e5d169c.jpg";
+
+                    //}
+                    if (model.SkillWorkingOption == null)
                     {
-                        //اگر تصویر شاخص آپلود نشده بود تصویر پیش فرض را اپلود کند 
-                        model.IndexImage = "384e5d169c.jpg";
-
+                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                        SkillWorkingOptions skOp = new SkillWorkingOptions();
+                        model.SkillWorkingOption = skOp;
                     }
+                    //---------------- برای اینکه در مپ کردن خطا ندهد چون مقدار نال میگیرد این کلاس و خطا میدهد--------------
 
-          
+                    //todo:صرف نطر کردن از پاپرتی ک در ویومدل نمیدهیم ولی در مدل وجود دارد
+                    if (model.TouristOption==null)
+                    {
+                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                        TouristOptions tOp = new TouristOptions();
+                        model.TouristOption = tOp;
+                    }
+               
+                    //------------------------------
+
                     await _unitOfWork.CountryRepUW.CreateAsync(model);
                     await _unitOfWork.SaveAsync();
                     //############------#############
@@ -207,15 +230,18 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                     if (images.Count != 0)
                     {
+                        //--------------------------- بدست اوردن شناسه کشوری که میخواهیم تصاویر را برای ان ثبت کنیم در جدول تصاویر --------------------------------
+                        var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
+                        int countryId = country.FirstOrDefault().Id;
+                        //-----------------------------------------------------------
                         for (int i = 0; i < images.Count; i++)
                         {
 
                             CountryCoverImageDto coverImageDto = new CountryCoverImageDto
                             {
                                 ImageName = images[i],
-                                CountryId = model.Id
+                                CountryId = countryId
                             };
-
                             await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
                             await _unitOfWork.SaveAsync();
                         }
@@ -229,13 +255,17 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                     {
                         for (int i = 0; i < videos.Count; i++)
                         {
+                            //--------------------------- بدست اوردن شناسه کشوری که میخواهیم ویدوها را برای ان ثبت کنیم در جدول ویدوها --------------------------------
+                            var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
+                            int countryId = country.FirstOrDefault().Id;
+                            //-----------------------------------------------------------
 
                             CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
                             {
                                 VideoName = videos[i],
-                                CountryId = model.Id
+                                CountryId =countryId
                             };
-
+                            
                             await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
                             await _unitOfWork.SaveAsync();
                         }
@@ -258,13 +288,20 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                 }
                 //---------------------------------------------------------
                 //display validation with jquery ajax
+
+                //دریافت متن خطا ها از کلاس ها و ویومدل ها مربوطه
                 var errorMessage = new List<string>();
+                
+                // دریافت کلید خطا ها از کلاس ها و ویومدل ها مربوطه---کلید خطا همان نام پراپرتی است 
                 var errorKeys = new List<string>();
+
                 foreach (var validation in ViewData.ModelState.Values)
                 {
                     errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
 
                 }
+
+
                 foreach (var modelStateKey in ViewData.ModelState.Keys)
                 {
                     var modelStateVal = ViewData.ModelState[modelStateKey];
@@ -276,13 +313,6 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                 }
               
                 return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
-
-                //ModelState.AddModelError("Password", "نام کاربری یا رمزعبور اشتباه است");
-                //return View(model);
-
-                //todo:ولیدیشن ها را اعلام خطا کنم در ویو
-                //return Json(new { status = "fail", message = "خطایی رخ داده است دوباره تلاش کنید" });
-                // return View(model);
 
             }
             catch (DbUpdateConcurrencyException ex)

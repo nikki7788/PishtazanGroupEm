@@ -96,6 +96,7 @@
 
             //اضافه کردن فایل ها به متغیر برای ارسال به اکشن
             for (var i = 0; i < file.length; i++) {
+
                  // data مهم است نه نام  files در دریافت اطلاهات فرم و تصویر اپلود نام
                 // میسازیم data نامی که در متغیر files
                 //data={files:"asdfdasf.jpg"}
@@ -132,22 +133,22 @@
                             }
 
                         }
-                        else if (inputId === "#imagesFiles") {
+                        else if (inputId === "#imgFiles") {
                             if (result.imageNames != null) {
 
                                 //ذخیره نام تصاویر در تگ
                                 for (var i = 0; i < result.imageNames.length; i++) {
-                                    $("div#hidden-input>div#images-hidden").append('<input type="text" class="d-none images" name="images"  />');
+                                    $("div#images-hidden").append('<input type="text" class="d-none images" name="images"  />');
                                     $('input.images').eq(i).attr("value", result.imageNames[i]);
                                 }
                             }
                         }
-                        else if (inputId === "#videosFiles") {
+                        else if (inputId === "#videoFiles") {
 
                             if (result.videoNames != null) {
 
                                 //ذخیره نام ویدوها در تگ
-                                for (var i = 0; i < result.imageNames.length; i++) {
+                                for (var i = 0; i < result.videoNames.length; i++) {
                                     $("div#hidden-input>div#videos-hidden").append('<input type="text" class="d-none videos" name="videos"  />');
                                     $('input.videos').eq(i).attr("value", result.videoNames[i]);
                                 }
