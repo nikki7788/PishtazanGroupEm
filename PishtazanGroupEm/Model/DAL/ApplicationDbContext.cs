@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,14 @@ namespace Model.DAL
         {
 
         }
+       public DbSet<Country> Countries { get; set; }
 
+        public DbSet<EmigrationType> EmigrationTypes { get; set; }
+
+        public DbSet<EmigrateCountry> EmigrateCountries { get; set; }
+
+        public DbSet<CountryCoverImage> CountryCoverImages { get; set; }
+
+        public DbSet<CountryCoverVideo> CountryCoverVideos { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace Model.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -180,6 +180,98 @@ namespace Model.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("Model.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Abstract")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("IndexImage");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("Model.Entities.CountryCoverImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<string>("ImageName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("CountryCoverImages");
+                });
+
+            modelBuilder.Entity("Model.Entities.CountryCoverVideo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<string>("VideoName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("CountryCoverVideos");
+                });
+
+            modelBuilder.Entity("Model.Entities.EmigrateCountry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CountryId");
+
+                    b.Property<int>("EmigrationTypeId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("EmigrationTypeId");
+
+                    b.ToTable("EmigrateCountrys");
+                });
+
+            modelBuilder.Entity("Model.Entities.EmigrationType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmigrationTypes");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Model.DAL.ApplicationRoles")
@@ -222,6 +314,90 @@ namespace Model.Migrations
                     b.HasOne("Model.DAL.ApplicationUsers")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Model.Entities.Country", b =>
+                {
+                    b.OwnsOne("Model.OwnedTypeClasses.SkillWorkingOptions", "SkillWorkingOption", b1 =>
+                        {
+                            b1.Property<int>("CountryId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<int>("FindingJobCVPrice");
+
+                            b1.Property<int>("MakingCVPrice");
+
+                            b1.Property<int>("MakingCoverLetterPrice");
+
+                            b1.Property<int>("MakingLinkedInPrice");
+
+                            b1.HasKey("CountryId");
+
+                            b1.ToTable("Countries");
+
+                            b1.HasOne("Model.Entities.Country")
+                                .WithOne("SkillWorkingOption")
+                                .HasForeignKey("Model.OwnedTypeClasses.SkillWorkingOptions", "CountryId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+
+                    b.OwnsOne("Model.OwnedTypeClasses.TouristOptions", "TouristOption", b1 =>
+                        {
+                            b1.Property<int>("CountryId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<int>("BookingHotel");
+
+                            b1.Property<int>("BookingPlane");
+
+                            b1.Property<int>("TakingEmbassyInterview");
+
+                            b1.Property<int>("TakingInvitation");
+
+                            b1.Property<int>("TakingTrainTicket");
+
+                            b1.Property<int>("TravelArrangment");
+
+                            b1.HasKey("CountryId");
+
+                            b1.ToTable("Countries");
+
+                            b1.HasOne("Model.Entities.Country")
+                                .WithOne("TouristOption")
+                                .HasForeignKey("Model.OwnedTypeClasses.TouristOptions", "CountryId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("Model.Entities.CountryCoverImage", b =>
+                {
+                    b.HasOne("Model.Entities.Country", "Country")
+                        .WithMany("CountryCoverImages")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Model.Entities.CountryCoverVideo", b =>
+                {
+                    b.HasOne("Model.Entities.Country", "Country")
+                        .WithMany("CountryCoverVideos")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Model.Entities.EmigrateCountry", b =>
+                {
+                    b.HasOne("Model.Entities.Country", "Country")
+                        .WithMany("EmigrateCountries")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Model.Entities.EmigrationType", "EmigrationType")
+                        .WithMany("EmigrateCountries")
+                        .HasForeignKey("EmigrationTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

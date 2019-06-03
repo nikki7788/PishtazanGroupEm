@@ -2,6 +2,10 @@
   "version": "1.0.0",
   "name": "asp.net",
   "private": true,
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "font-awesome": "4.7.0",
+    "material-dashboard": "^2.1.0",
+    "sweetalert2": "^8.10.6"
   }
 }

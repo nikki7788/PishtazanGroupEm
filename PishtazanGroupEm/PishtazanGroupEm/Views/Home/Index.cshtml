@@ -1,8 +1,22 @@
-﻿@{
+﻿
+@*@model IEnumerable< CountryDto>*@
+@*@model  CountryListDto*@
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <form asp-action="Create">
+        <input id="Description" name="Description" value="ندارد" />
+        <input id="Name" name="Name" value="ira" />
+        <input id="population" name="population" value="as" />
+        <input type="submit" />
+    </form>
+    @*@foreach (var item in Model)
+        {
+            @item.Id  @item.Name @item.Description
+
+        }*@
+   @*@Model.Name*@
 </div>
+<!--todo:داده ها و ویوی تستی-->

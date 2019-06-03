@@ -1,0 +1,498 @@
+﻿<!--todo:بررسی حجم فایل و نوع فایل سمت جیکویری
+                بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
+
+
+@model CountryCreateDto
+<!--استایل مودال مرحله ای-->
+<link href="~/step-modal/style-step-modal.css" rel="stylesheet" />
+<style>
+    .picture-container {
+        position: relative;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .picture {
+        width: 120px;
+        height: 120px;
+        /*background-color: #999999;*/
+        /*border: 4px solid #CCCCCC;*/
+        border: 4px groove #514e4e;
+        color: #FFFFFF;
+        border-radius: 50%;
+        margin: 5px auto;
+        overflow: hidden;
+        transition: all 0.2s;
+        -webkit-transition: all 0.2s;
+    }
+
+    input[type="file"] {
+        cursor: pointer;
+        display: block;
+        height: 100%;
+        left: 0;
+        opacity: 0 !important;
+        position: absolute;
+        top: 0;
+        width: 100%;
+    }
+</style>
+
+
+<form method="post" enctype="multipart/form-data" id="regForm">
+
+    <!--Modal Header-->
+    <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن کشور" }' />
+
+
+    @Html.AntiForgeryToken()
+    <!--Modal Body-->
+    <div class="modal-body ">
+
+        <!--tab ۱ صفحه اول مودال-->
+        <div class="tab">
+            <h4 class="text-info text-center"><b>‌مشخصات کشور</b></h4>
+            <hr class="w-50 bg-info" />
+            <br />
+            <!--نام کشور-->
+            <div class="form-group row ">
+                <label asp-for="Name" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <!--چکیده توضیحات کشور-->
+            <div class="form-group row ">
+                <label asp-for="Abstract" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="Abstract" class="form-control" />
+                    <span asp-validation-for="Abstract" class="text-danger"></span>
+                </div>
+            </div>
+
+
+
+            <!--توضیحات کشور-->
+            <div class="form-group row ">
+
+                <script src="~/ckeditor/ckeditor.js"></script>
+
+                <label asp-for="Description" class="col-12 col-form-label"></label>
+                <div class="col-12 ">
+                    <textarea id="Description" name="Description" asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+
+                </div>
+
+                <!-------#########---- CKEditor دستورات استفاده از ------############---->
+                <script>
+
+                    const config = {
+                        filebrowserImageBrowseUrl: "/imagebrowser",
+                        filebrowserImageWindowWidth: 780,
+                        filebrowserImageWindowHeight: 720,
+                        filebrowserBrowseUrl: "/linkbrowser",
+                        filebrowserWindowWidth: 350,
+                        filebrowserWindowHeight: 500
+                    };
+                    const editor = document.getElementById("Description");
+
+
+                    CKEDITOR.replace(editor, config);
+
+                </script>
+
+                <!------------------################---------->
+
+            </div>
+
+            <!--گزینه های اختیاری مهاجرت کاری برای همه کشور ها ثابت-->
+            <div class="form-group row ">
+                <label asp-for="SkillWorkingOption.MakingCVPrice" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="SkillWorkingOption.MakingCVPrice" class="form-control" value="0" />
+                    <span asp-validation-for="SkillWorkingOption.MakingCVPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <label asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" value="0" />
+                    <span asp-validation-for="SkillWorkingOption.MakingCoverLetterPrice" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row ">
+                <label asp-for="SkillWorkingOption.MakingLinkedInPrice" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="SkillWorkingOption.MakingCoverLetterPrice" class="form-control" value="0" />
+                    <span asp-validation-for="SkillWorkingOption.MakingCoverLetterPrice" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row ">
+                <label asp-for="SkillWorkingOption.FindingJobCVPrice" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="SkillWorkingOption.FindingJobCVPrice" class="form-control" value="0" />
+                    <span asp-validation-for="SkillWorkingOption.FindingJobCVPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+
+        </div>
+
+        @*<requestFiltering>
+                <requestLimits maxAllowedContentLength="104857600000" />
+            </requestFiltering>*@
+
+
+        <!--tab 2 صفحه دوم مودال-->
+        <div class="tab ">
+
+            <h4 class="text-info text-center"><b>افزودن تصویر کشور</b></h4>
+            <hr class="w-50 bg-info" />
+            <br />
+
+            <!--تصویر شاخص کشور-->
+            <div class="row">
+                <div class="picture-container col-md-12 mx-auto">
+                    <div class="picture ">
+                        @if (ViewBag.indexImgNM == null)
+                        {
+                            <!--برای وقتی که تص.یری آپ.ل.د نشده است تصویر پیش فرض را نشان دهد-->
+                            <img src="~/images/384e5d169c.png" class="w-100 h-100" id="IndexImages" title="countriIndexImage">
+                        }
+                        else
+                        {
+
+                            //اگر تصویری آپلود شده بود و ولیدشن ها رعایت نشده بود عکس اپلود شده همجنان نمایش داده شود و وجود داشته باشد*
+                            <img src="~/upload/country/indexImage/thumbnailImage/@ViewBag.ImgNM" class="w-100 h-100" id="IndexImages" title="countriIndexImage">
+
+                        }
+
+                    </div>
+                    <input type="file" class="form-control-file" asp-for="IndexImage" id="indexFiles" name="indexFiles">
+                    <label asp-for="IndexImage" class="col-form-label"></label>
+
+                </div>
+
+
+                <div class="col-md-12  text-center">
+                    <input type="button" id="btnupload" class="btn  text-white btn-dark" value="آپلود و نمایش تصویر"
+                           style="font-size:15px;" onclick="UploadImage('#indexFiles')" />
+                </div>
+
+                <div id="divmessage" class="text-center col-md-12 d-none" style="color:green;margin-right:0"></div>
+            </div>
+
+
+
+            <!--آپلود مجموعه تصاویر کشور-->
+            <div class="row  mt-2">
+                <div class="row col-xl-6  col-md-6 col-sm-12  btn-group btn-group-sm mx-auto px-0 ">
+                    <div class="col-xl-6  col-md-6 col-sm-12 btn btn px-0 py-0">
+                        <div class="btn btn-dark  pb-0 ">
+                            <input type="file" id="imgFiles" name="imgFiles" class="btn " multiple />
+
+                            <label class="control-label text-white">انتخاب مجموعه تصاویر</label>
+                        </div>
+                    </div>
+                    <input type="button" id="btnupload-images" class="col-xl-6  col-md-6 col-sm-12 btn btn-info" value="آپلود تصاویر" onclick="UploadImage('#imgFiles')" />
+                </div>
+                <div id="img-success" class="col-6 offset-3 bg-success btn-group  btn-group-sm  d-none text-center" style="border-radius:4px;">
+                    <span class="text-white"></span>
+                </div>
+            </div>
+
+
+            <!--آپلود مجموعه ویدوهای کشور-->
+            <div class="row mt-2">
+                <div class="row col-xl-6  col-md-6 col-sm-12  btn-group  btn-group-sm mx-auto px-0 ">
+                    <div class="col-xl-6  col-md-6 col-sm-12 btn px-0 py-0">
+                        <div class="btn btn-dark  pb-0 ">
+
+                            <input type="file" id="videoFiles" name="videoFiles" class="btn" multiple />
+
+                            <label class="control-label text-white">انتخاب مجموعه ویدو ها</label>
+                        </div>
+
+                    </div>
+                    <input type="button" id="btnupload-videos" class=" col-xl-6  col-md-6 col-sm-12 btn btn-info " value="آپلود تصاویر" onclick="UploadImage('#videoFiles')" />
+
+                </div>
+                <div id="video-success" class="col-6 offset-3 bg-success btn-group  btn-group-sm  d-none text-center">
+                    <span class="text-center text-white"></span>
+                </div>
+            </div>
+
+            <!---------###############---   دریافت مقادیر از ویو بگ و ایجکس جیکویری-##################----- -->
+            <div id="hidden-input">
+
+                <!--میتوان به دوصورت زیر  نوشت تگ-->
+                <!--ذخیره نام تصویر شاخص بعد از اپلود برای ارسال  همراه فرم -->
+                @*<input type="text" class="d-none" id="indexImage" name="indexImage" />*@
+                <input type="text" class="d-none" asp-for="IndexImage" />
+
+                <!----ذخیره نام تصاویر بعد از اپلود برای ارسال عهمراه فرم------------------------->
+                <div id="videos-hidden">
+
+                </div>
+
+
+                <!--------------ذخیره نام ویدوهابعد از اپلود برای ارسال  همراه فرم------------>
+
+                <div id="images-hidden">
+
+                </div>
+
+            </div>
+            <!-----------  ###############################-------->
+
+
+
+
+
+
+        </div>
+    </div>
+    @*Modal Footer*@
+    <div class="modal-footer justify-content-start ">
+        <div style="overflow:auto;">
+            <div>
+                <input class="btn btn-success " type="submit" id="submit-btn" value="افزودن کشور" />
+
+                <button class="btn btn-success" type="button" id="nextBtn" onclick="nextPrev(1)">بعدی</button>
+
+                <button class="btn btn-danger ml-2" type="button" id="prevBtn" onclick="nextPrev(-1)">قبلی</button>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Circles which indicates the steps of the form: -->
+    <!-- نمایش دهنده صفحه جاری در پایین موال -->
+
+    <div class="text-center" style="direction:ltr">
+        <span class="step"></span>
+        <span class="step"></span>
+
+    </div>
+</form>
+
+
+
+
+
+
+
+<script>
+    //ارسال فرم
+        $(document).ready(function () {
+
+            $("#regForm").submit(function (e) {
+
+                e.preventDefault();
+
+                //----############----CKEDITOR دریافت مقادیر   ---##############----------------
+                 //دریافت مقادیر ادیتور
+                var description = CKEDITOR.instances['Description'].getData();
+                $("textarea").val(description);
+                var form = $(this);
+                //-------------------------##########################--------------------------------------
+
+
+
+                 $.ajax({
+                type: "post",
+                url: '@Url.Action("CreateCountry", "Country", new { area = "AdminPanel"})',
+                     cache: false,
+                     data: form.serialize() /*+ "&description=" + description*/ ,
+                //beforeSend: function () {
+                //   // $(".se-pre-con").fadeIn('fast');
+                //     },
+                     //success: function (result) {
+
+                     //}
+                 }).done(function (result) {
+
+                     //اگر ولیدیشن خطا داشت
+                   if (result.status === "validationError") {
+
+                           Swal.fire({
+                               type: "error",
+                               html: "<span class='text-dark ' style:'font-weight: bold'>" + result.message + "</span>",
+                               animation: false,
+                               confirmButtonColor: '#f44336',
+                               confirmButtonText: 'تایید',
+                               customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+
+                       // برای اینکه اگر بعد از درست کردن خطای ورودی پیام خطا پاک شود
+                       //ابتدا تمام خطاهارا پاک میکنیم و سپس دوباره هرکدام خطا داشت نمایش میدهیم
+
+                       //------------------ حذف تمام پیام های خطای اینپوت ها و کلاس خطای انها -------------------
+                       for (var i = 0; i < $('span.field-validation-error').length; i++) {
+                           $('span.field-validation-error').removeClass('field-validation-error')
+                              .addClass("field-validation-valid") .text("");
+                       };
+                       //-------------------------- نمایش خطای اینپوت هایی که ولیدیشن را رعایت نکرده اند بعد از بررسی در سرورو ------------------------------------
+                       for (var i = 0; i < result.errorKey.length; i++) {
+                           $(`span[data-valmsg-for='${result.errorKey[i]}']`).removeClass("field-validation-valid")
+                               .addClass("field-validation-error").text(result.errorMessages[i]);
+                       };
+                     };
+
+                     if (result.status==="success") {
+                          Swal.fire({
+                               type: "success",
+                              html: "<span class='text-dark ' style:'font-weight: bold'> کشور</span>"
+                                 + "<span class='text-success px-3' style:'font-weight: bold;font-style:20px;'>"+result.message + "</span>"+
+                            "<span class='text-dark ' style:'font-weight: bold'> با موفقیت ثبت شد</span>"
+                              ,
+                               animation: false,
+                               confirmButtonColor: '#4caf50',
+                               confirmButtonText: 'تایید',
+
+                          }).then(function () {
+
+                              //for displaying index view after finishing modal
+                              window.location.href = '@Url.Action("Index", "Country")';
+                          });
+                     }
+
+                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                     Swal.fire({
+                         type: "error",
+                         html: "<span class='text-dark ' style:'font-weight: bold'>:" + textStatus+ " </span>",
+                               animation: false,
+                               confirmButtonColor: '#f44336',
+                               confirmButtonText: 'تایید',
+                               customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+            });
+
+
+            });
+
+        });
+
+</script>
+
+<script>
+    ////نمایش تصویرقبل  از آپلود شدن
+    //  // Prepare the preview for profile picture
+    //    $("#files").change(function(){
+    //        readURL(this);
+    //    });
+    //    //Function to show image before upload
+    //function readURL(input) {
+    //    if (input.files && input.files[0]) {
+    //        var reader = new FileReader();
+
+    //        reader.onload = function (e) {
+    //            $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('fast');
+    //        }
+    //        reader.readAsDataURL(input.files[0]);
+    //    }
+    //}
+    // </script>
+
+
+
+
+
+<script>
+    /*اسکریپت مودال یا تب های مرحله ای*/
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+    function showTab(n) {
+        // This function will display the specified tab of the form ...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        // ... and fix the Previous/Next buttons:
+        if (n == 0) {
+            document.getElementById("prevBtn").style.display = "none";
+        }
+        else {
+            document.getElementById("prevBtn").style.display = "inline";
+        }
+
+
+        if (n == (x.length - 1)) {
+            document.getElementById("nextBtn").style.display = "none";
+            document.getElementById("submit-btn").style.display = "inline";
+        }
+        else {
+            document.getElementById("submit-btn").style.display = "none";
+            document.getElementById("nextBtn").style.display = "inline";
+            document.getElementById("nextBtn").innerHTML = "بعدی";
+        }
+        // ... and run a function that displays the correct step indicator:
+        fixStepIndicator(n)
+    }
+
+    function nextPrev(n) {
+        // This function will figure out which tab to display
+        var x = document.getElementsByClassName("tab");
+
+        //برای  اینگه اگر ولیدیشن چکبود مرحله بعد نرود
+        // Exit the function if any field in the current tab is invalid:
+        //if (n == 1 && !validateForm()) return false;
+
+        // Hide the current tab:
+        x[currentTab].style.display = "none";
+        // Increase or decrease the current tab by 1:
+        currentTab = currentTab + n;
+        //// if you have reached the end of the form... :
+        //if (currentTab >= x.length) {
+        //    //...the form gets submitted:
+        //    document.getElementById("regForm").submit();
+        //    return false;
+        //}
+        // Otherwise, display the correct tab:
+        showTab(currentTab);
+    }
+    //متد چک کردن ورودی ها
+    //function validateForm() {
+    //    // This function deals with validation of the form fields
+    //    var x, y, i, valid = true;
+    //    x = document.getElementsByClassName("tab");
+    //    y = x[currentTab].getElementsByTagName("input");
+    //    // A loop that checks every input field in the current tab:
+    //    for (i = 0; i < y.length; i++) {
+    //        // If a field is empty...
+    //        if (y[i].value == "") {
+    //            // add an "invalid" class to the field:
+    //            y[i].className += " invalid";
+    //            // and set the current valid status to false:
+    //            valid = false;
+    //        }
+    //    }
+    //    // If the valid status is true, mark the step as finished and valid:
+    //    if (valid) {
+    //        document.getElementsByClassName("step")[currentTab].className += " finish";
+    //    }
+    //    return valid; // return the valid status
+    //}
+
+
+
+    function fixStepIndicator(n) {
+        // This function removes the "active" class of all steps...
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class to the current step:
+        x[n].className += " active";
+    }
+
+</script>

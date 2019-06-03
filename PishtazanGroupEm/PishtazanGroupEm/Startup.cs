@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Model.DAL;
+using Model.Infrastructure;
+using Model.Repository;
+using Model.Service;
+using Model.UnitOfWork;
+using System.IO;
 
 namespace PishtazanGroupEm
 {
@@ -21,6 +21,10 @@ namespace PishtazanGroupEm
     {
         public Startup(IHostingEnvironment env)
         {
+            ////-------------- for automapper ----------------------------------
+            AutoMapperConfiguration.InitializeAutoMapper();
+            //------------------------------------------------------------
+
             // appsetting  تنطیم کردن خواندن از  
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -28,6 +32,7 @@ namespace PishtazanGroupEm
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
         }
 
         public IConfiguration Configuration { get; }
@@ -45,7 +50,12 @@ namespace PishtazanGroupEm
             services.AddIdentity<ApplicationUsers, ApplicationRoles>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders(); //به هرکاربردر هنگام لاگین بودن یک توکن اختصاص میدهد  باتغیرر توکن لاگ وت میشود
-            //-----------------------------------------------------------------------
+                                             //-----------------------------------------------------------------------
+
+            //-------------------------- set the services and Unit of work and repository and services setting ---------------------------------------------
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUploadingService, UploadingRepo>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -54,8 +64,27 @@ namespace PishtazanGroupEm
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //----------------------------------------------------------------------------
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //-------------------IIS افزایش حجم اپلود فایل پیش فرض سایت و---------------------
+            //--< set uploadsize large files >----
+
+            services.Configure<FormOptions>(options =>
+
+            {
+
+              options.ValueLengthLimit = int.MaxValue;
+
+                options.MultipartBodyLengthLimit = int.MaxValue;
+
+                options.MultipartHeadersLengthLimit = int.MaxValue;
+
+            });
+
+            //--</ set uploadsize large files >----
+            //----------------------------------------------------------------
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,12 +94,13 @@ namespace PishtazanGroupEm
             {
                 app.UseDeveloperExceptionPage();
 
-                //------------برای آپدیت کردن کتابخانه های کلاینت مانند بوت استرپ جی کویری و ..------------------
-                //app.UseStaticFiles(new StaticFileOptions
-                //{
-                //    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
-                //    RequestPath = "/" + "node_modules"
-                //});
+                //------------------------------NPM  node_modules  دسترسی دادن پروژه به فایل های   --------------------------------------------------
+                //----------- برای آپدیت کردن کتابخانه های کلاینت NPM  node_modules  ..------------------
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "node_modules")),
+                    RequestPath = "/" + "node_modules"
+                });
                 //--------------------------------------------------=-------
 
 
@@ -89,8 +119,17 @@ namespace PishtazanGroupEm
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}"
+                    );
             });
         }
     }
