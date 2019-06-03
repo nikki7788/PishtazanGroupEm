@@ -5,7 +5,6 @@
     -->
 
 @model CountryCreateDto
-
 <!--استایل مودال مرحله ای-->
 <link href="~/step-modal/style-step-modal.css" rel="stylesheet" />
 
@@ -82,13 +81,13 @@
 
 
             <!--چکیده توضیحات کشور-->
-            @*<div class="form-group row ">
+            <div class="form-group row ">
                 <label asp-for="Abstract" class="col-12 col-form-label"></label>
                 <div class="col-12">
                     <input asp-for="Abstract" class="form-control" />
                     <span asp-validation-for="Abstract" class="text-danger"></span>
                 </div>
-            </div>*@
+            </div>
 
 
 
@@ -120,7 +119,8 @@
 
                     CKEDITOR.replace(editor, config);
 
-                </script>
+
+/**/</script>
 
                 <!------------------################---------->
 
@@ -173,8 +173,17 @@
                     <div class="picture ">
                         @if (ViewBag.indexImgNM == null)
                         {
-                            <!--برای وقتی که تص.یری آپ.ل.د نشده است تصویر پیش فرض را نشان دهد-->
-                            <img src="~/upload/country/indexImage/normalImage/@Model.IndexImage" class="w-100 h-100" id="IndexImages" title="countriIndexImage">
+                            if (Model.IndexImage == "384e5d169c.jpg")
+                            {
+                                //اگر تصویری در هنگام ایجاد کشور وارد نشده بود و تصویر پیش فرض از قبل وجود داشت  
+                                <img src="~/images/384e5d169c.png" class="w-100 h-100" id="IndexImages" title="countriIndexImage">
+
+                            }
+                            else
+                            {
+                                <!--برای وقتی که تص.یری آپ.ل.د نشده است تصویر از قبل اپلود شده کشور را نشان دهد-->
+                                <img src="~/upload/country/indexImage/normalImage/@Model.IndexImage" class="w-100 h-100" id="IndexImages" title="countriIndexImage">
+                            }
                         }
                         else
                         {

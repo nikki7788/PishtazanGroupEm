@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Model.Entities;
 using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImages;
@@ -29,10 +30,14 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly IUploadingService _uploadingService;
-        public CountryController(IUnitOfWork unitOfWork, IUploadingService uploadingService)
+
+        private readonly ICountryService _countrySerice;
+        public CountryController(IUnitOfWork unitOfWork, IUploadingService uploadingService
+            ,ICountryService countryService)
         {
             _unitOfWork = unitOfWork;
             _uploadingService = uploadingService;
+            _countrySerice = countryService;
         }
 
         #endregion#################
@@ -47,18 +52,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         }
 
 
-        /// <summary>
-        /// نمایش مودال افزودن کشور
-        /// </summary>
-        /// <returns></returns>
-        ///todo: دارند باید از روی کلاس انها نمونه ساخت و بعد مقدار دهی گرد owned  برای مقدار دهی پراپرتی هایی که ازنوع کلاس هایی که اتریبیوت 
-        public IActionResult CreateCountry()
-        {
-            //CreatCountryMViewModel model = new CreatCountryMViewModel();
-            CountryCreateDto model = new CountryCreateDto();
 
-            return PartialView("_CreateCountryPartial", model);
-        }
 
         /// <summary>
         /// اپلود کردن تصویر و ویدو برای کشور
@@ -109,10 +103,10 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                     //اگر فایل ها فیلم بودند
                     else if (inputId == "#videoFiles")
                     {
-                        if (item.ContentType == "video/mp4" || item.ContentType == "video/mkv"|| item.ContentType == "video/Matroska" || item.ContentType == "video/x-matroska"
-                            || item.ContentType == "image/webm"|| item.ContentType == "image/ogg" || item.ContentType == "image/3gp")
+                        if (item.ContentType == "video/mp4" || item.ContentType == "video/mkv" || item.ContentType == "video/Matroska" || item.ContentType == "video/x-matroska"
+                            || item.ContentType == "image/webm" || item.ContentType == "image/ogg" || item.ContentType == "image/3gp")
                         {
-                           
+
                             //چک کردن حجم فایل برحسب بایت
                             //تا حجم ۱ گیگ
                             if (item == null || item.Length <= 0 || item.Length >= 1000720000)
@@ -174,6 +168,23 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
+        /// <summary>
+        /// نمایش مودال افزودن کشور
+        /// </summary>
+        /// <returns></returns>
+        ///todo: دارند باید از روی کلاس انها نمونه ساخت و بعد مقدار دهی گرد owned  برای مقدار دهی پراپرتی هایی که ازنوع کلاس هایی که اتریبیوت 
+        public IActionResult CreateCountry()
+        {
+            //CreatCountryMViewModel model = new CreatCountryMViewModel();
+            CountryCreateDto model = new CountryCreateDto();
+
+            return PartialView("_CreateCountryPartial", model);
+        }
+
+       
+
+
+
 
         /// <summary>
         /// 
@@ -197,31 +208,25 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                         model.IndexImage = "384e5d169c.jpg";
 
                     }
-                    /////////////////////-----------برای جلوگیری از خزای نال دادن در دیتابیس----------------////////////////////
-                    if (model.SkillWorkingOption==null)
+
+                    if (model.SkillWorkingOption == null)
                     {
-                        SkillWorkingOptions sk = new SkillWorkingOptions();
-                        //اگر هزینه خدمت های اختیاری برای مهاجرت کاری نال بود
-                        sk.FindingJobCVPrice = 0;
-                        sk.MakingCoverLetterPrice = 0;
-                        sk.MakingCVPrice = 0;
-                        sk.MakingLinkedInPrice = 0;
-                        model.SkillWorkingOption = sk;
+                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                        SkillWorkingOptions skOp = new SkillWorkingOptions();
+                        model.SkillWorkingOption = skOp;
                     }
-                    if (model.TouristOption==null)
+                    //---------------- برای اینکه در مپ کردن خطا ندهد چون مقدار نال میگیرد این کلاس و خطا میدهد--------------
+
+                    //todo:صرف نطر کردن از پاپرتی ک در ویومدل نمیدهیم ولی در مدل وجود دارد
+                    if (model.TouristOption == null)
                     {
-                        //اگر هزینه خدمت های اختیاری برای مهاجرت توریستی نال بود
-                        TouristOptions ts = new TouristOptions();
-                        ts.BookingHotel = 0;
-                        ts.BookingPlane = 0;
-                        ts.TakingEmbassyInterview = 0;
-                        ts.TakingInvitation = 0;
-                        ts.TakingTrainTicket = 0;
-                        ts.TravelArrangment = 0;
-                        model.TouristOption = ts;
+                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                        TouristOptions tOp = new TouristOptions();
+                        model.TouristOption = tOp;
                     }
-                    ///////////-------------------------///////////
-          
+
+                    //------------------------------
+
                     await _unitOfWork.CountryRepUW.CreateAsync(model);
                     await _unitOfWork.SaveAsync();
                     //############------#############
@@ -230,15 +235,18 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
                     if (images.Count != 0)
                     {
+                        //--------------------------- بدست اوردن شناسه کشوری که میخواهیم تصاویر را برای ان ثبت کنیم در جدول تصاویر --------------------------------
+                        var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
+                        int countryId = country.FirstOrDefault().Id;
+                        //-----------------------------------------------------------
                         for (int i = 0; i < images.Count; i++)
                         {
 
                             CountryCoverImageDto coverImageDto = new CountryCoverImageDto
                             {
                                 ImageName = images[i],
-                                CountryId = model.Id
+                                CountryId = countryId
                             };
-
                             await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
                             await _unitOfWork.SaveAsync();
                         }
@@ -252,11 +260,15 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                     {
                         for (int i = 0; i < videos.Count; i++)
                         {
+                            //--------------------------- بدست اوردن شناسه کشوری که میخواهیم ویدوها را برای ان ثبت کنیم در جدول ویدوها --------------------------------
+                            var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
+                            int countryId = country.FirstOrDefault().Id;
+                            //-----------------------------------------------------------
 
                             CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
                             {
                                 VideoName = videos[i],
-                                CountryId = model.Id
+                                CountryId = countryId
                             };
 
                             await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
@@ -323,6 +335,33 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                // return Json(new { message = ex });
                throw ex;
             }
+        }
+
+
+
+
+        /// <summary>
+        /// نمایش مودال ویرایش کشور
+        /// </summary>
+        /// <param name="Id">شناسه کشور</param>
+        /// <returns></returns>
+        ///todo: دارند باید از روی کلاس انها نمونه ساخت و بعد مقدار دهی گرد owned  برای مقدار دهی پراپرتی هایی که ازنوع کلاس هایی که اتریبیوت 
+        public async Task< IActionResult> EditCountry(int Id)
+        {
+            if (Id==0||Id==null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            CountryCreateDto model = await _countrySerice.GetEditByIdAsync(Id);
+
+            if (model==null)
+            {
+                return RedirectToAction("Index");
+
+            }
+
+            return PartialView("_EditCountryPartial", model);
         }
 
 

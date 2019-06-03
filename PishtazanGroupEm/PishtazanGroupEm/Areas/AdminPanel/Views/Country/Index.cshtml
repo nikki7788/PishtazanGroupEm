@@ -47,6 +47,7 @@
                 <td>@item.Name</td>
 
                 <td>@item.Abstract</td>
+
                 @if (item.IndexImage == "384e5d169c.jpg")
                 {
                     <td><img src="~/images/384e5d169c.png" alt="index_country_img" style="width:80px;height:80px;"/></td>
@@ -66,7 +67,7 @@
                             <i class="fa fa-cog  fa-spin"></i>
                         </a>
                         <div class="dropdown-menu justify-content-center">
-                            <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-book" asp-action="EditBook"
+                            <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-country" asp-action="EditCountry"
                                data-target="#modal-action-country" asp-route-id="@item.Id">
                                 <i class="p-1 fa fa-pencil"></i>
                                 <span>ویرایش</span>
@@ -143,7 +144,7 @@
                             }
 
                         }
-                        else if (inputId === "#imagesFiles") {
+                        else if (inputId === "#imgFiles") {
                             if (result.imageNames != null) {
 
                                 //ذخیره نام تصاویر در تگ
@@ -153,7 +154,7 @@
                                 }
                             }
                         }
-                        else if (inputId === "#videosFiles") {
+                        else if (inputId === "#videoFiles") {
 
                             if (result.videoNames != null) {
 

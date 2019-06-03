@@ -56,6 +56,7 @@ namespace PishtazanGroupEm
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUploadingService, UploadingRepo>();
+            services.AddScoped<ICountryService, CountryRepo>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {

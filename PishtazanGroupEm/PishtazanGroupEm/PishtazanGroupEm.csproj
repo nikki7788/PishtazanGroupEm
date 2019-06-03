@@ -9,12 +9,16 @@
   <ItemGroup>
     <Compile Remove="wwwroot\assets\**" />
     <Compile Remove="wwwroot\upload\countr\**" />
+    <Compile Remove="wwwroot\upload\s\**" />
     <Content Remove="wwwroot\assets\**" />
     <Content Remove="wwwroot\upload\countr\**" />
+    <Content Remove="wwwroot\upload\s\**" />
     <EmbeddedResource Remove="wwwroot\assets\**" />
     <EmbeddedResource Remove="wwwroot\upload\countr\**" />
+    <EmbeddedResource Remove="wwwroot\upload\s\**" />
     <None Remove="wwwroot\assets\**" />
     <None Remove="wwwroot\upload\countr\**" />
+    <None Remove="wwwroot\upload\s\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -102,6 +106,8 @@
     <Folder Include="wwwroot\upload\country\videos\" />
     <Folder Include="wwwroot\upload\country\images\" />
     <Folder Include="wwwroot\upload\country\contentImage\" />
+    <Folder Include="wwwroot\upload\userImage\thumbnailImage\" />
+    <Folder Include="wwwroot\upload\userImage\normalImage\" />
     <Folder Include="wwwroot\upload\userImage\thumbnailImage\" />
     <Folder Include="wwwroot\upload\userImage\normalImage\" />
   </ItemGroup>
