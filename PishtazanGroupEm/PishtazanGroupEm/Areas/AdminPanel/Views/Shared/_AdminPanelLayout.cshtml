@@ -1,6 +1,6 @@
 ﻿@* todo:لودینگ سایت *@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" >
+<html lang="fa" dir="rtl">
 
 <head>
     <meta charset="utf-8" />
@@ -17,7 +17,10 @@
 
 
     <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <!--    فونتهای روبوتو و ایکن متریال دانلود شده     -->
+    <link href="~/adminPanel/css/materialIconRobotoFont.css" rel="stylesheet" />
+    
+    @*<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />*@
     @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">*@
     <!-- fontawsome-->
     <link href="~/node_modules/font-awesome/css/font-awesome.css" rel="stylesheet" />
@@ -164,8 +167,8 @@
     <script>
         //برای اسکرول کردن داینامیک
         $("html").removeClass("perfect-scrollbar-off").addClass("perfect-scrollbar-on");
-        //todo:اگر صفحه رفرش شود این دستور اجرا میشود
-        //را دارد تا صفحه رفرش شود وبرگردد perfect-scrollbar-off اگراز مودال خارج شویم همچنان کلاس 
+            //todo:اگر صفحه رفرش شود این دستور اجرا میشود
+            //را دارد تا صفحه رفرش شود وبرگردد perfect-scrollbar-off اگراز مودال خارج شویم همچنان کلاس
     </script>
 
     @RenderSection("panelScript", required: false)
