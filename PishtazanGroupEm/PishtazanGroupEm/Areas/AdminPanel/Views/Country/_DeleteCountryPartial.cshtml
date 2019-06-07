@@ -1,0 +1,39 @@
+﻿
+@model string
+
+@{
+    Layout = null;
+}
+<style>
+    .modal-body {
+        width: auto;
+        height: auto;
+    }
+
+    .modal-footer {
+        padding-bottom: 0;
+    }
+</style>
+<form asp-controller="Country" asp-action="DeleteCountry">
+
+    <partial name="/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "حذف کشور" }' />
+    @*@await Html.PartialAsync("~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml",
+        new ModalHeader { Heading = "حذف کشور" })*@
+
+    <div class="modal-body">
+        <div>
+            <span> آیا از حذف دسته بندی</span>
+            <span class="text-danger">" @Model "</span>
+            <span> مطمئن هستید؟</span>
+        </div>
+    </div>
+
+
+    <div class="modal-footer" style="text-align:left;">
+        <button class="btn btn-default" type="button" data-dismiss="modal">برگشت</button>
+        <button class="btn btn-danger" type="submit">
+            حذف
+        </button>
+    </div>
+
+</form>

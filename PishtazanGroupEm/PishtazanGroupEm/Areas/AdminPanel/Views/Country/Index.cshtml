@@ -41,55 +41,61 @@
             }
             @foreach (var item in Model)
             {
-            <tr>
-                <td>@(counter++)</td>
+                <tr>
+                    <td>@(counter++)</td>
 
-                <td>@item.Name</td>
+                    <td>@item.Name</td>
 
-                <td>@item.Abstract</td>
+                    <td>@item.Abstract</td>
 
-                @if (item.IndexImage == "384e5d169c.jpg")
-                {
-                    <td><img src="~/images/384e5d169c.png" alt="index_country_img" style="width:80px;height:80px;"/></td>
+                    @if (item.IndexImage == "384e5d169c.jpg")
+                    {
+                        <td><img src="~/images/384e5d169c.png" alt="index_country_img" style="width:80px;height:80px;" /></td>
 
-                }
-                else
-                {
-                    <td><img src="~/upload/country/indexImage/thumbnailImage/@item.IndexImage" alt="index_country_img" style="width:80px;height:80px;"/></td>
+                    }
+                    else
+                    {
+                        <td><img src="~/upload/country/indexImage/thumbnailImage/@item.IndexImage" alt="index_country_img" style="width:80px;height:80px;" /></td>
 
-                }
+                    }
 
 
 
-                <td class="align-middle">
-                    <div class="dropdown dropright ">
-                        <a class="fa fa-spin " aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
-                            <i class="fa fa-cog  fa-spin"></i>
-                        </a>
-                        <div class="dropdown-menu justify-content-center">
-                            <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-country" asp-action="EditCountry"
-                               data-target="#modal-action-country" asp-route-id="@item.Id">
-                                <i class="p-1 fa fa-pencil"></i>
-                                <span>ویرایش</span>
+                    <td class="align-middle">
+                        <div class="dropdown dropright ">
+                            <a class="fa fa-spin " aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+                                <i class="fa fa-cog  fa-spin"></i>
                             </a>
+                            <div class="dropdown-menu justify-content-center">
+                                <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-country" asp-action="EditCountry"
+                                   data-target="#modal-action-country" asp-route-id="@item.Id">
+                                    <i class="p-1 fa fa-pencil"></i>
+                                    <span>ویرایش</span>
+                                </a>
 
-                            <div class="dropdown-divider"></div>
+                                <div class="dropdown-divider"></div>
 
-                            <a class="text-danger dropdown-item" data-toggle="modal" id="show-delete-book" asp-action="DeleteBook"
-                               data-target="#modal-action-country" asp-route-id="@item.Id">
-                                <i class="p-1 fa fa-trash"></i>
-                                <span>حذف</span>
-                            </a>
+                                <a class="text-danger dropdown-item" data-toggle="modal" id="show-delete-country" asp-action="DeleteCountry"
+                                   data-target="#modal-delete-country" asp-route-id="@item.Id">
+                                    <i class="p-1 fa fa-trash"></i>
+                                    <span>حذف</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
             }
 
         </tbody>
     </table>
 
 </div>
+
+@* نمای مودال با سایز کوچکتر برای حذف *@
+<partial name='~/Views/Shared/Partials/Modal/_ModalPartial.cshtml' 
+         model='new BootstrapModel { Id ="modal-delete-country", Size=ModalSize.Medium }' />
+
+@* نمایش مودال برای ایجاد و ویرایش باس ایز بزرگ *@
 <partial name="~/Views/Shared/Partials/Modal/_ModalPartial.cshtml" model='new BootstrapModel { Id ="modal-action-country", Size=ModalSize.Large }' />
 @*@await Html.PartialAsync("~/Views/Shared/Partials/Modal/_ModalPartial.cshtml", new BootstrapModel { Id = "modal-action-country", Size = ModalSize.Large })*@
 
@@ -242,7 +248,7 @@
             });
         };
     </script>
-    
+
 }
 
 

@@ -5,6 +5,10 @@
     -->
 
 @model CountryCreateDto
+@{
+    var coverImages = ViewBag.coverImages;
+    var coverVideos = ViewBag.coverVideos;
+}
 <!--استایل مودال مرحله ای-->
 <link href="~/step-modal/style-step-modal.css" rel="stylesheet" />
 
@@ -68,6 +72,7 @@
             <h4 class="text-info text-center"><b>‌مشخصات کشور</b></h4>
             <hr class="w-50 bg-info" />
             <br />
+
 
             <!--نام کشور-->
             <div class="form-group row ">
@@ -175,7 +180,7 @@
                         {
                             if (Model.IndexImage == "384e5d169c.jpg")
                             {
-                                //اگر تصویری در هنگام ایجاد کشور وارد نشده بود و تصویر پیش فرض از قبل وجود داشت  
+                                //اگر تصویری در هنگام ایجاد کشور وارد نشده بود و تصویر پیش فرض از قبل وجود داشت
                                 <img src="~/images/384e5d169c.png" class="w-100 h-100" id="IndexImages" title="countriIndexImage">
 
                             }
@@ -211,6 +216,13 @@
 
 
             <!--آپلود مجموعه تصاویر کشور-->
+            @foreach (var item in coverImages)
+            {
+                <div class=" row  mt-2">
+                    <input type="checkbox" name="name" value="" />
+                    <img src="~/upload/country/images/@item.ImageName" alt="coverimages" style="width:30px;height:30px" />
+                </div>
+            }
             <div class="row  mt-2">
                 <div class="row col-xl-6  col-md-6 col-sm-12  btn-group btn-group-sm mx-auto px-0 ">
                     <div class="col-xl-6  col-md-6 col-sm-12 btn btn px-0 py-0">
@@ -226,6 +238,11 @@
                     <span class="text-white"></span>
                 </div>
             </div>
+
+
+
+
+
 
 
             <!--آپلود مجموعه ویدوهای کشور-->

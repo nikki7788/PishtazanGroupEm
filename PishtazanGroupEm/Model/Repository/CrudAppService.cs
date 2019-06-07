@@ -189,12 +189,13 @@ namespace Model.Repository
         /// حذف یک رکورد براساس آیدی
         /// </summary>
         /// <param name="id"></param>
-        //public virtual async Task DeletById(object id)
-        //{
-        //    var entity = await GetById(id);
-        //    Delete(entity);
+        public virtual async Task DeletById(object id)
+        {
+            TEntityDto entityDto = await GetByIdAsync(id);
+            TEntity entity = Mapper.Map<TEntity>(entityDto);
+            Delete(entity);
 
-        //}
+        }
 
 
 
