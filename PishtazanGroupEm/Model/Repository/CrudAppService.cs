@@ -9,9 +9,12 @@ using AutoMapper.QueryableExtensions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Model.Infrastructure;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace Model.Repository
 {
+
     /// <summary>
     /// کلاس مشترک عملیات 
     /// ویرایش - ایجاد-خواندن -حذف
@@ -35,15 +38,18 @@ namespace Model.Repository
 
         private readonly ApplicationDbContext _context;
 
-        private DbSet<TEntity> _table;    //e.g. _context.categories....
+        private  DbSet<TEntity> _table;    //e.g. _context.categories....
+
+        private readonly IHostingEnvironment _iHosting;
 
         //private readonly IMapper _mapper;
 
 
-        public CrudAppService(ApplicationDbContext context)
+        public CrudAppService(ApplicationDbContext context, IHostingEnvironment iHosting)
         {
             _context = context;
             _table = context.Set<TEntity>();
+            _iHosting = iHosting;
 
         }
         //public CrudAppService(IMapper mapper) 
@@ -165,8 +171,6 @@ namespace Model.Repository
 
 
 
-
-
         /// <summary>
         /// حذف یک کورد
         /// مثلا میگوییم دسته بندی فوتبال را حذف کن
@@ -174,9 +178,9 @@ namespace Model.Repository
         /// <param name="entity"></param>
         public virtual void Delete(TEntity entity)
         {
-            //var entry = _context.Entry(entity);
+           // var entry = _context.Entry(entity);
+           // if (entry.State == EntityState.Detached)
 
-            //if (entry.State == EntityState.Detached)
             if (_context.Entry(entity).State == EntityState.Detached)
             {
                 _table.Attach(entity);
@@ -185,21 +189,83 @@ namespace Model.Repository
         }
 
 
+
+
         /// <summary>
         /// حذف یک رکورد براساس آیدی
         /// </summary>
         /// <param name="id"></param>
-        public virtual async Task DeletById(object id)
+        public virtual async Task DeleteById(object id)
         {
-            TEntityDto entityDto = await GetByIdAsync(id);
-            TEntity entity = Mapper.Map<TEntity>(entityDto);
+            //TEntityDto entityDto = await GetByIdAsync(id);
+            //TEntity entity = Mapper.Map<TEntity>(entityDto);
+            //Delete(entity);
+
+            var entity = await _table.FindAsync(id);
             Delete(entity);
 
         }
 
 
+        /// <summary>
+        /// حذف فایل از روت سایت
+        /// </summary>
+        /// <param name="routing">مسیر روت فایل ذخیره شده</param>
+        /// eg: "\\upload\\advImage\\"
+        /// <param name="fileName">نام فایلی که قرار است حذف شود</param>
+        public void DeleteRootFile(string routing, string fileName)
+        {
+            try
+            {
+                //حذف فایل از روت سایت
+                if (fileName != null)
+                {
+                    var dirPath = Path.Combine(_iHosting.WebRootPath + routing + fileName);
+                    File.Delete(dirPath);
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
 
+                throw ex;
+            }
+            catch (ArgumentException ex)
+            {
 
+                throw ex;
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+
+                throw ex;
+            }
+            catch (PathTooLongException ex)
+            {
+
+                throw ex;
+            }
+            catch (IOException ex)
+            {
+
+                throw ex;
+            }
+            catch (NotSupportedException ex)
+            {
+
+                throw ex;
+            }
+
+            catch (UnauthorizedAccessException ex)
+            {
+
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
 
 
@@ -211,6 +277,7 @@ namespace Model.Repository
             //todo: را اینجا بنویسیم یا درکنترلر کدام بهتر است؟ try catch 
             await _context.SaveChangesAsync();
         }
+
         //public virtual async void Save()
         //{
         //    await _context.SaveChangesAsync();

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -67,7 +68,12 @@ namespace PishtazanGroupEm
 
             //----------------------------------------------------------------------------
 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            ////tempdata
+            //services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
+            //services.AddSession();
 
             //-------------------IIS افزایش حجم اپلود فایل پیش فرض سایت و---------------------
             //--< set uploadsize large files >----
@@ -76,7 +82,7 @@ namespace PishtazanGroupEm
 
             {
 
-              options.ValueLengthLimit = int.MaxValue;
+                options.ValueLengthLimit = int.MaxValue;
 
                 options.MultipartBodyLengthLimit = int.MaxValue;
 
@@ -113,9 +119,14 @@ namespace PishtazanGroupEm
                 app.UseHsts();
             }
 
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            ////tempdata
+            //app.UseSession();
 
             app.UseMvc(routes =>
             {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Model.DAL;
 using Model.Entities;
 using Model.Models.Countries;
@@ -15,16 +16,18 @@ namespace Model.UnitOfWork
     /// <summary>
     /// برای هر موجودیت و جدول Crud پیاده سازی 
     /// </summary>
-    public class UnitOfWork:IDisposable,IUnitOfWork
+    public class UnitOfWork : IDisposable, IUnitOfWork
     {
         #region ################## Dependencies #####################################
         private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _iHosting;
 
         //private readonly IMapper _mapper;
 
-        public UnitOfWork(ApplicationDbContext context/*,IMapper mapper*/)
+        public UnitOfWork(ApplicationDbContext context, IHostingEnvironment iHosting/*,IMapper mapper*/)
         {
             _context = context;
+            _iHosting = iHosting;
             //_mapper = mapper;
         }
 
@@ -41,7 +44,7 @@ namespace Model.UnitOfWork
         private CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> _countryCoverImageRepoUW;
 
 
-        private CrudAppService<CountryCoverVideo,CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> _countryCoverVideoRepoUW;
+        private CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> _countryCoverVideoRepoUW;
 
 
 
@@ -64,7 +67,7 @@ namespace Model.UnitOfWork
             {
                 if (_countryRepUW == null)
                 {
-                    _countryRepUW = new CrudAppService<Country, CountryListDto, CountryCreateDto, CountryCreateDto>(_context/*,_mapper*/);
+                    _countryRepUW = new CrudAppService<Country, CountryListDto, CountryCreateDto, CountryCreateDto>(_context, _iHosting/*,_mapper*/);
                 }
                 return _countryRepUW;
             }
@@ -78,14 +81,14 @@ namespace Model.UnitOfWork
         ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
         ///  CountryCoverImage برای کلاس و جدول CRUD پیاده سازی کلاس 
         /// </summary>
-        public CrudAppService<CountryCoverImage,CountryCoverImageDto,CountryCoverImageDto, CountryCoverImageDto> CountryCoverImageRepoUW
+        public CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto> CountryCoverImageRepoUW
         {
             //فقط خواندنی
             get
             {
                 if (_countryCoverImageRepoUW == null)
                 {
-                    _countryCoverImageRepoUW = new CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto>(_context/*,_mapper*/);
+                    _countryCoverImageRepoUW = new CrudAppService<CountryCoverImage, CountryCoverImageDto, CountryCoverImageDto, CountryCoverImageDto>(_context, _iHosting/*,_mapper*/);
                 }
                 return _countryCoverImageRepoUW;
             }
@@ -107,7 +110,7 @@ namespace Model.UnitOfWork
             {
                 if (_countryCoverVideoRepoUW == null)
                 {
-                    _countryCoverVideoRepoUW = new CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto>(_context/*,_mapper*/);
+                    _countryCoverVideoRepoUW = new CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto>(_context, _iHosting/*,_mapper*/);
                 }
                 return _countryCoverVideoRepoUW;
             }

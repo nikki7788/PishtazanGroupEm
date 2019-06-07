@@ -49,7 +49,16 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            //نمایش پیام حذف با موفقیت انجام شد
+            //if (TempData["Message"]!= null)
+            //{
+            //   ViewBag.status = TempData["Message"].ToString();
+
+            //}
+
             var model = await _unitOfWork.CountryRepUW.GetAsync(null, c => c.OrderByDescending(cu => cu.Id));
+
+          
             return View(model);
         }
 
@@ -348,6 +357,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// <param name="Id">شناسه کشور</param>
         /// <returns></returns>
         ///todo: دارند باید از روی کلاس انها نمونه ساخت و بعد مقدار دهی گرد owned  برای مقدار دهی پراپرتی هایی که ازنوع کلاس هایی که اتریبیوت 
+        [HttpGet]
         public async Task<IActionResult> EditCountry(int Id)
         {
             if (Id == 0)
@@ -528,23 +538,55 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
-
+        /// <summary>
+        /// نمایش مودال حذف
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> DeleteCountry(int Id)
         {
-           var model= await _unitOfWork.CountryRepUW.GetByIdAsync(Id);
-
-            return PartialView("_DeleteCountryPartial",model.Name);
+            var model = await _unitOfWork.CountryRepUW.GetByIdAsync(Id);
+            ViewBag.countryName = model.Name;
+            return PartialView("_DeleteCountryPartial", model.Name);
         }
 
-
-        [HttpPost,ActionName("Delete")]
+        /// <summary>
+        /// حذف کشور
+        /// </summary>
+        /// <param name="Id">شناسه کشور</param>
+        /// <returns></returns>
+        /// حذف کور به همراه تصویر اخص و تصاویر و ویدوهای ان به جز تصاویر محتوای کشور
+        [HttpPost, ActionName("DeleteCountry")]
         public async Task<IActionResult> DeleteConfirm(int Id)
         {
+
             try
             {
-                await _unitOfWork.CountryRepUW.DeletById(id);
+                ///حذف تصاویر و ویدوها و تصویر شاخص کشور از روت سایت
+                ///تصاویر محتوا حذف نمیشوند
+                ///شناسه تصاویر و ویدوهای کشور را پس از حذف فایل ها از روت سایت برمیکگرداند
+                var coVidImg = await _countrySerice.DeleteRootFile(Id);
+
+                if (coVidImg != null)
+                {
+                    /// countryCoverimage - countrycovervideo حذف ویدوها و تصاویر از جدول های 
+                    await _countrySerice.DeleteCoverVideoAndImage(coVidImg);
+
+                }
+
+                //حذف کشور
+                await _unitOfWork.CountryRepUW.DeleteById(Id);
                 await _unitOfWork.CountryRepUW.SaveAsync();
+
+                //نمایش پیام حذف با موفقیت انجام شد
+               // TempData["Message"] = "success";
+                //TempData.Keep("Message");
+
+                //return Json(new { status = "success", countryName = countryName });
+                //return RedirectToAction(nameof(Index), new { status = "success" });    
+                return RedirectToAction(nameof(Index));
+
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -560,10 +602,11 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                 throw ex;
             }
 
-            return RedirectToAction(nameof(Index));
+
         }
 
         //todo:ویرایش کشور  تکمیل نشده است
+        //todo:نمایش پیام حذف با موفقیت انجام نشده ات
         #endregion#################
     }
 }

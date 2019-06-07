@@ -37,3 +37,46 @@
     </div>
 
 </form>
+
+
+
+
+@*<script>
+        //ارسال فرم
+        $(document).ready(function () {
+
+            //$.get("demo_test.asp", function (data, status) {
+            //    alert("Data: " + data + "\nStatus: " + status);
+        //    });
+
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("DeleteCountry","Country", new { area = "AdminPanel"})',
+            contentType: false,
+                    dataType: "json",
+                    processData: false
+        }).done(function (result) {
+                if (result.status === "success") {
+
+                    Swal.fire({
+
+                        type: "success",
+                        html: "<span class='text-dark ' style:'font-weight: bold'>کشور  با موفقیت حذف شد </span>",
+                        animation: false,
+                        confirmButtonColor: '#f44336',
+                        confirmButtonText: 'تایید',
+                        customClass: {
+                            popup: 'animated tada'
+                        }
+
+                    }).then(function () {
+                        //for displaying index view after finishing modal
+                        window.location.href = '@Url.Action("Index", "Country")';
+                    });
+
+                };
+            });
+
+
+        });
+    </script>*@
