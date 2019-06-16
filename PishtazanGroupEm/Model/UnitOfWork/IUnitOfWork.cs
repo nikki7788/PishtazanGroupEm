@@ -3,6 +3,7 @@ using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImages;
 using Model.Repository;
+using Model.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,6 +33,14 @@ namespace Model.UnitOfWork
         /// برای جدول ویدوهای کشور ها CRUD پیاده سازی عملیات 
         /// </summary>
         CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> CountryCoverVideoRepoUW { get; }
+
+
+
+        /// <summary>
+        /// مدیریت تراکنش
+        /// Transaction
+        /// </summary>
+        IEntityDataBaseTransaction BeginTransaction();
 
 
         /// <summary>

@@ -6,6 +6,7 @@ using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImages;
 using Model.Repository;
+using Model.Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,6 +56,8 @@ namespace Model.UnitOfWork
 
 
         #region ############################ properties #############################################
+  
+        
         /// <summary>
         /// کشور ها
         ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
@@ -118,6 +121,16 @@ namespace Model.UnitOfWork
 
 
 
+
+        /// <summary>
+        ///مدیریت تراکنش
+        ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
+        ///  Transaction پیاده سازی لایه سرویس 
+        /// </summary>
+        public IEntityDataBaseTransaction BeginTransaction()
+        {
+            return new EntityDataBaseTransaction(_context);
+        }
 
 
         #endregion ##########################

@@ -251,31 +251,31 @@
         };
     </script>
 
-@* نمایش پیام حذف با موفقیت انجام شد *@
+    @* نمایش پیام حذف با موفقیت انجام شد *@
     @*<script>
-    //ارسال فرم
-        $(document).ready(function () {
+        //ارسال فرم
+            $(document).ready(function () {
 
-            if (@ViewBag.status === "success") {
+                if (@ViewBag.status === "success") {
 
 
-            Swal.fire({
+                Swal.fire({
 
-                type: "success",
-                html: "<span class='text-dark ' style:'font-weight: bold'>کشور  با موفقیت حذف شد </span>",
-                animation: false,
-                confirmButtonColor: '#f44336',
-                confirmButtonText: 'تایید',
-                customClass: {
-                    popup: 'animated tada'
-                }
+                    type: "success",
+                    html: "<span class='text-dark ' style:'font-weight: bold'>کشور  با موفقیت حذف شد </span>",
+                    animation: false,
+                    confirmButtonColor: '#f44336',
+                    confirmButtonText: 'تایید',
+                    customClass: {
+                        popup: 'animated tada'
+                    }
 
-            })
-                @*.then(function () {
-                //for displaying index view after finishing modal
-                window.location.href = '@Url.Action("Index", "Country")';
-            });*@
-                }
+                })
+                    @*.then(function () {
+                    //for displaying index view after finishing modal
+                    window.location.href = '@Url.Action("Index", "Country")';
+                });*@
+@*}
         });
     </script>*@
 

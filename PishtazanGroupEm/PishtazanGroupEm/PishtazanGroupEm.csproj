@@ -101,10 +101,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\AdminPanel\Data\" />
+    <Folder Include="wwwroot\upload\country\images\" />
     <Folder Include="wwwroot\upload\country\indexImage\thumbnailImage\" />
     <Folder Include="wwwroot\upload\country\indexImage\normalImage\" />
     <Folder Include="wwwroot\upload\country\videos\" />
-    <Folder Include="wwwroot\upload\country\images\" />
     <Folder Include="wwwroot\upload\country\contentImage\" />
     <Folder Include="wwwroot\upload\userImage\thumbnailImage\" />
     <Folder Include="wwwroot\upload\userImage\normalImage\" />

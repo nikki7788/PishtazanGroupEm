@@ -1,5 +1,7 @@
 ﻿using Model.Entities;
 using Model.Models.Countries;
+using Model.Models.CountryCover_Images;
+using Model.Models.CountryCoverImages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,7 @@ namespace Model.Service
         /// اگر خروجی متد را اینگونه در نطر بگیریم میتوانیم چندین خروجی از متد بگیریم
         ///     فقط با متد های غی همزمان کار میکند
         /// که بامتد های غیر همزمان کارنمیکنند از این استفاده میکنیمref , out به جای
-        Task<Tuple<List<CountryCoverImage>, List<CountryCoverVideo>, CountryCreateDto>> GetEditByIdAsync(int Id);
+        Task<Tuple<List<CountryCoverImageDto>, List<CountryCoverVideoDto>, CountryCreateDto>> GetEditByIdAsync(int Id);
 
 
 
@@ -37,20 +39,30 @@ namespace Model.Service
         /// <param name="Id">شتاسه کشور</param>
         /// <returns></returns>
         /// تصاویر محتوا حذف نمیشوند
-        Task<Tuple<IQueryable<CountryCoverImage>, IQueryable<CountryCoverVideo>>>
-             DeleteRootFile(int Id);
+        Task DeleteRootFile(int Id);
 
+
+
+        /// <summary>
+        /// حذف تصاویر  از دیتابیس
+        /// </summary>
+        /// <param name="Id">شناسه کشور</param>
+        /// <returns></returns>
+        Task DeleteCoverdImage(int Id);
 
 
 
 
         /// <summary>
-        /// حذف تصاویر و ویدوهای کشور از دیتابیس
+        /// حذف ویدوها  از دیتابیس
         /// </summary>
-        /// <param name="model">مدل دریافتی جدول تصاویر و ویدوها</param>
-        /// countrycoverimage - countrycvoervideo
+        /// <param name="Id">شناسه کشور</param>
         /// <returns></returns>
-        Task DeleteCoverVideoAndImage(Tuple<IQueryable<CountryCoverImage>, IQueryable<CountryCoverVideo>> model);
+        Task DeleteCoverVideo(int Id);
+
+
+
+
 
 
     }

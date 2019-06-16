@@ -58,7 +58,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
             var model = await _unitOfWork.CountryRepUW.GetAsync(null, c => c.OrderByDescending(cu => cu.Id));
 
-          
+
             return View(model);
         }
 
@@ -206,148 +206,158 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         public async Task<IActionResult> CreateCountryConfirm(CountryCreateDto model, List<string> images, List<string> videos)
 
         {
-            try
+            using (var transaction = _unitOfWork.BeginTransaction())
             {
-                var ImagesNM = ViewBag.ImagesNM;
-                if (ModelState.IsValid)
+                try
                 {
-                    //###################------ایجاد کشور در جدول کشور ها -----#########################
-
-                    if (model.IndexImage == null)
+                    var ImagesNM = ViewBag.ImagesNM;
+                    if (ModelState.IsValid)
                     {
-                        //اگر تصویر شاخص آپلود نشده بود تصویر پیش فرض را اپلود کند 
-                        model.IndexImage = "384e5d169c.jpg";
+                        //###################------ایجاد کشور در جدول کشور ها -----#########################
 
-                    }
-
-                    if (model.SkillWorkingOption == null)
-                    {
-                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
-                        SkillWorkingOptions skOp = new SkillWorkingOptions();
-                        model.SkillWorkingOption = skOp;
-                    }
-                    //---------------- برای اینکه در مپ کردن خطا ندهد چون مقدار نال میگیرد این کلاس و خطا میدهد--------------
-
-                    //todo:صرف نطر کردن از پاپرتی ک در ویومدل نمیدهیم ولی در مدل وجود دارد
-                    if (model.TouristOption == null)
-                    {
-                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
-                        TouristOptions tOp = new TouristOptions();
-                        model.TouristOption = tOp;
-                    }
-
-                    //------------------------------
-
-                    await _unitOfWork.CountryRepUW.CreateAsync(model);
-                    await _unitOfWork.SaveAsync();
-                    //############------#############
-
-                    //-######################--CoverImage ثبت نام تمجموعه تصاویر کشور در دول تصاویر---#####################################
-
-                    if (images.Count != 0)
-                    {
-                        //--------------------------- بدست اوردن شناسه کشوری که میخواهیم تصاویر را برای ان ثبت کنیم در جدول تصاویر --------------------------------
-                        var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
-                        int countryId = country.FirstOrDefault().Id;
-                        //-----------------------------------------------------------
-                        for (int i = 0; i < images.Count; i++)
+                        if (model.IndexImage == null)
                         {
+                            //اگر تصویر شاخص آپلود نشده بود تصویر پیش فرض را اپلود کند 
+                            model.IndexImage = "384e5d169c.jpg";
 
-                            CountryCoverImageDto coverImageDto = new CountryCoverImageDto
-                            {
-                                ImageName = images[i],
-                                CountryId = countryId
-                            };
-                            await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
-                            await _unitOfWork.SaveAsync();
                         }
-                    }
 
-                    //-######################--#####################################
-
-                    //------######################----CoverVideo ثبت نام تمجموعه تصاویر کشور در دول تصاویر--------######################----------
-
-                    if (videos.Count != 0)
-                    {
-                        for (int i = 0; i < videos.Count; i++)
+                        if (model.SkillWorkingOption == null)
                         {
-                            //--------------------------- بدست اوردن شناسه کشوری که میخواهیم ویدوها را برای ان ثبت کنیم در جدول ویدوها --------------------------------
+                            //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                            SkillWorkingOptions skOp = new SkillWorkingOptions();
+                            model.SkillWorkingOption = skOp;
+                        }
+                        //---------------- برای اینکه در مپ کردن خطا ندهد چون مقدار نال میگیرد این کلاس و خطا میدهد--------------
+
+                        //todo:صرف نطر کردن از پاپرتی ک در ویومدل نمیدهیم ولی در مدل وجود دارد
+                        if (model.TouristOption == null)
+                        {
+                            //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                            TouristOptions tOp = new TouristOptions();
+                            model.TouristOption = tOp;
+                        }
+
+                        //------------------------------
+
+                        await _unitOfWork.CountryRepUW.CreateAsync(model);
+                        await _unitOfWork.SaveAsync();
+                        //############------#############
+
+                        //-######################--CoverImage ثبت نام تمجموعه تصاویر کشور در دول تصاویر---#####################################
+
+                        if (images.Count != 0)
+                        {
+                            //--------------------------- بدست اوردن شناسه کشوری که میخواهیم تصاویر را برای ان ثبت کنیم در جدول تصاویر --------------------------------
                             var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
                             int countryId = country.FirstOrDefault().Id;
                             //-----------------------------------------------------------
-
-                            CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
+                            for (int i = 0; i < images.Count; i++)
                             {
-                                VideoName = videos[i],
-                                CountryId = countryId
-                            };
 
-                            await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
-                            await _unitOfWork.SaveAsync();
+                                CountryCoverImageDto coverImageDto = new CountryCoverImageDto
+                                {
+                                    ImageName = images[i],
+                                    CountryId = countryId
+                                };
+                                await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
+                                await _unitOfWork.SaveAsync();
+                            }
+                        }
+
+                        //-######################--#####################################
+
+                        //------######################----CoverVideo ثبت نام تمجموعه تصاویر کشور در دول تصاویر--------######################----------
+
+                        if (videos.Count != 0)
+                        {
+                            for (int i = 0; i < videos.Count; i++)
+                            {
+                                //--------------------------- بدست اوردن شناسه کشوری که میخواهیم ویدوها را برای ان ثبت کنیم در جدول ویدوها --------------------------------
+                                var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
+                                int countryId = country.FirstOrDefault().Id;
+                                //-----------------------------------------------------------
+
+                                CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
+                                {
+                                    VideoName = videos[i],
+                                    CountryId = countryId
+                                };
+
+                                await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
+                                await _unitOfWork.SaveAsync();
+                            }
+                        }
+
+                        //-######################--#####################################
+
+                        ///درصورت خطا ندادن اعمال روی دیتابیس
+                        ///اجرای تراکنش و اعمال تمام تغییرات در دیتابیس
+                        transaction.Commit();
+
+                        return Json(new { status = "success", message = model.Name });
+                    }
+
+                    // ---------------اگر ولیدیشن رعایت نشده بود-------
+
+                    //-----اگر ولیدیشن رعایت نشده بود عکس آپلود شده دوباره نمایش داده شود ------------------
+                    //و نام ان برای ذخیره در دیتابیس بماند و نیاز ب اپدیت مجدد نباشد
+                    if (model.IndexImage != null)
+                    {
+                        // این روش بدون کوکی است
+                        //در کنترلر یوزر و اکشن ایجاد از کوکی استفاده کرده ام
+                        ViewBag.indexImgNM = model.IndexImage;
+                    }
+                    //---------------------------------------------------------
+                    //display validation with jquery ajax
+                    var errorMessage = new List<string>();
+                    var errorKeys = new List<string>();
+                    foreach (var validation in ViewData.ModelState.Values)
+                    {
+                        errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
+
+                    }
+                    foreach (var modelStateKey in ViewData.ModelState.Keys)
+                    {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            errorKeys.Add(modelStateKey);
+                            // You may log the errors if you want
                         }
                     }
 
-                    //-######################--#####################################
+                    return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
 
-                    return Json(new { status = "success", message = model.Name });
+                    //ModelState.AddModelError("Password", "نام کاربری یا رمزعبور اشتباه است");
+                    //return View(model);
+
+                    //todo:ولیدیشن ها را اعلام خطا کنم در ویو
+                    //return Json(new { status = "fail", message = "خطایی رخ داده است دوباره تلاش کنید" });
+                    // return View(model);
+
                 }
-
-                // ---------------اگر ولیدیشن رعایت نشده بود-------
-
-                //-----اگر ولیدیشن رعایت نشده بود عکس آپلود شده دوباره نمایش داده شود ------------------
-                //و نام ان برای ذخیره در دیتابیس بماند و نیاز ب اپدیت مجدد نباشد
-                if (model.IndexImage != null)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    // این روش بدون کوکی است
-                    //در کنترلر یوزر و اکشن ایجاد از کوکی استفاده کرده ام
-                    ViewBag.indexImgNM = model.IndexImage;
+
+                    throw ex;
                 }
-                //---------------------------------------------------------
-                //display validation with jquery ajax
-                var errorMessage = new List<string>();
-                var errorKeys = new List<string>();
-                foreach (var validation in ViewData.ModelState.Values)
+                catch (DbUpdateException ex)
                 {
-                    errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
 
+                    throw ex;
                 }
-                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                catch (Exception ex)
                 {
-                    var modelStateVal = ViewData.ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        errorKeys.Add(modelStateKey);
-                        // You may log the errors if you want
-                    }
+                    ///درصورت بوجود امدن خطا در عملیات روی دیتابیس
+                    ///تمام عمنلیات به عقب برمیکردد
+                    transaction.Rollback();
+
+                    // return Json(new { message = ex });
+                    throw ex;
                 }
-
-                return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
-
-                //ModelState.AddModelError("Password", "نام کاربری یا رمزعبور اشتباه است");
-                //return View(model);
-
-                //todo:ولیدیشن ها را اعلام خطا کنم در ویو
-                //return Json(new { status = "fail", message = "خطایی رخ داده است دوباره تلاش کنید" });
-                // return View(model);
-
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-
-                throw ex;
-            }
-            catch (DbUpdateException ex)
-            {
-
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                // return Json(new { message = ex });
-                throw ex;
             }
         }
-
 
 
 
@@ -400,139 +410,153 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         public async Task<IActionResult> EditCountryConfirm(CountryCreateDto model, List<string> images, List<string> videos)
 
         {
-            try
+            using (var transaction = _unitOfWork.BeginTransaction())
             {
-                //var xc = ViewBag.coverImages;
-                var ImagesNM = ViewBag.ImagesNM;
-                if (ModelState.IsValid)
+
+
+                try
                 {
-                    //###################------ایجاد کشور در جدول کشور ها -----#########################
-
-                    if (model.SkillWorkingOption == null)
+                    //var xc = ViewBag.coverImages;
+                    var ImagesNM = ViewBag.ImagesNM;
+                    if (ModelState.IsValid)
                     {
-                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
-                        SkillWorkingOptions skOp = new SkillWorkingOptions();
-                        model.SkillWorkingOption = skOp;
-                    }
-                    //---------------- برای اینکه در مپ کردن خطا ندهد چون مقدار نال میگیرد این کلاس و خطا میدهد--------------
+                        //###################------ایجاد کشور در جدول کشور ها -----#########################
 
-                    //todo:صرف نطر کردن از پاپرتی ک در ویومدل نمیدهیم ولی در مدل وجود دارد
-                    if (model.TouristOption == null)
-                    {
-                        //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
-                        TouristOptions tOp = new TouristOptions();
-                        model.TouristOption = tOp;
-                    }
-
-                    //------------------------------
-
-                    _unitOfWork.CountryRepUW.Update(model);
-                    await _unitOfWork.SaveAsync();
-                    //############------#############
-
-                    //-######################--CoverImage ثبت نام تمجموعه تصاویر کشور در دول تصاویر---#####################################
-
-                    if (images.Count != 0)
-                    {
-                        //--------------------------- بدست اوردن شناسه کشوری که میخواهیم تصاویر را برای ان ثبت کنیم در جدول تصاویر --------------------------------
-                        var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
-                        int countryId = country.FirstOrDefault().Id;
-                        //-----------------------------------------------------------
-                        for (int i = 0; i < images.Count; i++)
+                        if (model.SkillWorkingOption == null)
                         {
-
-                            CountryCoverImageDto coverImageDto = new CountryCoverImageDto
-                            {
-                                ImageName = images[i],
-                                CountryId = countryId
-                            };
-                            await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
-                            await _unitOfWork.SaveAsync();
+                            //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                            SkillWorkingOptions skOp = new SkillWorkingOptions();
+                            model.SkillWorkingOption = skOp;
                         }
-                    }
+                        //---------------- برای اینکه در مپ کردن خطا ندهد چون مقدار نال میگیرد این کلاس و خطا میدهد--------------
 
-                    //-######################--#####################################
-
-                    //------######################----CoverVideo ثبت نام تمجموعه تصاویر کشور در دول تصاویر--------######################----------
-
-                    if (videos.Count != 0)
-                    {
-                        for (int i = 0; i < videos.Count; i++)
+                        //todo:صرف نطر کردن از پاپرتی ک در ویومدل نمیدهیم ولی در مدل وجود دارد
+                        if (model.TouristOption == null)
                         {
-                            //--------------------------- بدست اوردن شناسه کشوری که میخواهیم ویدوها را برای ان ثبت کنیم در جدول ویدوها --------------------------------
+                            //مقدار پیش فرض هر پراپرتی را صفر میدهد-مقدار پیش فرض متغیر اینت
+                            TouristOptions tOp = new TouristOptions();
+                            model.TouristOption = tOp;
+                        }
+
+                        //------------------------------
+
+                        _unitOfWork.CountryRepUW.Update(model);
+                        await _unitOfWork.SaveAsync();
+                        //############------#############
+
+                        //-######################--CoverImage ثبت نام تمجموعه تصاویر کشور در دول تصاویر---#####################################
+
+                        if (images.Count != 0)
+                        {
+                            //--------------------------- بدست اوردن شناسه کشوری که میخواهیم تصاویر را برای ان ثبت کنیم در جدول تصاویر --------------------------------
                             var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
                             int countryId = country.FirstOrDefault().Id;
                             //-----------------------------------------------------------
-
-                            CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
+                            for (int i = 0; i < images.Count; i++)
                             {
-                                VideoName = videos[i],
-                                CountryId = countryId
-                            };
 
-                            await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
-                            await _unitOfWork.SaveAsync();
+                                CountryCoverImageDto coverImageDto = new CountryCoverImageDto
+                                {
+                                    ImageName = images[i],
+                                    CountryId = countryId
+                                };
+                                await _unitOfWork.CountryCoverImageRepoUW.CreateAsync(coverImageDto);
+                                await _unitOfWork.SaveAsync();
+                            }
+                        }
+
+                        //-######################--#####################################
+
+                        //------######################----CoverVideo ثبت نام تمجموعه تصاویر کشور در دول تصاویر--------######################----------
+
+                        if (videos.Count != 0)
+                        {
+                            for (int i = 0; i < videos.Count; i++)
+                            {
+                                //--------------------------- بدست اوردن شناسه کشوری که میخواهیم ویدوها را برای ان ثبت کنیم در جدول ویدوها --------------------------------
+                                var country = await _unitOfWork.CountryRepUW.GetAsync(c => c.Name == model.Name);
+                                int countryId = country.FirstOrDefault().Id;
+                                //-----------------------------------------------------------
+
+                                CountryCoverVideoDto coverVideoDto = new CountryCoverVideoDto
+                                {
+                                    VideoName = videos[i],
+                                    CountryId = countryId
+                                };
+
+                                await _unitOfWork.CountryCoverVideoRepoUW.CreateAsync(coverVideoDto);
+                                await _unitOfWork.SaveAsync();
+                            }
+                        }
+
+                        //-######################--#####################################
+
+                        ///درصورت خطا ندادن اعمال روی دیتابیس
+                        ///اجرای تراکنش و اعمال تمام تغییرات در دیتابیس
+                        transaction.Commit();
+
+                        return Json(new { status = "success", message = model.Name });
+                    }
+
+                    // ---------------اگر ولیدیشن رعایت نشده بود-------
+
+                    //-----اگر ولیدیشن رعایت نشده بود عکس آپلود شده دوباره نمایش داده شود ------------------
+                    //و نام ان برای ذخیره در دیتابیس بماند و نیاز ب اپدیت مجدد نباشد
+                    if (model.IndexImage != null)
+                    {
+                        // این روش بدون کوکی است
+                        //در کنترلر یوزر و اکشن ایجاد از کوکی استفاده کرده ام
+                        ViewBag.indexImgNM = model.IndexImage;
+                    }
+                    //---------------------------------------------------------
+                    //display validation with jquery ajax
+                    var errorMessage = new List<string>();
+                    var errorKeys = new List<string>();
+                    foreach (var validation in ViewData.ModelState.Values)
+                    {
+                        errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
+
+                    }
+                    foreach (var modelStateKey in ViewData.ModelState.Keys)
+                    {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            errorKeys.Add(modelStateKey);
+                            // You may log the errors if you want
                         }
                     }
 
-                    //-######################--#####################################
+                    return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
 
-                    return Json(new { status = "success", message = model.Name });
+                    //ModelState.AddModelError("Password", "نام کاربری یا رمزعبور اشتباه است");
+                    //return View(model);
+
+                    //todo:ولیدیشن ها را اعلام خطا کنم در ویو
+                    //return Json(new { status = "fail", message = "خطایی رخ داده است دوباره تلاش کنید" });
+                    // return View(model);
+
                 }
-
-                // ---------------اگر ولیدیشن رعایت نشده بود-------
-
-                //-----اگر ولیدیشن رعایت نشده بود عکس آپلود شده دوباره نمایش داده شود ------------------
-                //و نام ان برای ذخیره در دیتابیس بماند و نیاز ب اپدیت مجدد نباشد
-                if (model.IndexImage != null)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    // این روش بدون کوکی است
-                    //در کنترلر یوزر و اکشن ایجاد از کوکی استفاده کرده ام
-                    ViewBag.indexImgNM = model.IndexImage;
+
+                    throw ex;
                 }
-                //---------------------------------------------------------
-                //display validation with jquery ajax
-                var errorMessage = new List<string>();
-                var errorKeys = new List<string>();
-                foreach (var validation in ViewData.ModelState.Values)
+                catch (DbUpdateException ex)
                 {
-                    errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
 
+                    throw ex;
                 }
-                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                catch (Exception ex)
                 {
-                    var modelStateVal = ViewData.ModelState[modelStateKey];
-                    foreach (var error in modelStateVal.Errors)
-                    {
-                        errorKeys.Add(modelStateKey);
-                        // You may log the errors if you want
-                    }
+
+                    ///درصورت بوجود امدن خطا در عملیات روی دیتابیس
+                    ///تمام عمنلیات به عقب برمیکردد
+                    transaction.Rollback();
+
+                    // return Json(new { message = ex });
+                    throw ex;
                 }
-
-                return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
-
-                //ModelState.AddModelError("Password", "نام کاربری یا رمزعبور اشتباه است");
-                //return View(model);
-
-                //todo:ولیدیشن ها را اعلام خطا کنم در ویو
-                //return Json(new { status = "fail", message = "خطایی رخ داده است دوباره تلاش کنید" });
-                // return View(model);
-
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-
-                throw ex;
-            }
-            catch (DbUpdateException ex)
-            {
-
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                // return Json(new { message = ex });
-                throw ex;
             }
         }
 
@@ -560,53 +584,71 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         [HttpPost, ActionName("DeleteCountry")]
         public async Task<IActionResult> DeleteConfirm(int Id)
         {
-
-            try
+            using (var transaction = _unitOfWork.BeginTransaction())
             {
-                ///حذف تصاویر و ویدوها و تصویر شاخص کشور از روت سایت
-                ///تصاویر محتوا حذف نمیشوند
-                ///شناسه تصاویر و ویدوهای کشور را پس از حذف فایل ها از روت سایت برمیکگرداند
-                var coVidImg = await _countrySerice.DeleteRootFile(Id);
 
-                if (coVidImg != null)
+
+                try
                 {
-                    /// countryCoverimage - countrycovervideo حذف ویدوها و تصاویر از جدول های 
-                    await _countrySerice.DeleteCoverVideoAndImage(coVidImg);
+
+                    ///-------------حذف تصاویر و ویدوها و تصویر شاخص کشور از روت سایت-------------------
+
+                    ///تصاویر محتوا حذف نمیشوند
+                    ///حذف فایل های مرتبط با کشور از روت سایت
+                    await _countrySerice.DeleteRootFile(Id);
+
+
+                    ///--------------- countryCoverimage - countrycovervideo حذف ویدوها و تصاویر از جدول های -------------------------------
+                    await _countrySerice.DeleteCoverdImage(Id);
+                    await _countrySerice.DeleteCoverVideo(Id);
+
+
+                    ///--------------حذف کشور------------------------
+                    await _unitOfWork.CountryRepUW.DeleteById(Id);
+                    await _unitOfWork.CountryRepUW.SaveAsync();
+
+                    ///درصورت خطا ندادن اعمال روی دیتابیس
+                    ///اجرای تراکنش و اعمال تمام تغییرات در دیتابیس
+                    transaction.Commit();
+
+                    //نمایش پیام حذف با موفقیت انجام شد
+                    // TempData["Message"] = "success";
+                    //TempData.Keep("Message");
+
+                    //return Json(new { status = "success", countryName = countryName });
+                    //return RedirectToAction(nameof(Index), new { status = "success" });    
+                    return RedirectToAction(nameof(Index));
 
                 }
+                catch (DbUpdateConcurrencyException ex)
+                {
 
-                //حذف کشور
-                await _unitOfWork.CountryRepUW.DeleteById(Id);
-                await _unitOfWork.CountryRepUW.SaveAsync();
+                    throw ex;
+                }
+                catch (DbUpdateException ex)
+                {
+                    throw ex;
+                }
+                catch (Exception ex)
+                {
+                    ///درصورت بوجود امدن خطا در عملیات روی دیتابیس
+                    ///تمام عمنلیات به عقب برمیکردد
+                    transaction.Rollback();
+                    throw ex;
+                }
 
-                //نمایش پیام حذف با موفقیت انجام شد
-               // TempData["Message"] = "success";
-                //TempData.Keep("Message");
-
-                //return Json(new { status = "success", countryName = countryName });
-                //return RedirectToAction(nameof(Index), new { status = "success" });    
-                return RedirectToAction(nameof(Index));
 
             }
-            catch (DbUpdateConcurrencyException ex)
-            {
-
-                throw ex;
-            }
-            catch (DbUpdateException ex)
-            {
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-
         }
 
-        //todo:ویرایش کشور  تکمیل نشده است
-        //todo:نمایش پیام حذف با موفقیت انجام نشده ات
+        ///todo:  کلی و اخری کافی است catch   یک رول بک نوشت با برای   catch  آیا نیاز است برای هر 
+        ///todo:ویرایش کشور  تکمیل نشده است
+        ///todo:نمایش پیام حذف با موفقیت انجام نشده ات
+        ///todo:temp data and session
+        ///todo:حذف تصویر شاخص و سپس اپدیت تصویر جدید در ویرایش
+        ///todo:حذف ویدو و تصاویر و نمایش انها برای انتخاب توسط کاربر برای حذف  در ویرایش
+        ///toso:اعمال فیلتر برای مثلا ۳تا ویدو و تصویر اخر اپلود شده برای کشور درویو اصلی سایت 
+
         #endregion#################
     }
 }

@@ -12,6 +12,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Model.UnitOfWork;
+using Model.Models.CountryCoverImages;
+using Model.Models.CountryCover_Images;
 //todo:برای فع خطا روی جوین زدن باید 
 //using System.Linq;
 //وارد شود
@@ -57,23 +59,17 @@ namespace Model.Repository
         /// اگر خروجی متد را اینگونه در نطر بگیریم میتوانیم چندین خروجی از متد بگیریم
         ///     فقط با متد های غی همزمان کار میکند
         /// که بامتد های غیر همزمان کارنمیکنند از این استفاده میکنیمref , out به جای
-        public async Task<Tuple<List<CountryCoverImage>, List<CountryCoverVideo>, CountryCreateDto>> GetEditByIdAsync(int Id)
+        public async Task<Tuple<List<CountryCoverImageDto>, List<CountryCoverVideoDto>, CountryCreateDto>> GetEditByIdAsync(int Id)
         {
             Country country = await _context.Countries.FindAsync(Id);
             CountryCreateDto countryDto = Mapper.Map<CountryCreateDto>(country);
+            List<CountryCoverImageDto> coverImg =  _unitOfWork.CountryCoverImageRepoUW.GetAsync(c => c.CountryId == Id).Result.ToList();
+            List<CountryCoverVideoDto> coverVideo =  _unitOfWork.CountryCoverVideoRepoUW.GetAsync(c => c.CountryId == Id).Result.ToList();
 
-            var coverImg = await (from c in _context.Countries
-                                  join co in _context.CountryCoverImages
-                                  on c.Id equals co.CountryId
-                                  where c.Id == Id
-                                  select co).ToListAsync();
-            var coverVideo = await (from c in _context.Countries
-                                    join co in _context.CountryCoverVideos
-                                    on c.Id equals co.CountryId
-                                    where c.Id == Id
-                                    select co).ToListAsync();
 
-            return new Tuple<List<CountryCoverImage>, List<CountryCoverVideo>, CountryCreateDto>(coverImg, coverVideo, countryDto);
+
+
+            return new Tuple<List<CountryCoverImageDto>, List<CountryCoverVideoDto>, CountryCreateDto>(coverImg, coverVideo, countryDto);
         }
 
 
@@ -84,25 +80,23 @@ namespace Model.Repository
         /// <param name="Id">شتاسه کشور</param>
         /// <returns></returns>
         /// تصاویر محتوا حذف نمیشوند
-        public async Task<Tuple<IQueryable<CountryCoverImage>, IQueryable<CountryCoverVideo>>>
-            DeleteRootFile(int Id)
+        public async Task  DeleteRootFile(int Id)
         {
             try
             {
-                IQueryable<CountryCoverImage> covImg = null;
-                IQueryable<CountryCoverVideo> coVid = null;
-                
+           
+
                 Country query = await _context.Countries.FindAsync(Id);
 
                 if (query != null)
                 {
 
                     ///---------------------- حذف تصویر شاخص کشور-------------------
-                    
+
                     ///اگرتصویر شاخص تصویر پیش فرض نبود
-                    if ( query.IndexImage != "384e5d169c.png")
+                    if (query.IndexImage != "384e5d169c.png")
                     {
-                        
+
                         string fileName = query.IndexImage;
 
                         ///حذف تصویر عادی شاخص کشور
@@ -115,15 +109,11 @@ namespace Model.Repository
                     }
 
                     ///------------------ حذف مجموعه تصاویر کشور ----------------
-                    var coverImg = (from c in _context.Countries
-                                    join co in _context.CountryCoverImages
-                                    on c.Id equals co.CountryId
-                                    where c.Id == Id
-                                    select co);
-                    covImg = coverImg;
-                    if (coverImg != null)
+                    IEnumerable<CountryCoverImageDto> countryImage = await _unitOfWork.CountryCoverImageRepoUW.GetAsync(c => c.CountryId == Id);
+
+                    if (countryImage != null)
                     {
-                        foreach (var item in coverImg)
+                        foreach (var item in countryImage)
                         {
                             ///حذف تصویر شاخص کشور
                             var dirPathImg = Path.Combine(_iHosting.WebRootPath + "\\upload\\country\\images\\" + item.ImageName);
@@ -132,16 +122,11 @@ namespace Model.Repository
                     }
 
                     ///------------------------------ حذف جموعه ویدو های کشور --------------------------------
-                    IQueryable<CountryCoverVideo> coverVideo = (from c in _context.Countries
-                                                                join co in _context.CountryCoverVideos
-                                                                on c.Id equals co.CountryId
-                                                                where c.Id == Id
-                                                                select co);
-                    coVid = coverVideo;
+                    IEnumerable<CountryCoverVideoDto> CoverVideo = await _unitOfWork.CountryCoverVideoRepoUW.GetAsync(c => c.CountryId == Id);
 
-                    if (coverVideo != null)
+                    if (CoverVideo != null)
                     {
-                        foreach (var item in coverVideo)
+                        foreach (var item in CoverVideo)
                         {
                             ///حذف تصویر شاخص کشور
                             var dirPathVid = Path.Combine(_iHosting.WebRootPath + "\\upload\\country\\videos\\" + item.VideoName);
@@ -149,11 +134,7 @@ namespace Model.Repository
                         }
                     }
                     ///---------------------------------------------------------
-
-
-
                 }
-                return new Tuple<IQueryable<CountryCoverImage>, IQueryable<CountryCoverVideo>>(covImg, coVid);
 
             }
             catch (ArgumentNullException ex)
@@ -203,40 +184,44 @@ namespace Model.Repository
 
 
         /// <summary>
-        /// حذف تصاویر و ویدوهای کشور از دیتابیس
+        /// حذف تصاویر  از دیتابیس
         /// </summary>
-        /// <param name="model">مدل دریافتی جدول تصاویر و ویدوها</param>
-        /// countrycoverimage - countrycvoervideo
+        /// <param name="Id">شناسه کشور</param>
         /// <returns></returns>
-        public async Task DeleteCoverVideoAndImage(Tuple<IQueryable<CountryCoverImage>,
-            IQueryable<CountryCoverVideo>> model)
+        public async Task DeleteCoverdImage(int Id)
         {
 
-            var covImg =await model.Item1.ToListAsync();
-            var covVid =await model.Item2.ToListAsync();
-             foreach (var coverImg in covImg)
+            IEnumerable<CountryCoverImageDto> countryImage = await _unitOfWork.CountryCoverImageRepoUW.GetAsync(c => c.CountryId == Id);
+
+            foreach (var item in countryImage)
             {
-                ///  countryCoverImage حذف فایل تصویر کشور از جدول مجموعه تصاویر
-                await _unitOfWork.CountryCoverImageRepoUW.DeleteById(coverImg.Id);
+                await _unitOfWork.CountryCoverImageRepoUW.DeleteById(item.Id);
 
-                //if (_context.Entry(coverImg).State == EntityState.Detached)
-                //{
-                //    _context.Attach(coverImg);
-                //}
-                //_context.Remove(coverImg);
-
-                await _unitOfWork.SaveAsync();
             }
 
-            foreach (var coverVideo in covVid)
-            {
-                ///  countryCoverVideo حذف ویدوهای کشور از جدول مجموعه تصاویر
-               await _unitOfWork.CountryCoverVideoRepoUW.DeleteById(coverVideo.Id);
-            
-                await _unitOfWork.SaveAsync();
-
-            }
+            await _unitOfWork.SaveAsync();
         }
+
+
+        /// <summary>
+        /// حذف ویدوها  از دیتابیس
+        /// </summary>
+        /// <param name="Id">شناسه کشور</param>
+        /// <returns></returns>
+        public async Task DeleteCoverVideo(int Id)
+        {
+
+            IEnumerable<CountryCoverVideoDto> countryImage = await _unitOfWork.CountryCoverVideoRepoUW.GetAsync(c => c.CountryId == Id);
+
+            foreach (var item in countryImage)
+            {
+                await _unitOfWork.CountryCoverVideoRepoUW.DeleteById(item.Id);
+
+            }
+
+            await _unitOfWork.SaveAsync();
+        }
+
 
         //todo:چگونگی انتقال متغیر و اطلاعات بین تابع ها در ریپازیتوری
         //انواع متغیر ها        
