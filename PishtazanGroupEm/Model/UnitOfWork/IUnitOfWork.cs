@@ -2,6 +2,7 @@
 using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImages;
+using Model.Models.EmigrationTypes;
 using Model.Repository;
 using Model.Service;
 using System;
@@ -34,6 +35,12 @@ namespace Model.UnitOfWork
         /// </summary>
         CrudAppService<CountryCoverVideo, CountryCoverVideoDto, CountryCoverVideoDto, CountryCoverVideoDto> CountryCoverVideoRepoUW { get; }
 
+
+
+        /// <summary>
+        /// برای جدول ویدوهای تنواع مهاجرت  CRUD پیاده سازی عملیات 
+        /// </summary>
+        CrudAppService<EmigrationType, EmigrationTypeListDto, EmigrationTypeCreateDto, EmigrationTypeCreateDto> EmigrationTypeRepoUW { get; }
 
 
         /// <summary>

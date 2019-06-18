@@ -128,9 +128,10 @@ namespace Model.Repository
         /// <summary>
         /// لیستی  از کورد ها را میاورد
         /// </summary>
-        /// <param name="whereIf"></param>
-        /// <param name="orderByIf"></param>
-        /// <param name="joinString"></param>
+        /// <param name="whereIf">اعمال شرط و فیلتر </param>
+        /// <param name="orderByIf">اعمال صعودی نزولی</param>
+        /// <param name="joinString">نام جدول برای جوین</param>
+        /// نام جدول در قسمت نویگیشن پاپرتی ها
         /// <returns>یک لییستی از ویو مدل برمیگرداند</returns>
         public virtual async Task<IEnumerable<TEntityDto>> GetAsync(Expression<Func<TEntity, bool>> whereIf = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByIf = null,

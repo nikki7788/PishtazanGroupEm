@@ -46,6 +46,10 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
         #region ####################### Actions #################################################
 
+        /// <summary>
+        /// نمایش لیست کشور ها
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -55,11 +59,25 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
             //   ViewBag.status = TempData["Message"].ToString();
 
             //}
+            try
+            {
+                var model = await _unitOfWork.CountryRepUW.GetAsync(null, c => c.OrderByDescending(cu => cu.Id));
 
-            var model = await _unitOfWork.CountryRepUW.GetAsync(null, c => c.OrderByDescending(cu => cu.Id));
+                return View(model);
+            }
+            catch (ArgumentNullException ex)
+            {
+
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
 
-            return View(model);
+
         }
 
 

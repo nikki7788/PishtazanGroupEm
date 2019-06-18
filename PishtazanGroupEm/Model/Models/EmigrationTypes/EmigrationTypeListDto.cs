@@ -1,29 +1,34 @@
 ﻿using Model.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Model.Models.EmigrationType
+namespace Model.Models.EmigrationTypes
 {
     /// <summary>
-    /// ویو مدل نوع مهاجرت
+    /// ویو مدل لیست نوع مهاجرت
     /// </summary>
-    public class EmigrationTypeDto:BaseEntity<int>
+    public class EmigrationTypeListDto : BaseEntity<int>
     {
-    
+
 
         #region ############## Properties #########################
 
         /// <summary>
         /// نام نوع مهاجرت
         /// </summary>
+        [Display(Name = "نوع مهاجرت")]
+
         public string Name { get; set; }
 
 
         /// <summary>
         /// توضیحات نوع مهاجرت
         /// </summary>
+        [Display(Name = "توضیحات")]
+
         public string Description { get; set; }
 
         #endregion#############
@@ -31,7 +36,7 @@ namespace Model.Models.EmigrationType
         #region #################### Navigation Properties ########################
 
 
-        public virtual ICollection<EmigrateCountry> EmigrateCountries { get; set; }
+    //    public virtual ICollection<EmigrateCountry> EmigrateCountries { get; set; }
 
         #endregion ##################
 

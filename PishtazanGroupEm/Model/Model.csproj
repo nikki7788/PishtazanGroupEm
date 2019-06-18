@@ -22,6 +22,12 @@
     <Compile Remove="Migrations\20190519142713_Mig6-Add_Abstract_prop_to_the_country-[notmapped]_removed_from_TouristOptions.cs" />
     <Compile Remove="Migrations\20190519142713_Mig6-Add_Abstract_prop_to_the_country-[notmapped]_removed_from_TouristOptions.Designer.cs" />
     <Compile Remove="Migrations\20190602134627_Mig7-Correcting_errorsInUpdate_countries_and_touristOptions.cs" />
+    <Compile Remove="Migrations\20190602135418_Mig-Correcting_errorsInUpdate_countries_and_touristOptions.cs" />
+    <Compile Remove="Migrations\20190602135418_Mig-Correcting_errorsInUpdate_countries_and_touristOptions.Designer.cs" />
+    <Compile Remove="Migrations\20190603100506_Mig8-the_abstract_added_to_the_country.cs" />
+    <Compile Remove="Migrations\20190603100506_Mig8-the_abstract_added_to_the_country.Designer.cs" />
+    <Compile Remove="Migrations\20190616205621_Mig8-the_abstract_added_to_the_country.cs" />
+    <Compile Remove="Migrations\20190616205621_Mig8-the_abstract_added_to_the_country.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /PishtazanGroupEm/PishtazanGroupEm/wwwroot/upload/country/images
+/PishtazanGroupEm/PishtazanGroupEm/wwwroot/upload/country/indexImage
