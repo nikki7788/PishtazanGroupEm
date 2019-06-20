@@ -22,6 +22,8 @@ namespace Model.Entities
         /// </summary>
         public int CountryId { get; set; }
 
+
+
         /// <summary>
         /// شناسه نوع مهاجرت
         /// </summary>

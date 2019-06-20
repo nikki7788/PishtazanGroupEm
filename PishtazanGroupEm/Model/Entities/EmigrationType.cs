@@ -25,6 +25,11 @@ namespace Model.Entities
 
 
         /// <summary>
+        /// چکیده توضیحات نوع مهاجرت
+        /// </summary>
+        public string Abstract { get; set; }
+
+        /// <summary>
         /// توضیحات نوع مهاجرت
         /// </summary>
         public string Description { get; set; }

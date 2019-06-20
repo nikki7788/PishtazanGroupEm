@@ -83,6 +83,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
+
         /// <summary>
         /// اپلود کردن تصویر و ویدو برای کشور
         /// </summary>
@@ -197,6 +198,9 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
+
+
+
         /// <summary>
         /// نمایش مودال افزودن کشور
         /// </summary>
@@ -210,8 +214,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
             return PartialView("_CreateCountryPartial", model);
         }
 
-
-
+        
 
 
 
@@ -380,6 +383,8 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                 }
             }
         }
+
+
 
 
 
@@ -584,6 +589,8 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
+
+
         /// <summary>
         /// نمایش مودال حذف
         /// </summary>
@@ -596,6 +603,10 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
             ViewBag.countryName = model.Name;
             return PartialView("_DeleteCountryPartial", model.Name);
         }
+
+
+
+
 
         /// <summary>
         /// حذف کشور

@@ -20,15 +20,22 @@ namespace Model.Models.EmigrationTypes
         /// نام نوع مهاجرت
         /// </summary>
         [Display(Name = "نوع مهاجرت")]
-
         public string Name { get; set; }
+
+
+
+        /// <summary>
+        /// چکیده توضیحات نوع مهاجرت
+        /// </summary>
+        [Display(Name = "چکیده ")]
+        public string Abstract { get; set; }
+
 
 
         /// <summary>
         /// توضیحات نوع مهاجرت
         /// </summary>
         [Display(Name = "توضیحات")]
-
         public string Description { get; set; }
 
         #endregion#############

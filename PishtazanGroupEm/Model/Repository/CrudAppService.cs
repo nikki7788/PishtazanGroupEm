@@ -121,6 +121,23 @@ namespace Model.Repository
 
 
 
+        /// <summary>
+        /// یک رکورد مربوط ای دی مورد نظر را  برای ویرایش برمیکرداند
+        /// </summary>
+        /// <param name="id">آیدی دریافتی از کنترلر</param>
+        /// <returns>یک ویومدل برمیگرداند</returns>
+        public virtual async Task<TCreateDto> GetEditByIdAsync(object id)
+        {
+
+            var entity = await _table.FindAsync(id);
+
+            //var entityDto = BaseDto<TEntityDto,TEntity>.FromEntity(entity);
+
+            //TEntityDto entityDto = BaseDto<TEntityDto, TEntity>.FromEntity(entity);
+            var entityDto = Mapper.Map<TCreateDto>(entity);
+            return entityDto;
+        }
+
 
 
 
@@ -206,6 +223,7 @@ namespace Model.Repository
             Delete(entity);
 
         }
+
 
 
         /// <summary>

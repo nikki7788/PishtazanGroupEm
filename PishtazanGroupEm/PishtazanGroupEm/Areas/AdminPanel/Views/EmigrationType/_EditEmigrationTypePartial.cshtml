@@ -9,7 +9,7 @@
 <form method="post" enctype="multipart/form-data" id="regForm">
 
     <!--Modal Header-->
-    <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن نوع مهاجرت" }' />
+    <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "ویرایش نوع مهاجرت" }' />
 
 
     <!--Modal Body-->
@@ -28,12 +28,12 @@
 
         <!--چکیده توضیحات کشور-->
         <div class="form-group row ">
-                <label asp-for="Abstract" class="col-12 col-form-label"></label>
-                <div class="col-12">
-                    <input asp-for="Abstract" class="form-control" />
-                    <span asp-validation-for="Abstract" class="text-danger"></span>
-                </div>
+            <label asp-for="Abstract" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="Abstract" class="form-control" />
+                <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
+        </div>
 
 
 
@@ -77,13 +77,13 @@
 
     @*Modal Footer*@
     <div class="modal-footer justify-content-start ">
-        <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "افزودن نوع مهاجرت" }' />
+        <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "ویرایش نوع مهاجرت" }' />
     </div>
 
 </form>
 
 
-    <script>
+<script>
     //ارسال فرم
         $(document).ready(function () {
 
@@ -100,7 +100,7 @@
 
                 $.ajax({
                 type: "post",
-                url: '@Url.Action("CreateEmigrationType", "EmigrationType", new { area = "AdminPanel"})',
+                url: '@Url.Action("EditEmigrationType", "EmigrationType", new { area = "AdminPanel"})',
                      cache: false,
                      data: form.serialize() /*+ "&description=" + description*/ ,
                 //beforeSend: function () {
@@ -145,7 +145,7 @@
                                type: "success",
                               html: "<span class='text-dark ' style:'font-weight: bold'> کشور</span>"
                                  + "<span class='text-success px-3' style:'font-weight: bold;font-style:20px;'>"+result.message + "</span>"+
-                            "<span class='text-dark ' style:'font-weight: bold'> با موفقیت ثبت شد</span>"
+                            "<span class='text-dark ' style:'font-weight: bold'> با موفقیت ویرایش شد</span>"
                               ,
                                animation: false,
                                confirmButtonColor: '#4caf50',
@@ -173,4 +173,4 @@
                  });
             });
         });
-    </script>
+</script>

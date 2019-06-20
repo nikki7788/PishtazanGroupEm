@@ -23,6 +23,14 @@ namespace Model.Models.EmigrationTypes
         [Display(Name = "نوع مهاجرت")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// چکیده توضیحات نوع مهاجرت
+        /// </summary>
+        [Required(AllowEmptyStrings = false, ErrorMessage = PublicConst.EnterMessage)]
+        [StringLength(500, MinimumLength = 2, ErrorMessage = PublicConst.LengthMessage)]
+        // [RegularExpression(@"[0-9A-Zا-ی ء ؤ ئ ةأإآa-z_\s\-\(\)\.]+", ErrorMessage = PublicConst.DangrouseMessageForBadCharachter)]
+        [Display(Name = "چکیده ")]
+        public string Abstract { get; set; }
 
         /// <summary>
         /// توضیحات نوع مهاجرت
