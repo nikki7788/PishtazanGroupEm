@@ -31,7 +31,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
         #region################## Actions #############################
 
-        
+
         /// <summary>
         /// نمایش انواع مهاجرت ها
         /// </summary>
@@ -57,6 +57,76 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         }
 
 
+
+        /// <summary>
+        /// نمایش مودال افزودن نوع مهاجرت
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CreateEmigrationType()
+        {
+            EmigrationTypeCreateDto model = new EmigrationTypeCreateDto();
+
+            return PartialView("_CreateEmigrationTypePartial", model);
+        }
+
+
+
+        /// <summary>
+        /// افزودن کشور متد پست
+        /// </summary>
+        /// <param name="model">مدل دریافتی از ویو</param>
+        /// <returns></returns>
+        [HttpPost, ActionName("CreateEmigrationType")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateEmigrationTypeConfirm(EmigrationTypeCreateDto model)
+
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+
+                    ///##############-- ایجاد نوع مهاجرت --#################
+
+                    await _unitOfWork.EmigrationTypeRepoUW.CreateAsync(model);
+                    await _unitOfWork.SaveAsync();
+
+                    ///############------#############
+
+                    return Json(new { status = "success", message = model.Name });
+
+                }
+
+                // ---------------اگر ولیدیشن رعایت نشده بود-------
+               
+                //-------------------------- خطاهای ورودی  هارا برمیکرداند-------------------------------
+                //display validation with jquery ajax
+                var errorMessage = new List<string>();
+                var errorKeys = new List<string>();
+                foreach (var validation in ViewData.ModelState.Values)
+                {
+                    errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
+
+                }
+                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        errorKeys.Add(modelStateKey);
+                        // You may log the errors if you want
+                    }
+                }
+                return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
         #endregion ##########################

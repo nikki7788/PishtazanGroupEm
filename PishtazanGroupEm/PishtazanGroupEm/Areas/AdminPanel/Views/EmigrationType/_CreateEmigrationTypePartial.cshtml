@@ -1,0 +1,176 @@
+﻿<!--todo:بررسی حجم فایل و نوع فایل سمت جیکویری
+                بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
+
+
+@model EmigrationTypeCreateDto
+
+
+@Html.AntiForgeryToken()
+<form method="post" enctype="multipart/form-data" id="regForm">
+
+    <!--Modal Header-->
+    <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن نوع مهاجرت" }' />
+
+
+    <!--Modal Body-->
+    <div class="modal-body ">
+
+
+        <!--نام کشور-->
+        <div class="form-group row ">
+            <label asp-for="Name" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <!--چکیده توضیحات کشور-->
+        @*<div class="form-group row ">
+                <label asp-for="Abstract" class="col-12 col-form-label"></label>
+                <div class="col-12">
+                    <input asp-for="Abstract" class="form-control" />
+                    <span asp-validation-for="Abstract" class="text-danger"></span>
+                </div>
+            </div>*@
+
+
+
+        <!--توضیحات کشور-->
+        <div class="form-group row ">
+
+            <script src="~/ckeditor/ckeditor.js"></script>
+
+            <label asp-for="Description" class="col-12 col-form-label"></label>
+            <div class="col-12 ">
+                <textarea id="Description" name="Description" asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+
+            </div>
+
+            <!-------#########---- CKEditor دستورات استفاده از ------############---->
+            <script>
+
+                const config = {
+                    filebrowserImageBrowseUrl: "/imagebrowser",
+                    filebrowserImageWindowWidth: 780,
+                    filebrowserImageWindowHeight: 720,
+                    filebrowserBrowseUrl: "/linkbrowser",
+                    filebrowserWindowWidth: 350,
+                    filebrowserWindowHeight: 500
+                };
+                const editor = document.getElementById("Description");
+
+
+                CKEDITOR.replace(editor, config);
+
+
+            </script>
+
+            <!------------------################---------->
+
+        </div>
+
+
+    </div>
+
+    @*Modal Footer*@
+    <div class="modal-footer justify-content-start ">
+        <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "افزودن نوع مهاجرت" }' />
+    </div>
+
+</form>
+
+
+    <script>
+    //ارسال فرم
+        $(document).ready(function () {
+
+            $("#regForm").submit(function (e) {
+
+                e.preventDefault();
+
+                //----############----CKEDITOR دریافت مقادیر   ---##############----------------
+                 //دریافت مقادیر ادیتور
+                var description = CKEDITOR.instances['Description'].getData();
+                $("textarea").val(description);
+                var form = $(this);
+                //-------------------------##########################--------------------------------------
+
+                $.ajax({
+                type: "post",
+                url: '@Url.Action("CreateEmigrationType", "EmigrationType", new { area = "AdminPanel"})',
+                     cache: false,
+                     data: form.serialize() /*+ "&description=" + description*/ ,
+                //beforeSend: function () {
+                //   // $(".se-pre-con").fadeIn('fast');
+                //     },
+                     //success: function (result) {
+
+                     //}
+                 }).done(function (result) {
+
+                     //اگر ولیدیشن خطا داشت
+                   if (result.status === "validationError") {
+
+                           Swal.fire({
+                               type: "error",
+                               html: "<span class='text-dark ' style:'font-weight: bold'>" + result.message + "</span>",
+                               animation: false,
+                               confirmButtonColor: '#f44336',
+                               confirmButtonText: 'تایید',
+                               customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+
+                       // برای اینکه اگر بعد از درست کردن خطای ورودی پیام خطا پاک شود
+                       //ابتدا تمام خطاهارا پاک میکنیم و سپس دوباره هرکدام خطا داشت نمایش میدهیم
+
+                       //------------------ حذف تمام پیام های خطای اینپوت ها و کلاس خطای انها -------------------
+                       for (var i = 0; i < $('span.field-validation-error').length; i++) {
+                           $('span.field-validation-error').removeClass('field-validation-error')
+                              .addClass("field-validation-valid") .text("");
+                       };
+                       //-------------------------- نمایش خطای اینپوت هایی که ولیدیشن را رعایت نکرده اند بعد از بررسی در سرورو ------------------------------------
+                       for (var i = 0; i < result.errorKey.length; i++) {
+                           $(`span[data-valmsg-for='${result.errorKey[i]}']`).removeClass("field-validation-valid")
+                               .addClass("field-validation-error").text(result.errorMessages[i]);
+                       };
+                     };
+
+                     if (result.status==="success") {
+                          Swal.fire({
+                               type: "success",
+                              html: "<span class='text-dark ' style:'font-weight: bold'> کشور</span>"
+                                 + "<span class='text-success px-3' style:'font-weight: bold;font-style:20px;'>"+result.message + "</span>"+
+                            "<span class='text-dark ' style:'font-weight: bold'> با موفقیت ثبت شد</span>"
+                              ,
+                               animation: false,
+                               confirmButtonColor: '#4caf50',
+                               confirmButtonText: 'تایید',
+
+                          }).then(function () {
+
+                              //for displaying index view after finishing modal
+                              window.location.href = '@Url.Action("Index", "Country")';
+                          });
+                     }
+
+                 }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                     Swal.fire({
+                         type: "error",
+                         html: "<span class='text-dark ' style:'font-weight: bold'>خطایی رخ داده است لطفا دوباره تلاش کنید </span>",
+                               animation: false,
+                               confirmButtonColor: '#f44336',
+                               confirmButtonText: 'تایید',
+                               customClass: {
+                                popup: 'animated tada'
+                               }
+                     });
+                 });
+            });
+        });
+    </script>

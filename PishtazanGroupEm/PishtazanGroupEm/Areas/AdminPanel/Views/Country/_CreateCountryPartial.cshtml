@@ -38,16 +38,16 @@
     }
 </style>
 
-
+@Html.AntiForgeryToken()
 <form method="post" enctype="multipart/form-data" id="regForm">
 
     <!--Modal Header-->
     <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن کشور" }' />
 
 
-    @Html.AntiForgeryToken()
+
     <!--Modal Body-->
-    <div class="modal-body ">
+    <div class="modal-body modal-body-special ">
 
         <!--tab ۱ صفحه اول مودال-->
         <div class="tab">
@@ -103,7 +103,8 @@
 
                     CKEDITOR.replace(editor, config);
 
-                </script>
+
+/**/</script>
 
                 <!------------------################---------->
 

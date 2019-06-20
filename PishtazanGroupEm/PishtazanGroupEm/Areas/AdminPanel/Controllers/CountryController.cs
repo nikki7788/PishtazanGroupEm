@@ -216,9 +216,13 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
         /// <summary>
-        /// افزودن کشور متد پست
+        /// فزودن کشور متد پست
         /// </summary>
+        /// <param name="model">مدل دریافتی از ویو</param>
+        /// <param name="images">نام تصاویر دریافتی از ویو</param>
+        /// <param name="videos">نام ویودوهای دریافتی از ویو</param>
         /// <returns></returns>
+
         [HttpPost, ActionName("CreateCountry")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCountryConfirm(CountryCreateDto model, List<string> images, List<string> videos)
@@ -326,7 +330,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                         //در کنترلر یوزر و اکشن ایجاد از کوکی استفاده کرده ام
                         ViewBag.indexImgNM = model.IndexImage;
                     }
-                    //---------------------------------------------------------
+                    //-------------------------- خطاهای ورودی  هارا برمیکرداند-------------------------------
                     //display validation with jquery ajax
                     var errorMessage = new List<string>();
                     var errorKeys = new List<string>();

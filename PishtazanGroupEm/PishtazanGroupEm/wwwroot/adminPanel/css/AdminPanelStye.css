@@ -23,11 +23,12 @@ ul li {
     overflow-y:auto !important;
 }*/
 
-.modal-body {
-    height: 450px;
-    overflow-y: auto;
-    /*direction: ltr;*/
-}
+/*مربوط به مودال کشور ها*/
+/*.modal-body-special {*/
+    /*height: 450px;
+    overflow-y: auto;*/
+    /*/*direction: ltr;*/
+/*}/*
 
 /*.modal-body {
     max-height: calc(100vh - 200px);

@@ -19,9 +19,9 @@ namespace PishtazanGroupEm.Controllers
         }
         public async Task< IActionResult> Index()
         {
-            //var model=await _unitOfWork.CountryRepUW.GetByIdAsync(2);
-            //return View(model);
-            return View();
+            var model = await _unitOfWork.CountryRepUW.GetAsync();
+            return View(model);
+            //  return View();
         }
 
         //[HttpPost]
