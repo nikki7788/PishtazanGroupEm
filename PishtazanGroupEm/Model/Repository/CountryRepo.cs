@@ -195,7 +195,7 @@ namespace Model.Repository
 
             foreach (var item in countryImage)
             {
-                await _unitOfWork.CountryCoverImageRepoUW.DeleteById(item.Id);
+                await _unitOfWork.CountryCoverImageRepoUW.DeleteByIdAsync(item.Id);
 
             }
 
@@ -215,7 +215,7 @@ namespace Model.Repository
 
             foreach (var item in countryImage)
             {
-                await _unitOfWork.CountryCoverVideoRepoUW.DeleteById(item.Id);
+                await _unitOfWork.CountryCoverVideoRepoUW.DeleteByIdAsync(item.Id);
 
             }
 

@@ -1,6 +1,8 @@
 ﻿<!--todo:بررسی حجم فایل و نوع فایل سمت جیکویری
-                بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
-
+    بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
+@* todo: در بعضی مواقع ckeditor برطرف کردن مشکل بالا نیامدن  
+    VM18422:1 Uncaught SyntaxError: Identifier 'config' has already been declared
+    *@
 
 @model EmigrationTypeCreateDto
 
@@ -40,7 +42,7 @@
         <!--توضیحات کشور-->
         <div class="form-group row ">
 
-            <script src="~/ckeditor/ckeditor.js"></script>
+
 
             <label asp-for="Description" class="col-12 col-form-label"></label>
             <div class="col-12 ">
@@ -50,6 +52,7 @@
             </div>
 
             <!-------#########---- CKEditor دستورات استفاده از ------############---->
+            <script src="~/ckeditor/ckeditor.js"></script>
             <script>
 
                 const config = {

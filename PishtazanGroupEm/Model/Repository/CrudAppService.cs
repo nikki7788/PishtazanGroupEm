@@ -213,7 +213,7 @@ namespace Model.Repository
         /// حذف یک رکورد براساس آیدی
         /// </summary>
         /// <param name="id"></param>
-        public virtual async Task DeleteById(object id)
+        public virtual async Task DeleteByIdAsync(object id)
         {
             //TEntityDto entityDto = await GetByIdAsync(id);
             //TEntity entity = Mapper.Map<TEntity>(entityDto);

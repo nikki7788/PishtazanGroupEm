@@ -11,6 +11,13 @@
     tr th {
         text-align: center !important;
     }
+
+    /* swal  راست چین کردن دکمه های */
+    .swal2-actions {
+  direction: ltr;
+ 
+}
+
 </style>
 
 <div class="card-body">
@@ -60,8 +67,7 @@
 
                                 <div class="dropdown-divider"></div>
 
-                                <a class="text-danger dropdown-item" data-toggle="modal" id="show-delete-emigrationType" asp-action="DeleteEmigrationType"
-                                   data-target="#modal-delete-emigrationType" asp-route-id="@item.Id">
+                                <a class="text-danger dropdown-item" id="delete-emigrationType" delete-id="@item.Id" delete-name="@item.Name">
                                     <i class="p-1 fa fa-trash"></i>
                                     <span>حذف</span>
                                 </a>
@@ -85,5 +91,80 @@
 
     @* نمایش مودال  *@
     <script src="~/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
-  
+   @* حذف نوع مهاجرت *@
+ <script>
+        $(document).ready(function () {
+
+            $('a#delete-emigrationType').click(function () {
+
+                ///دریافت شناسه ایتم برای حذف کردن
+                var deleteId = $(this).attr("delete-id");
+                //دریافت نام آیتم مورد حذف
+                var deletName = $(this).attr("delete-name");
+
+                ///-------------- نمایش مودال سوال برای حذف کردن----------------
+                Swal.fire({
+                    html: "<span class='text-dark ' style:'font-weight: bold'> آیا از حذف </span>"
+                                    + "<span class='text-danger' style:'font-weight: bold;font-style:20px;padding:0 5px 0 5px !important;'>" + deletName + "</span>" +
+                                    "<span class='text-dark ' style:'font-weight: bold'> مطميتن هستید؟</span>"
+                                ,
+                    //  text: "You won't be able to revert this!",
+                    type: 'warning',
+                     customClass: {
+                         icon: 'swal2-arabic-warning-mark'
+                    },
+                     showCloseButton: true,
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    cancelButtonText: 'انصراف',
+                    confirmButtonText: 'بله مطمين هستم'
+                }).then((result) => {
+                    ///-------------- انجام عملیات حذف در صورت تایید حذف----------------
+                    if (result.value) {
+                       $.ajax({
+                    type: "post",
+                    url: '@Url.Action("DeleteEmigrationType", "EmigrationType", new { area = "AdminPanel"})',
+                    //cache: false,
+                    //processData: false,
+                    //contentType: false,
+                    data: { delId: deleteId },
+                    success: function (result) {
+                        if (result.status === "success") {
+                            Swal.fire({
+                                type: "success",
+                                html: "<span class='text-dark ' style:'font-weight: bold'> نوع مهاجرت</span>"
+                                    + "<span class='text-success px-3' style:'font-weight: bold;font-style:20px;'>" + deletName + "</span>" +
+                                    "<span class='text-dark ' style:'font-weight: bold'> حذف با موفقیت انجام شد</span>"
+                                ,
+                                animation: false,
+                                confirmButtonColor: '#4caf50',
+                                confirmButtonText: 'تایید',
+                            }).then(function () {
+                                //for displaying index view after finishing modal
+                                window.location.href = '@Url.Action("Index", "EmigrationType")';
+                            });
+                        }
+                    }
+
+                }).done(function (result) {
+                    if (result.status === "fail") {
+
+                        Swal.fire({
+                            type: "error",
+                            html: "<span class='text-dark ' style:'font-weight: bold'>" + "خطایی رخ داده است لطا دوباره تلاش کنید" + "</span>",
+                            animation: false,
+                            confirmButtonColor: '#f44336',
+                            confirmButtonText: 'تایید',
+                            customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+                    }
+                });
+                    }
+                });
+            });
+        });
+    </script>
 }

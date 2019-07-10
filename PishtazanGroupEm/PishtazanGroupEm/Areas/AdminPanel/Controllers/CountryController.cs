@@ -637,7 +637,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
                     ///--------------حذف کشور------------------------
-                    await _unitOfWork.CountryRepUW.DeleteById(Id);
+                    await _unitOfWork.CountryRepUW.DeleteByIdAsync(Id);
                     await _unitOfWork.CountryRepUW.SaveAsync();
 
                     ///درصورت خطا ندادن اعمال روی دیتابیس

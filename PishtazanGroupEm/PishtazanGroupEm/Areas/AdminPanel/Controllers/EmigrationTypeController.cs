@@ -72,7 +72,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
         /// <summary>
-        /// افزودن کشور متد پست
+        /// افزودن نوع مهاجرت متد پست
         /// </summary>
         /// <param name="model">مدل دریافتی از ویو</param>
         /// <returns></returns>
@@ -136,14 +136,14 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// <returns></returns>
         public async Task<IActionResult> EditEmigrationType(int Id)
         {
-            EmigrationTypeCreateDto model =await _unitOfWork.EmigrationTypeRepoUW.GetEditByIdAsync(Id);
+            EmigrationTypeCreateDto model = await _unitOfWork.EmigrationTypeRepoUW.GetEditByIdAsync(Id);
             return PartialView("_EditEmigrationTypePartial", model);
         }
 
 
 
         /// <summary>
-        /// ویرایش کشور متد پست
+        /// ویرایش نوع مهاجرت متد پست
         /// </summary>
         /// <param name="model">مدل دریافتی از ویو</param>
         /// <returns></returns>
@@ -198,6 +198,32 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
                 throw ex;
             }
         }
+
+
+
+        /// <summary>
+        /// حذف نوع مهاجرت
+        /// </summary>
+        /// <param name="Id">شناسه نوع مهاجرت</param>
+        /// <returns></returns>
+        /// swal in view and ajax حذف به کمک 
+        [HttpPost]
+        public async Task<IActionResult> DeleteEmigrationType(int delId)
+        {
+            if (delId != 0)
+            {
+                await _unitOfWork.EmigrationTypeRepoUW.DeleteByIdAsync(delId);
+                await _unitOfWork.EmigrationTypeRepoUW.SaveAsync();
+                return Json(new { status = "success" });
+            }
+            
+            return Json(new { status = "fail" });
+
+        }
+
         #endregion ##########################
+
+
     }
+
 }
