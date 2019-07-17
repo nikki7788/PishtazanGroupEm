@@ -2,6 +2,7 @@
 using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImages;
+using Model.Models.EmigrateCountries;
 using Model.Models.EmigrationTypes;
 using Model.Repository;
 using Model.Service;
@@ -41,6 +42,15 @@ namespace Model.UnitOfWork
         /// برای جدول ویدوهای تنواع مهاجرت  CRUD پیاده سازی عملیات 
         /// </summary>
         CrudAppService<EmigrationType, EmigrationTypeListDto, EmigrationTypeCreateDto, EmigrationTypeCreateDto> EmigrationTypeRepoUW { get; }
+
+
+        /// <summary>
+        /// کشور-مهاجرت
+        ///  EmigrateCountry برای کلاس و جدول CRUD پیاده سازی کلاس 
+        /// </summary>
+        /// مشخص کردن انواع مهاجرت برای هر کشور
+        CrudAppService<EmigrateCountry, EmigrateCountryListDto, EmigrateCountryCreateDto, EmigrateCountryCreateDto> EmigrationCountryRepoUW { get; }
+
 
 
         /// <summary>

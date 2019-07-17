@@ -5,6 +5,7 @@ using Model.Entities;
 using Model.Models.Countries;
 using Model.Models.CountryCover_Images;
 using Model.Models.CountryCoverImages;
+using Model.Models.EmigrateCountries;
 using Model.Models.EmigrationTypes;
 using Model.Repository;
 using Model.Service;
@@ -50,6 +51,9 @@ namespace Model.UnitOfWork
 
 
         private CrudAppService<EmigrationType, EmigrationTypeListDto, EmigrationTypeCreateDto, EmigrationTypeCreateDto> _emigrationTypeRepoUW;
+
+
+        private CrudAppService<EmigrateCountry, EmigrateCountryListDto, EmigrateCountryCreateDto, EmigrateCountryCreateDto> _emigrateCountryRepoUW;
 
 
 
@@ -126,7 +130,6 @@ namespace Model.UnitOfWork
 
 
 
-
         /// <summary>
         /// انواع مهاجرت
         ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
@@ -142,6 +145,26 @@ namespace Model.UnitOfWork
                     _emigrationTypeRepoUW = new CrudAppService<EmigrationType, EmigrationTypeListDto, EmigrationTypeCreateDto, EmigrationTypeCreateDto>(_context, _iHosting);
                 }
                 return _emigrationTypeRepoUW;
+            }
+        }
+
+
+        /// <summary>
+        /// کشور-مهاجرت
+        ///   IUnitOfWork پیاده سازی اعضای اینترفیس   
+        ///  EmigrateCountry برای کلاس و جدول CRUD پیاده سازی کلاس 
+        /// </summary>
+        /// مشخص کردن انواع مهاجرت برای هر کشور
+        public CrudAppService<EmigrateCountry, EmigrateCountryListDto, EmigrateCountryCreateDto, EmigrateCountryCreateDto> EmigrationCountryRepoUW
+        {
+            //فقط خواندنی
+            get
+            {
+                if (_emigrateCountryRepoUW == null)
+                {
+                    _emigrateCountryRepoUW = new CrudAppService<EmigrateCountry, EmigrateCountryListDto, EmigrateCountryCreateDto, EmigrateCountryCreateDto>(_context, _iHosting);
+                }
+                return _emigrateCountryRepoUW;
             }
         }
 

@@ -134,6 +134,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// نمایش مودال ویرایش نوع مهاجرت
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         public async Task<IActionResult> EditEmigrationType(int Id)
         {
             EmigrationTypeCreateDto model = await _unitOfWork.EmigrationTypeRepoUW.GetEditByIdAsync(Id);

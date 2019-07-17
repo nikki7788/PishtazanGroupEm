@@ -28,12 +28,12 @@
 
         <!--چکیده توضیحات کشور-->
         <div class="form-group row ">
-                <label asp-for="Abstract" class="col-12 col-form-label"></label>
-                <div class="col-12">
-                    <input asp-for="Abstract" class="form-control" />
-                    <span asp-validation-for="Abstract" class="text-danger"></span>
-                </div>
+            <label asp-for="Abstract" class="col-12 col-form-label"></label>
+            <div class="col-12">
+                <input asp-for="Abstract" class="form-control" />
+                <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
+        </div>
 
 
 
@@ -76,14 +76,14 @@
     </div>
 
     @*Modal Footer*@
-    <div class="modal-footer justify-content-start ">
+    <div class="justify-content-end ">
         <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "افزودن نوع مهاجرت" }' />
     </div>
 
 </form>
 
 
-    <script>
+<script>
     //ارسال فرم
         $(document).ready(function () {
 
@@ -95,8 +95,9 @@
                  //دریافت مقادیر ادیتور
                 var description = CKEDITOR.instances['Description'].getData();
                 $("textarea").val(description);
-                var form = $(this);
                 //-------------------------##########################--------------------------------------
+                ///دریافت مقادیر فرم
+                var form = $(this);
 
                 $.ajax({
                 type: "post",
@@ -173,4 +174,4 @@
                  });
             });
         });
-    </script>
+</script>

@@ -1,0 +1,171 @@
+﻿
+
+
+
+@model IEnumerable<EmigrateCountryListDto>
+
+@{
+    ViewData["Title"] = "مدیریت انواع مهاجرت ها";
+}
+<link href="~/node_modules/sweetalert2/dist/sweetalert2.css" rel="stylesheet" />
+
+<style>
+    tr th {
+        text-align: center !important;
+    }
+
+    /* swal  راست چین کردن دکمه های */
+    .swal2-actions {
+        direction: ltr;
+    }
+</style>
+
+<div class="card-body">
+    <div>
+        <a class="btn btn-primary" data-toggle="modal" asp-area="AdminPanel" asp-controller="EmigrateCountry" asp-action="CreateEmigrateCountry"
+           data-target="#modal-action-emigratioCountry" id="add-emigratioCountry">
+            <i class="fa fa-plus"></i>
+            <span>افزودن  کشور - نوع مهاجرت</span>
+        </a>
+    </div>
+
+    <table class="table table-striped table-sm  table-hover mt-3 text-center ">
+        <thead>
+            <tr>
+
+                <th>ردیف</th>
+                <!-- Html Helper for dynamic implementing the property titles of the table(class= @@model IEnumerable<BookGroup>)-->
+                @*<th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Abstract)</th>*@
+
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int counter = 1;
+            }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@(counter++)</td>
+
+                    @*<td>@item.Name</td>
+                        <td>@item.Abstract</td>*@
+
+                    <td class="align-middle">
+                        <div class="dropdown dropright ">
+                            <a class="fa fa-spin " aria-haspopup="true" aria-expanded="false" data-toggle="dropdown">
+                                <i class="fa fa-cog  fa-spin"></i>
+                            </a>
+                            <div class="dropdown-menu justify-content-center">
+                                <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-emigratioCountry" asp-action="EditEmigrationType"
+                                   data-target="#modal-action-emigrationType" asp-route-id="@item.CountryId">
+                                    <i class="p-1 fa fa-pencil"></i>
+                                    <span>ویرایش</span>
+                                </a>
+
+                                <div class="dropdown-divider"></div>
+
+                                <a class="text-danger dropdown-item" id="delete-emigratioCountry" delete-id="@item.CountryId">
+                                    <i class="p-1 fa fa-trash"></i>
+                                    <span>حذف</span>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+@* نمای مودال با سایز کوچکتر برای حذف *@
+<partial name='~/Views/Shared/Partials/Modal/_ModalPartial.cshtml'
+         model='new BootstrapModel { Id ="modal-action-emigratioCountry", Size=ModalSize.Medium }' />
+
+
+@section panelScript{
+
+    @* نمایش مودال  *@
+    <script src="~/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+    @* حذف نوع مهاجرت *@
+    <script>
+        $(document).ready(function () {
+
+            $('a#delete-emigrationType').click(function () {
+
+                ///دریافت شناسه ایتم برای حذف کردن
+                var deleteId = $(this).attr("delete-id");
+                //دریافت نام آیتم مورد حذف
+
+                ///-------------- نمایش مودال سوال برای حذف کردن----------------
+                Swal.fire({
+                    html: "<span class='text-dark ' style:'font-weight: bold'> آیا از حذف </span>"
+                                    + "<span class='text-danger' style:'font-weight: bold;font-style:20px;padding:0 5px 0 5px !important;'>" + deletName + "</span>" +
+                                    "<span class='text-dark ' style:'font-weight: bold'> مطميتن هستید؟</span>"
+                                ,
+                    //  text: "You won't be able to revert this!",
+                    type: 'warning',
+                     customClass: {
+                         icon: 'swal2-arabic-warning-mark'
+                    },
+                     showCloseButton: true,
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    cancelButtonText: 'انصراف',
+                    confirmButtonText: 'بله مطمين هستم'
+                }).then((result) => {
+                    ///-------------- انجام عملیات حذف در صورت تایید حذف----------------
+                    if (result.value) {
+                       $.ajax({
+                    type: "post",
+                    url: '@Url.Action("DeleteEmigrationType", "EmigrationType", new { area = "AdminPanel"})',
+                    //cache: false,
+                    //processData: false,
+                    //contentType: false,
+                    data: { delId: deleteId },
+                    success: function (result) {
+                        if (result.status === "success") {
+                            Swal.fire({
+                                type: "success",
+                                html: "<span class='text-dark ' style:'font-weight: bold'> نوع مهاجرت</span>"
+                                    + "<span class='text-success px-3' style:'font-weight: bold;font-style:20px;'>" + deletName + "</span>" +
+                                    "<span class='text-dark ' style:'font-weight: bold'> حذف با موفقیت انجام شد</span>"
+                                ,
+                                animation: false,
+                                confirmButtonColor: '#4caf50',
+                                confirmButtonText: 'تایید',
+                            }).then(function () {
+                                //for displaying index view after finishing modal
+                                window.location.href = '@Url.Action("Index", "EmigrationType")';
+                            });
+                        }
+                    }
+
+                }).done(function (result) {
+                    if (result.status === "fail") {
+
+                        Swal.fire({
+                            type: "error",
+                            html: "<span class='text-dark ' style:'font-weight: bold'>" + "خطایی رخ داده است لطا دوباره تلاش کنید" + "</span>",
+                            animation: false,
+                            confirmButtonColor: '#f44336',
+                            confirmButtonText: 'تایید',
+                            customClass: {
+                                popup: 'animated tada'
+                            }
+                        });
+                    }
+                });
+                    }
+                });
+            });
+        });
+    </script>
+
+   
+}

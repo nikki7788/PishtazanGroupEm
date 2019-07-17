@@ -1,0 +1,205 @@
+﻿<!--todo:بررسی حجم فایل و نوع فایل سمت جیکویری
+                بررسی ولیدیشن سمت جیکویری و دستورات ایجکس مانده-->
+@*@model EmigrateCountryCreateDto*@
+@model CreateEmigrateCountryMViewModel
+
+@{
+    var countryList = ViewBag.listOfCountry;
+    var emgTTypeList = ViewBag.listOfEmgType;
+}
+
+@* Multi select DropdownList Style*@
+<link href="~/node_modules/@@nobleclem/jquery-multiselect/jquery.multiselect.css" rel="stylesheet" />
+
+
+@if (countryList.Count == 0)
+{
+
+    @* اگر تمام کشورها نوع مهاجرتشان مشخص شده باشد *@
+
+    <!--Modal Header-->
+    <div class="modal-header bg-warning ">
+        <!--initializing header dynamically-->
+
+        <h4 class="modal-title text-danger "><b><i class="fa fa-warning"></i></b></h4>
+        <h4 class="modal-title text-danger "><b>توجه !</b></h4>
+        <div class="d-flex">
+            <button class="close justify-content-end" data-dismiss="modal" aria-label="close">
+                @*<span aria-hidden="true" class="fa fa-times fa-1x "></span>*@
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+
+    <!--Modal Body-->
+    <div class="modal-body text-center">
+        <span class="font-weight-bold text-dark ">کشور جدیدی  برای ثبت اطلاعات  وجود ندارد </span>
+        <br />
+        <br />
+        <span class="font-weight-bold text-dark">
+            برای تغییر نوع مهاجرت هر کشور روی دکمه
+            <span class="text-success font-weight-bold ">ویرایش</span>
+            کلیک کنید
+        </span>
+
+    </div>
+    @*Modal Footer*@
+    <div class="modal-footer justify-content-center  ">
+        <button type="submit" class="btn ml-2 bg-success text-white font-weight-bold" id="CancelbuttonId" data-dismiss="modal" style="font-size:15px;"> بله متوجه شدم </button>
+    </div>
+
+
+}
+else
+{
+    @* اگر کشور جدیدی وجود داشته باشد ک نوع مهاجرت ان مشخص نشده باشد *@
+
+    @Html.AntiForgeryToken()
+    <form method="post" enctype="multipart/form-data" id="regForm">
+
+        <!--Modal Header-->
+        <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن کشور - انواع مهاجرت" }' />
+
+
+        <!--Modal Body-->
+        <div class="modal-body ">
+
+
+            <!--نام کشور-->
+            <div class="form-group row">
+                <label asp-for="CountryId" class="control-label">نام کشور</label>
+                <select asp-for="CountryId" asp-items="@(new SelectList(countryList,"Id","Name"))" class="form-control "></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+
+            </div>
+
+            <!--نام نوع مهاجرت-->
+            <div class="form-group ">
+                <label asp-for="EmigrationTypeId" class="control-label"></label>
+                <select asp-for="EmigrationTypeId" asp-items="@(new SelectList(emgTTypeList,"Id","Name"))" class="form-control 3col active" multiple="multiple"></select>
+                <span asp-validation-for="EmigrationTypeId" class="text-danger"></span>
+
+            </div>
+        </div>
+
+        @*Modal Footer*@
+        <div class="justify-content-end ">
+            <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "افزودن " }' />
+        </div>
+
+    </form>
+}
+
+
+
+
+@*ارسال فرم*@
+<script>
+
+        $(document).ready(function () {
+
+            $("#regForm").submit(function (e) {
+
+                e.preventDefault();
+
+                ///دریافت مقادیر فرم
+                var form = $(this);
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("CreateEmigrateCountry", "EmigrateCountry", new { area = "AdminPanel"})',
+                    cache: false,
+                    data: form.serialize(),
+
+                }).done(function (result) {
+
+                    //اگر ولیدیشن خطا داشت
+                    if (result.status === "validationError") {
+
+                        Swal.fire({
+                            type: "error",
+                            html: "<span class='text-dark ' style:'font-weight: bold'>" + result.message + "</span>",
+                            animation: false,
+                            confirmButtonColor: '#f44336',
+                            confirmButtonText: 'تایید',
+                            customClass: {
+                                popup: 'animated tada'
+                            }
+
+                        });
+
+
+                       // برای اینکه اگر بعد از درست کردن خطای ورودی پیام خطا پاک شود
+                       //ابتدا تمام خطاهارا پاک میکنیم و سپس دوباره هرکدام خطا داشت نمایش میدهیم
+
+                       //------------------ حذف تمام پیام های خطای اینپوت ها و کلاس خطای انها -------------------
+                       for (var i = 0; i < $('span.field-validation-error').length; i++) {
+                           $('span.field-validation-error').removeClass('field-validation-error')
+                              .addClass("field-validation-valid") .text("");
+                       };
+                       //-------------------------- نمایش خطای اینپوت هایی که ولیدیشن را رعایت نکرده اند بعد از بررسی در سرورو ------------------------------------
+                       for (var i = 0; i < result.errorKey.length; i++) {
+                           $(`span[data-valmsg-for='${result.errorKey[i]}']`).removeClass("field-validation-valid")
+                               .addClass("field-validation-error").text(result.errorMessages[i]);
+                       };
+                    }
+
+                    if (result.status==="success") {
+                          Swal.fire({
+                              type: "success",
+                              html: "<span class='text-dark ' style:'font-weight: bold'>" + result.message + "</span>",
+                               animation: false,
+                               confirmButtonColor: '#4caf50',
+                               confirmButtonText: 'تایید',
+
+                          }).then(function () {
+
+                              //for displaying index view after finishing modal
+                              window.location.href = '@Url.Action("Index", "CreateEmigrateCountry")';
+                          });
+                    }
+
+                }).fail(function (XMLHttpRequest, textStatus, errorThrown) {
+
+                     Swal.fire({
+                         type: "error",
+                         html: "<span class='text-dark ' style:'font-weight: bold'>خطایی رخ داده است لطفا دوباره تلاش کنید </span>",
+                               animation: false,
+                               confirmButtonColor: '#f44336',
+                               confirmButtonText: 'تایید',
+                               customClass: {
+                                popup: 'animated tada'
+                               }
+                     });
+
+                });
+            });
+
+        });
+</script>
+
+
+@* Multi select DropdownList *@
+<script src="~/node_modules/@@nobleclem/jquery-multiselect/jquery.multiselect.js"></script>
+<script>
+    $(document).ready(function () {
+        $('select[multiple].3col.active').multiselect({
+            columns: 3,
+            search: true,
+            selectAll: true,
+            showCheckbox: false,
+            texts: {
+                placeholder: 'یک  یا چند مورد از انواع مهاجرت را انتخاب کنید',
+                search: 'جست و جو',
+                selectAll: "انتخاب همه",
+                unselectAll: "حذف همه انتخاب ها"
+            },
+
+        });
+
+    });
+</script>
+
+
+
+
+

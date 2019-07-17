@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="node_modules\%40nobleclem\jquery-multiselect\bower.json" />
+    <Content Include="node_modules\%40nobleclem\jquery-multiselect\demo.html" />
+    <Content Include="node_modules\%40nobleclem\jquery-multiselect\jquery.multiselect.css" />
+    <Content Include="node_modules\%40nobleclem\jquery-multiselect\package.json" />
     <Content Include="node_modules\font-awesome\css\font-awesome.css" />
     <Content Include="node_modules\font-awesome\css\font-awesome.min.css" />
     <Content Include="node_modules\font-awesome\fonts\fontawesome-webfont.eot" />
@@ -114,6 +118,10 @@
 
 
   <ItemGroup>
+    <None Include="node_modules\%40nobleclem\jquery-multiselect\CHANGELOG" />
+    <None Include="node_modules\%40nobleclem\jquery-multiselect\jquery.multiselect.js" />
+    <None Include="node_modules\%40nobleclem\jquery-multiselect\LICENSE" />
+    <None Include="node_modules\%40nobleclem\jquery-multiselect\README.md" />
     <None Include="node_modules\font-awesome\.npmignore" />
     <None Include="node_modules\font-awesome\css\font-awesome.css.map" />
     <None Include="node_modules\font-awesome\fonts\fontawesome-webfont.svg" />
