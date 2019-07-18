@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
 using Model.Models.Countries;
 using Model.Models.EmigrateCountries;
+using Model.Service;
 using Model.UnitOfWork;
 using PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels;
 
@@ -21,10 +22,12 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         #region ###################### Dependencies ###########################
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmigrateCountryService _emgCountryService;
 
-        public EmigrateCountryController(IUnitOfWork unitOfWork)
+        public EmigrateCountryController(IUnitOfWork unitOfWork, IEmigrateCountryService emgCountryService)
         {
             _unitOfWork = unitOfWork;
+            _emgCountryService = emgCountryService;
         }
 
         #endregion############
@@ -60,6 +63,8 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
+
+
         /// <summary>
         /// نمایش مودال افزودن انواع مهاجرت به کشور
         /// </summary>
@@ -71,37 +76,20 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
             {
 
                 CreateEmigrateCountryMViewModel model = new CreateEmigrateCountryMViewModel();
-                ///---------------------- دریافت مقادیر کشورهای ثبت شده در جدول کشور - مهاجرت ---------------------
-                var emCountry = await _unitOfWork.EmigrationCountryRepoUW.GetAsync();
-                var lstEmCountry = emCountry.GroupBy(c => c.CountryId);
 
-                ///---------------------- دریافت مقادیر کشورهای ثبت شده در جدول کشور --------------------
-                var countries = await _unitOfWork.CountryRepUW.GetAsync();
-                List<CountryListDto> lstOfCountries = countries.ToList();
-
-                ///---------------------- افزودن تمام کشورهای موجود در جدول کشورها به یک متغیر --------------------
-              
-                ///---------- برای عدم نمایش کشورهایی که نوع مهاجرت برای انها ثبت شده است در کمبوباکس ایجاد ------------
-                List<CountryListDto> selectedcountries = new List<CountryListDto>();
-                selectedcountries.AddRange(lstOfCountries);
-                foreach (var emc in lstEmCountry)
-                {
-                    foreach (var co in lstOfCountries)
-                    {
-                        if (co.Id == emc.Key)
-                        {
-                            ///--------------   حذف کشورهایی که برای انها نوع مهاجرت مشخص کردیم از لیست متغیر  --------
-                            selectedcountries.Remove(co);
-                        }
-
-                    }
-                }
-
-                ///ارسال نام کشور ها و نام انواع مهاجرت به ویو برای نمایش در لیست بازشو =کمبوباکس
-                ViewBag.listOfCountry = selectedcountries;
+                /////-----ارسال نام کشور ها و نام انواع مهاجرت به ویو برای نمایش در لیست بازشو =کمبوباکس---
+                //////کشورهایی که در جدول نوع مهاجرت - کشور ثبت نشده اند
+                ///--------------- ارسال اسامی کشورهایی که اطلاعات نوع مهاجرت برای انها ثبت نشده است -------------
+                ViewBag.listOfCountry = _emgCountryService.CountriesList(); 
                 ViewBag.listOfEmgType = await _unitOfWork.EmigrationTypeRepoUW.GetAsync();
 
                 return PartialView("_CreateEmigrateCountryPartial", model);
+
+            }
+            catch (ArgumentNullException ex)
+            {
+
+                throw ex;
             }
             catch (Exception ex)
             {
@@ -112,9 +100,12 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
 
+
+
         /// <summary>
-        /// 
+        /// افزودن انواع مهاجرت به کشور
         /// </summary>
+        /// <param name="model">مدل دریافتی از ویو</param>
         /// <returns></returns>
         [HttpPost, ActionName("CreateEmigrateCountry")]
         [ValidateAntiForgeryToken]
@@ -176,6 +167,8 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
 
         }
+
+
 
 
         #endregion############
