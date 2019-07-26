@@ -2,7 +2,7 @@
 
 
 
-@model IEnumerable<EmigrateCountryListDto>
+@model IEnumerable<CountryListDto>
 
 @{
     ViewData["Title"] = "مدیریت انواع مهاجرت ها";
@@ -23,7 +23,7 @@
 <div class="card-body">
     <div>
         <a class="btn btn-primary" data-toggle="modal" asp-area="AdminPanel" asp-controller="EmigrateCountry" asp-action="CreateEmigrateCountry"
-           data-target="#modal-action-emigratioCountry" id="add-emigratioCountry">
+           data-target="#modal-action-emigrateCountry" id="add-emigrateCountry">
             <i class="fa fa-plus"></i>
             <span>افزودن  کشور - نوع مهاجرت</span>
         </a>
@@ -35,8 +35,7 @@
 
                 <th>ردیف</th>
                 <!-- Html Helper for dynamic implementing the property titles of the table(class= @@model IEnumerable<BookGroup>)-->
-                @*<th>@Html.DisplayNameFor(model => model.Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.Abstract)</th>*@
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
 
                 <th>عملیات</th>
             </tr>
@@ -50,8 +49,7 @@
                 <tr>
                     <td>@(counter++)</td>
 
-                    @*<td>@item.Name</td>
-                        <td>@item.Abstract</td>*@
+                    <td>@item.Name</td>
 
                     <td class="align-middle">
                         <div class="dropdown dropright ">
@@ -59,15 +57,15 @@
                                 <i class="fa fa-cog  fa-spin"></i>
                             </a>
                             <div class="dropdown-menu justify-content-center">
-                                <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-emigratioCountry" asp-action="EditEmigrationType"
-                                   data-target="#modal-action-emigrationType" asp-route-id="@item.CountryId">
+                                <a class="text-info  dropdown-item" data-toggle="modal" id="show-edit-emigrateCountry" asp-action="EditEmigrateCountry" 
+                                   data-target="#modal-edit-emigrateCountry" asp-route-id="@item.Id">
                                     <i class="p-1 fa fa-pencil"></i>
                                     <span>ویرایش</span>
                                 </a>
 
                                 <div class="dropdown-divider"></div>
 
-                                <a class="text-danger dropdown-item" id="delete-emigratioCountry" delete-id="@item.CountryId">
+                                <a class="text-danger dropdown-item" id="delete-emigrateCountry" delete-id="@item.Id">
                                     <i class="p-1 fa fa-trash"></i>
                                     <span>حذف</span>
                                 </a>
@@ -82,15 +80,20 @@
 
 </div>
 
-@* نمای مودال با سایز کوچکتر برای حذف *@
-<partial name='~/Views/Shared/Partials/Modal/_ModalPartial.cshtml'
-         model='new BootstrapModel { Id ="modal-action-emigratioCountry", Size=ModalSize.Medium }' />
 
+@* نمای مودال افزودن *@
+<partial name='~/Views/Shared/Partials/Modal/_ModalPartial.cshtml'
+         model='new BootstrapModel { Id ="modal-action-emigrateCountry", Size=ModalSize.Medium }' />
+
+@* نمایش مودال ویرایش  *@
+<partial name='~/Views/Shared/Partials/Modal/_ModalPartial.cshtml'
+         model='new BootstrapModel { Id ="modal-edit-emigrateCountry", Size=ModalSize.Medium }' />
 
 @section panelScript{
-
-    @* نمایش مودال  *@
+    <script src="~/js/all-index.js"></script>
+    @* نمایش swweetAlert2  *@
     <script src="~/node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
     @* حذف نوع مهاجرت *@
     <script>
         $(document).ready(function () {
@@ -167,5 +170,5 @@
         });
     </script>
 
-   
+
 }

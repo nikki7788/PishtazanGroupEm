@@ -28,6 +28,8 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Models.ViewModels
         [Display(Name = "نوع مهاجرت")]
         public List<int> EmigrationTypeId { get; set; }
 
+        //public List<string> EmigrationType { get; set; }
+
 
         #endregion
     }

@@ -20,9 +20,16 @@ namespace Model.Service
         /// کشورهایی که برای انها نوع مهاجرت وارد نشده است را برمیکرداند
         /// ///کشورهایی که در جدول نوع مهاجرت - کشور ثبت نشده اند
         /// </summary>
-        /// <param name="Id"></param>
         /// <returns></returns>
         IEnumerable<CountryListDto> CountriesList();
+
+
+
+        /// <summary>
+        /// کشورهایی که برای انها نوع مهاجرت وارد شده است را برمیکرداند
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<CountryListDto> CountriesListIndex();
 
 
     }

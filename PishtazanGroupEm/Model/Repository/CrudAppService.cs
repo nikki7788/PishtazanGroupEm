@@ -141,6 +141,49 @@ namespace Model.Repository
 
 
 
+        /// <summary>
+        /// لیستی  از کورد ها را میاوردبرای ویرایش
+        /// </summary>
+        /// <param name="whereIf">اعمال شرط و فیلتر </param>
+        /// <param name="orderByIf">اعمال صعودی نزولی</param>
+        /// <param name="joinString">نام جدول برای جوین</param>
+        /// نام جدول در قسمت نویگیشن پاپرتی ها
+        /// <returns>یک لییستی از ویو مدل برمیگرداند</returns>
+        public virtual async Task<IEnumerable<TCreateDto>> GetEditAsync(Expression<Func<TEntity, bool>> whereIf = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderByIf = null,
+           string joinString = "")
+        {
+
+            IQueryable<TEntity> query = _table;
+
+            if (whereIf != null)
+            {
+                query = query.Where(whereIf);
+            }
+
+            if (orderByIf != null)
+            {
+
+                query = orderByIf(query);
+            }
+
+            if (joinString != "")
+            {
+                foreach (var item in joinString.Split(','))
+                {
+                    //مانند جوین عمل میکند
+                    //همه اطلاعات  به یکباره میاورد
+                    //eager loading
+                    query = query.Include(item);
+                }
+
+            }
+            //لیستی از ویو مدل نمایش لیست برمیکرداند
+            IEnumerable<TCreateDto> entityDto = Mapper.Map<IEnumerable<TCreateDto>>(await query.ToListAsync());
+            return entityDto;
+            //todo:ویو مدل های ورودی متد را اگه نیاز بود باید تغییر نوع بدهم
+        }
+
 
         /// <summary>
         /// لیستی  از کورد ها را میاورد
@@ -193,7 +236,7 @@ namespace Model.Repository
         /// حذف یک کورد
         /// مثلا میگوییم دسته بندی فوتبال را حذف کن
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">کلاس مورد نطر برای حذف</param>
         public virtual void Delete(TEntity entity)
         {
            // var entry = _context.Entry(entity);

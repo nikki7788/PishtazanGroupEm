@@ -4,94 +4,56 @@
 @model CreateEmigrateCountryMViewModel
 
 @{
-    var countryList = ViewBag.listOfCountry;
     var emgTTypeList = ViewBag.listOfEmgType;
+    var countryList = ViewBag.listOfCountry;
 }
 
 @* Multi select DropdownList Style*@
 <link href="~/node_modules/@@nobleclem/jquery-multiselect/jquery.multiselect.css" rel="stylesheet" />
 
 
-@if (countryList.Count == 0)
-{
+@* اگر کشور جدیدی وجود داشته باشد ک نوع مهاجرت ان مشخص نشده باشد *@
 
-    @* اگر تمام کشورها نوع مهاجرتشان مشخص شده باشد *@
+
+
+
+@Html.AntiForgeryToken()
+<form method="post" enctype="multipart/form-data" id="regForm">
 
     <!--Modal Header-->
-    <div class="modal-header bg-warning ">
-        <!--initializing header dynamically-->
+    <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "ویرایش نوع مهاجرت" }' />
 
-        <h4 class="modal-title text-danger "><b><i class="fa fa-warning"></i></b></h4>
-        <h4 class="modal-title text-danger "><b>توجه !</b></h4>
-        <div class="d-flex">
-            <button class="close justify-content-end" data-dismiss="modal" aria-label="close">
-                @*<span aria-hidden="true" class="fa fa-times fa-1x "></span>*@
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    </div>
 
     <!--Modal Body-->
-    <div class="modal-body text-center">
-        <span class="font-weight-bold text-dark ">کشور جدیدی  برای ثبت اطلاعات  وجود ندارد </span>
-        <br />
-        <br />
-        <span class="font-weight-bold text-dark">
-            برای تغییر نوع مهاجرت هر کشور روی دکمه
-            <span class="text-success font-weight-bold ">ویرایش</span>
-            کلیک کنید
-        </span>
+    <div class="modal-body">
+
+        <!--نام کشور-->
+        <div class="form-group row">
+            <label asp-for="CountryId" class="control-label"></label>
+            <select asp-for="CountryId" class="form-control ">
+                <option value="@Model.CountryId" selected> @countryList.Name</option>
+            </select>
+            <span asp-validation-for="CountryId" class="text-danger"></span>
+
+        </div>
+
+        <!--نام نوع مهاجرت-->
+        <div class="form-group ">
+            <label asp-for="EmigrationTypeId" class="control-label"></label>
+            <select asp-for="EmigrationTypeId" asp-items="@(new SelectList(emgTTypeList,"Id","Name"))" class="form-control 3col active" multiple="multiple"></select>
+            <span asp-validation-for="EmigrationTypeId" class="text-danger"></span>
+
+        </div>
+
 
     </div>
+
     @*Modal Footer*@
-    <div class="modal-footer justify-content-center  ">
-        <button type="submit" class="btn ml-2 bg-success text-white font-weight-bold" id="CancelbuttonId" data-dismiss="modal" style="font-size:15px;"> بله متوجه شدم </button>
+    <div class="justify-content-start pl-3">
+        <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "ویرایش نوع مهاجرت" }' />
     </div>
 
-
-}
-else
-{
-    @* اگر کشور جدیدی وجود داشته باشد ک نوع مهاجرت ان مشخص نشده باشد *@
-
-    @Html.AntiForgeryToken()
-    <form method="post"  id="regForm">
-
-        <!--Modal Header-->
-        <partial name="~/Views/Shared/Partials/Modal/_ModalHeaderPartial.cshtml" model='new ModalHeader { Heading = "افزودن کشور - انواع مهاجرت" }' />
-
-
-        <!--Modal Body-->
-        <div class="modal-body ">
-
-
-            <!--نام کشور-->
-            <div class="form-group row">
-                <label asp-for="CountryId" class="control-label">نام کشور</label>
-                <select asp-for="CountryId" asp-items="@(new SelectList(countryList,"Id","Name"))" class="form-control "></select>
-                <span asp-validation-for="CountryId" class="text-danger"></span>
-
-            </div>
-
-            <!--نام نوع مهاجرت-->
-            <div class="form-group ">
-                <label asp-for="EmigrationTypeId" class="control-label"></label>
-                <select asp-for="EmigrationTypeId" asp-items="@(new SelectList(emgTTypeList,"Id","Name"))" class="form-control 3col active" multiple="multiple"></select>
-                <span asp-validation-for="EmigrationTypeId" class="text-danger"></span>
-
-            </div>
-        </div>
-
-        @*Modal Footer*@
-        <div class="justify-content-end ">
-            <partial name="~/Views/Shared/Partials/Modal/_ModalFooterPartial.cshtml" model='new ModalFooter { SubmitButtonText = "افزودن " }' />
-        </div>
-
-    </form>
-}
-
-
-
+</form>
 
 @*ارسال فرم*@
 <script>
@@ -102,17 +64,13 @@ else
 
                 e.preventDefault();
 
-                ///برای جلوگیری از ثبت دوباره یک رکورد در دیتابیس
-                ///to avoid duplicating recordes on database multiple times
-                e.stopImmediatePropagation();
-    
                 ///دریافت مقادیر فرم
                 var form = $(this);
                 $.ajax({
                     type: "post",
-                    url: '@Url.Action("CreateEmigrateCountry", "EmigrateCountry", new { area = "AdminPanel"})',
+                    url: '@Url.Action("EditEmigrateCountry", "EmigrateCountry", new { area = "AdminPanel"})',
                     cache: false,
-                    data: form.serialize(),
+                    data: form.serialize() ,
 
                 }).done(function (result) {
 
@@ -174,10 +132,8 @@ else
                                 popup: 'animated tada'
                                }
                      });
-
                 });
             });
-
         });
 </script>
 

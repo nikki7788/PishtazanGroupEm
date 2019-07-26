@@ -155,7 +155,7 @@ namespace Model.UnitOfWork
         ///  EmigrateCountry برای کلاس و جدول CRUD پیاده سازی کلاس 
         /// </summary>
         /// مشخص کردن انواع مهاجرت برای هر کشور
-        public CrudAppService<EmigrateCountry, EmigrateCountryListDto, EmigrateCountryCreateDto, EmigrateCountryCreateDto> EmigrationCountryRepoUW
+        public CrudAppService<EmigrateCountry, EmigrateCountryListDto, EmigrateCountryCreateDto, EmigrateCountryCreateDto> EmigrateCountryRepoUW
         {
             //فقط خواندنی
             get
