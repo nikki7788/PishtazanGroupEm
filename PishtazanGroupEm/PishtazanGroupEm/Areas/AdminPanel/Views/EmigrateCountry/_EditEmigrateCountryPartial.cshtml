@@ -63,6 +63,9 @@
             $("#regForm").submit(function (e) {
 
                 e.preventDefault();
+                ///برای جلوگیری از ثبت دوباره یک رکورد در دیتابیس
+                ///to avoid duplicating recordes on database multiple times
+                e.stopImmediatePropagation();
 
                 ///دریافت مقادیر فرم
                 var form = $(this);

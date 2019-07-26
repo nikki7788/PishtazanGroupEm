@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.Entities;
 using Model.Models.Countries;
 using Model.Models.EmigrateCountries;
+using Model.PublicClasses;
 using Model.Service;
 using Model.UnitOfWork;
 using Newtonsoft.Json;
@@ -184,7 +185,7 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
 
             ///دریافت اطلاعات=انواع مهجرت هر کشور ثبت شده برای کشور مورد  نطر
             IEnumerable<EmigrateCountryCreateDto> m = await _unitOfWork.EmigrateCountryRepoUW.GetEditAsync(c => c.CountryId == Id);
-          
+
             //TempData["emId"] = m;
             //ViewBag.mId = m;
 
@@ -217,115 +218,95 @@ namespace PishtazanGroupEm.Areas.AdminPanel.Controllers
         /// </summary>
         /// <param name="model">مدل دریافتی از ویو</param>
         /// <returns></returns>
-      //  [HttpPost, ActionName("EditEmigrateCountry")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditEmigrateCountryConfirm(CreateEmigrateCountryMViewModel model)
+        [HttpPost, ActionName("EditEmigrateCountry")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditEmigrateCountryConfirm(CreateEmigrateCountryMViewModel model)
 
-        //{
-        //    try
-        //    {
+        {
+            try
+            {
 
-        //        if (ModelState.IsValid)
-        //        {
+                if (ModelState.IsValid)
+                {
+                    ///##############-   ویرایش نوع مهاجرت - کشور  -#################
+                    ///روش ۲ تمام نوع مهاجرت ها را پاک میکنیم و توع مهاجرت های جدید را ثبت میکنیم
+                    ///ـــــــــــــــــــــــــ روش ۱ ـــــــــــــــــــــــــ
+                    ///انواع مهاجرت ثبت شده در ویایش را در خود نگه مید ارد برای مقایسه با نوع مهجرت های قبل از ویرایش
+                    /// هر دو طرف باید از یک نوع مجموعه باشند exception دستور 
+                    List<EmigrateCountryCreateDto> emgLst = new List<EmigrateCountryCreateDto>();
+                    foreach (var item in model.EmigrationTypeId)
+                    {
+                        EmigrateCountryCreateDto emgCountry = new EmigrateCountryCreateDto
+                        {
+                            CountryId = model.CountryId,
+                            EmigrationTypeId = item
+                        };
+                        emgLst.Add(emgCountry);
+                    }
+                    ///ــــــــــــــــــــــــــــــــــــــــــــــــــ
 
+                    ///دریافت اطلاعات=انواع مهاجرت ثبت شده برای کشور موردنطر قبل از ویرایش
+                    ///برای مقایسه با انواع مهاجرت ثبت شده در ویرایش و حذف نوع مهاجرت حذف شده برای کشور و افزودن و ثبت نوع مهاجرت جدید در دیتابیس
+                    IEnumerable<EmigrateCountryCreateDto> em = await _unitOfWork.EmigrateCountryRepoUW.GetEditAsync(c => c.CountryId == model.CountryId);
+                  
+                    ///افزودن و ثبت نوع مهاجرت جدید موجود درویرایش در داخل دیتابیس
+                    var exNew = emgLst.ExceptBy(em, a => a.EmigrationTypeId);
 
-        //            //var em = (IEnumerable<EmigrateCountryCreateDto>)TempData["emId"];
-        //            ///##############-   ویرایش نوع مهاجرت - کشور  -#################
-
-        //            List<EmigrateCountryCreateDto> emgLst = new List<EmigrateCountryCreateDto>();
-        //            foreach (var item in model.EmigrationTypeId)
-        //            {
-        //                EmigrateCountryCreateDto emgCountry = new EmigrateCountryCreateDto
-        //                {
-        //                    CountryId = model.CountryId,
-        //                    EmigrationTypeId = item
-        //                };
-        //                emgLst.Add(emgCountry);
-        //            }
-
-
-        //            var ex = em.Except(emgLst);
-        //            foreach (var item in ex)
-        //            {
-        //                await _unitOfWork.EmigrateCountryRepoUW.DeleteByIdAsync(item.Id);
-        //                await _unitOfWork.SaveAsync();
-        //            }
-
-        //            var exNew = emgLst.Except(em);
-        //            foreach (var m in exNew)
-        //            {
-        //                ///افزودن نوه مهجرت های جدید به کشورمورد نطر
-        //                EmigrateCountryCreateDto emgCo = new EmigrateCountryCreateDto
-        //                {
-        //                    CountryId = model.CountryId,
-        //                    EmigrationTypeId = m.EmigrationTypeId
-        //                };
-        //                await _unitOfWork.EmigrateCountryRepoUW.CreateAsync(emgCo);
-        //                await _unitOfWork.SaveAsync();
-        //            }
-
+                    foreach (var item in exNew)
+                    {
+                        ///افزودن نوه مهجرت های جدید به کشورمورد نطر
+                        EmigrateCountryCreateDto emgCo = new EmigrateCountryCreateDto
+                        {
+                            CountryId = model.CountryId,
+                            EmigrationTypeId = item.EmigrationTypeId
+                        };
+                        await _unitOfWork.EmigrateCountryRepoUW.CreateAsync(emgCo);
+                        await _unitOfWork.SaveAsync();
+                    }
 
 
-        //            //foreach (var item in mId)
-        //            //{
-        //            //    foreach (var m in model.EmigrationTypeId)
-        //            //    {
-        //            //        if (item.EmigrationTypeId != m)
-        //            //        {
-        //            //            ///حذف نوع مهاجرتی که در ویرایش 
-        //            //            await _unitOfWork.EmigrateCountryRepoUW.DeleteByIdAsync(item.Id);
-        //            //        }
+                    ///حذف نوع مهاجرت حذف شده برای کشور مورد نظر در ویرایش از دیتابیس
+                    var ex = em.ExceptBy(emgLst, a => a.EmigrationTypeId);
+                    foreach (var item in ex)
+                    {
+                        await _unitOfWork.EmigrateCountryRepoUW.DeleteByIdAsync(item.Id);
+                        await _unitOfWork.SaveAsync();
+                    }
 
-        //            //        ///افزودن نوه مهجرت های جدید به کشورمورد نطر
-        //            //        EmigrateCountryCreateDto emgCountry = new EmigrateCountryCreateDto
-        //            //        {
-        //            //            CountryId = model.CountryId,
-        //            //            EmigrationTypeId = m
-        //            //        };
+                    return Json(new { status = "success", message = "عملیات با موفقیت انجام شد" });
 
-        //            //        await _unitOfWork.SaveAsync();
+                    ///############------#############
+                }
 
-        //            //    }
+                // ---------------اگر ولیدیشن رعایت نشده بود-------
 
+                //-------------------------- خطاهای ورودی  هارا برمیکرداند-------------------------------
+                //display validation with jquery ajax
+                var errorMessage = new List<string>();
+                var errorKeys = new List<string>();
+                foreach (var validation in ViewData.ModelState.Values)
+                {
+                    errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
 
-        //            //    await _unitOfWork.SaveAsync();
-
-        //            //}
-
-        //            return Json(new { status = "success", message = "عملیات با موفقیت انجام شد" });
-
-        //            ///############------#############
-        //        }
-
-        //        // ---------------اگر ولیدیشن رعایت نشده بود-------
-
-        //        //-------------------------- خطاهای ورودی  هارا برمیکرداند-------------------------------
-        //        //display validation with jquery ajax
-        //        var errorMessage = new List<string>();
-        //        var errorKeys = new List<string>();
-        //        foreach (var validation in ViewData.ModelState.Values)
-        //        {
-        //            errorMessage.AddRange(validation.Errors.Select(error => error.ErrorMessage));
-
-        //        }
-        //        foreach (var modelStateKey in ViewData.ModelState.Keys)
-        //        {
-        //            var modelStateVal = ViewData.ModelState[modelStateKey];
-        //            foreach (var error in modelStateVal.Errors)
-        //            {
-        //                errorKeys.Add(modelStateKey);
-        //                // You may log the errors if you want
-        //            }
-        //        }
-        //        return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
+                }
+                foreach (var modelStateKey in ViewData.ModelState.Keys)
+                {
+                    var modelStateVal = ViewData.ModelState[modelStateKey];
+                    foreach (var error in modelStateVal.Errors)
+                    {
+                        errorKeys.Add(modelStateKey);
+                        // You may log the errors if you want
+                    }
+                }
+                return Json(new { status = "validationError", message = "ورودی های خود رادوباره بررسی کنید", errorMessages = errorMessage, errorKey = errorKeys });
 
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
         #endregion############
